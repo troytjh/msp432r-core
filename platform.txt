@@ -17,25 +17,25 @@ compiler.warning_flags.default=
 compiler.warning_flags.more=-Wall
 compiler.warning_flags.all=-Wall -Wextra
 
-compiler.path={runtime.tools.arm-none-eabi-gcc-6.3.1-20170620.path}/bin/
-compiler.c.cmd=arm-none-eabi-gcc
+compiler.path={runtime.tools.msp432-gcc-8.2.1-20170620.path}/bin/
+compiler.c.cmd=msp432-gcc
 compiler.c.flags=-c -g -Os {compiler.warning_flags} -ffunction-sections -fdata-sections
 #compiler.c.flags=-c -g -Os {compiler.warning_flags} -ffunction-sections -fdata-sections -nostdlib
-compiler.cpp.elf.cmd=arm-none-eabi-g++
+compiler.cpp.elf.cmd=msp432-g++
 compiler.c.elf.flags=-Os -Wl,--gc-sections -specs=nano.specs  -specs=rdimon.specs -specs=nosys.specs
-compiler.S.cmd=arm-none-eabi-gcc
+compiler.S.cmd=msp432-gcc
 compiler.S.flags=-c -g -x assembler-with-cpp
-compiler.cpp.cmd=arm-none-eabi-g++
+compiler.cpp.cmd=msp432-g++
 compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fno-exceptions
 #compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fno-exceptions -nostdlib
-compiler.ar.cmd=arm-none-eabi-ar
+compiler.ar.cmd=msp432-ar
 compiler.ar.flags=rcPs
-compiler.objcopy.cmd=arm-none-eabi-objcopy
+compiler.objcopy.cmd=msp432-objcopy
 compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
 compiler.elf2hex.flags=-O binary
-compiler.elf2hex.cmd=arm-none-eabi-objcopy
+compiler.elf2hex.cmd=msp432-objcopy
 compiler.ldflags=
-compiler.size.cmd=arm-none-eabi-size
+compiler.size.cmd=msp432-size
 
 
 compiler.driverlib.c.flags="-I{build.system.path}/source/ti/devices/msp432p4xx/driverlib" "-I{build.system.path}/source/ti/devices/msp432p4xx/inc" "-I{build.system.path}/source/ti/devices/msp432p4xx/" "-I{build.system.path}/source/third_party/CMSIS/Include"
