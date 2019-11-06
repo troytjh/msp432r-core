@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_family_arm_cc32xx_Timer__INTERNAL__
@@ -260,7 +260,7 @@
 
 /* Object__sizingError */
 #line 1 "Error_inconsistent_object_size_in_ti.sysbios.family.arm.cc32xx.Timer"
-typedef char ti_sysbios_family_arm_cc32xx_Timer_Object__sizingError[sizeof(ti_sysbios_family_arm_cc32xx_Timer_Object) > sizeof(ti_sysbios_family_arm_cc32xx_Timer_Struct) ? -1 : 1];
+typedef char ti_sysbios_family_arm_cc32xx_Timer_Object__sizingError[(sizeof(ti_sysbios_family_arm_cc32xx_Timer_Object) > sizeof(ti_sysbios_family_arm_cc32xx_Timer_Struct)) ? -1 : 1];
 
 
 #endif /* ti_sysbios_family_arm_cc32xx_Timer__INTERNAL____ */

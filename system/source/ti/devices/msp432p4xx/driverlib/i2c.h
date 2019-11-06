@@ -78,6 +78,11 @@ extern "C"
 #define EUSCI_B_I2C_TRANSMIT_MODE                              EUSCI_B_CTLW0_TR
 #define EUSCI_B_I2C_RECEIVE_MODE                                           0x00
 
+#define EUSCI_B_I2C_TIMEOUT_DISABLE                        EUSCI_B_CTLW1_CLTO_0
+#define EUSCI_B_I2C_TIMEOUT_28_MS                          EUSCI_B_CTLW1_CLTO_1
+#define EUSCI_B_I2C_TIMEOUT_31_MS                          EUSCI_B_CTLW1_CLTO_2
+#define EUSCI_B_I2C_TIMEOUT_34_MS                          EUSCI_B_CTLW1_CLTO_3
+
 #define EUSCI_B_I2C_NAK_INTERRUPT                             EUSCI_B_IE_NACKIE
 #define EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT                   EUSCI_B_IE_ALIE
 #define EUSCI_B_I2C_STOP_INTERRUPT                             EUSCI_B_IE_STPIE
@@ -313,6 +318,34 @@ extern void I2C_setSlaveAddress(uint32_t moduleInstance,
 //
 //*****************************************************************************
 extern void I2C_setMode(uint32_t moduleInstance, uint_fast8_t mode);
+
+//*****************************************************************************
+//
+//! Sets the timeout of the I2C device
+//!
+//! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
+//! parameters vary from part to part, but can include:
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
+//!  <br>It is important to note that for eUSCI modules, only "B" modules such as
+//!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
+//!  I2C mode.
+//!
+//! \param timeout indicates desired timeout
+//!     - \b EUSCI_B_I2C_TIMEOUT_DISABLE [Default value]
+//!     - \b EUSCI_B_I2C_TIMEOUT_28_MS
+//!     - \b EUSCI_B_I2C_TIMEOUT_31_MS
+//!     - \b EUSCI_B_I2C_TIMEOUT_34_MS
+//!
+//! Modified bits are \b UCSWRST of \b UCBxCTL0 and \b UCCLTO of \b UCBxCTL1
+//! registers
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void I2C_setTimeout(uint32_t moduleInstance, uint_fast16_t timeout);
 
 //*****************************************************************************
 //
@@ -986,7 +1019,8 @@ extern uint8_t I2C_masterIsStopSent(uint32_t moduleInstance);
 //! This function checks the status of the bus via UCTXSTT bit in
 //! UCBxCTL1 register.
 //!
-//! \return Returns true if the START has been sent, false if it is sending
+//! \return Returns EUSCI_B_I2C_BUS_BUSY if the I2C Master is busy; otherwise,
+//!         returns EUSCI_B_I2C_BUS_NOT_BUSY.
 //
 //*****************************************************************************
 extern bool I2C_masterIsStartSent(uint32_t moduleInstance);

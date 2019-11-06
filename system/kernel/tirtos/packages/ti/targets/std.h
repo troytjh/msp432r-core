@@ -1,5 +1,5 @@
 /* 
- *  Copyright (c) 2008-2016 Texas Instruments Incorporated
+ *  Copyright (c) 2008-2018 Texas Instruments Incorporated
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -79,24 +79,34 @@
     #define xdc__BITS64__
     #define xdc__INT64__
 
-#elif defined(__MSP430__)                       /* MSP430 */
-    #define xdc__LONGLONG__
-    #define xdc__BITS8__
-    #define xdc__BITS16__
-    #define xdc__BITS32__
-    #define xdc__BITS64__
-    #define xdc__INT64__
-
 #elif defined(__C7100__)
     #define xdc__LONGLONG__
     #define xdc__BITS8__
     #define xdc__BITS16__
     #define xdc__BITS32__
     #define xdc__BITS64__
-//    #define xdc__INT40__
+/*    #define xdc__INT40__ */
     #define xdc__INT64__
 
     #define __FAR__
+
+#elif defined(ti_targets_arm_clang_M4F) || \
+      defined(ti_targets_arm_clang_M4) || \
+      defined(ti_targets_arm_clang_M3)
+    #define xdc__LONGLONG__
+    #define xdc__BITS8__
+    #define xdc__BITS16__
+    #define xdc__BITS32__
+    #define xdc__BITS64__
+    #define xdc__INT64__
+
+#elif defined(__ARM_ARCH_8M_MAIN__)
+    #define xdc__LONGLONG__
+    #define xdc__BITS8__
+    #define xdc__BITS16__
+    #define xdc__BITS32__
+    #define xdc__BITS64__
+    #define xdc__INT64__
 
 #else
     #error <ti/targets/std.h> is not supported for this target
@@ -173,6 +183,13 @@ typedef uintptr_t       xdc_UArg;
 #define xdc__META(n,s)                               \
     ti_targets_mkPragma(DATA_SECTION(n, "xdc.meta")) \
     const char (n)[] = {s}
+
+#elif defined(__clang__)
+
+#define xdc__META(n,s) \
+    __attribute__ ((section ("xdc.meta"))) \
+    const char (n)[] = {(s)}
+
 #else
 
 #define xdc__META(n,s)                               \
@@ -203,7 +220,7 @@ static inline xdc_Fxn xdc_uargToFxn(xdc_UArg a) { return ((xdc_Fxn)(int)a); }
 
 #endif /* ti_targets_STD_ */
 /*
- *  @(#) ti.targets; 1, 0, 3,1; 7-27-2017 11:47:28; /db/ztree/library/trees/xdctargets/xdctargets-o04/src/ xlibrary
+ *  @(#) ti.targets; 1, 0, 3,0; 8-9-2019 17:15:03; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

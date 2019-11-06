@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_sysbios_syncs_SyncSem__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_syncs_SyncSem___VERS 200
@@ -267,8 +269,8 @@ struct ti_sysbios_syncs_SyncSem_Params {
 /* Struct */
 struct ti_sysbios_syncs_SyncSem_Struct {
     const ti_sysbios_syncs_SyncSem_Fxns__ *__fxns;
-    xdc_Bool __f0;
-    ti_sysbios_knl_Semaphore_Handle __f1;
+    xdc_Bool f0;
+    ti_sysbios_knl_Semaphore_Handle f1;
     xdc_runtime_Types_CordAddr __name;
 };
 
@@ -281,9 +283,9 @@ struct ti_sysbios_syncs_SyncSem_Struct {
 struct ti_sysbios_syncs_SyncSem_Fxns__ {
     const xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2* __sysp;
-    xdc_Bool (*query)(ti_sysbios_syncs_SyncSem_Handle __inst, xdc_Int qual);
-    xdc_Void (*signal)(ti_sysbios_syncs_SyncSem_Handle __inst);
-    xdc_Int (*wait)(ti_sysbios_syncs_SyncSem_Handle __inst, xdc_UInt timeout, xdc_runtime_Error_Block* eb);
+    xdc_Bool (*query)(ti_sysbios_syncs_SyncSem_Handle inst, xdc_Int qual);
+    xdc_Void (*signal)(ti_sysbios_syncs_SyncSem_Handle inst);
+    xdc_Int (*wait)(ti_sysbios_syncs_SyncSem_Handle inst, xdc_UInt timeout, xdc_runtime_Error_Block* eb);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_sysbios_syncs_SyncSem_Module__FXNS__CR
@@ -304,19 +306,19 @@ __extern const ti_sysbios_syncs_SyncSem_Fxns__ ti_sysbios_syncs_SyncSem_Module__
 
 /* Instance_init__E */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Instance_init__E, "ti_sysbios_syncs_SyncSem_Instance_init")
-__extern xdc_Int ti_sysbios_syncs_SyncSem_Instance_init__E(ti_sysbios_syncs_SyncSem_Object *__obj, const ti_sysbios_syncs_SyncSem_Params *__prms, xdc_runtime_Error_Block *__eb);
+__extern xdc_Int ti_sysbios_syncs_SyncSem_Instance_init__E(ti_sysbios_syncs_SyncSem_Object *obj, const ti_sysbios_syncs_SyncSem_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* Instance_finalize__E */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Instance_finalize__E, "ti_sysbios_syncs_SyncSem_Instance_finalize")
-__extern void ti_sysbios_syncs_SyncSem_Instance_finalize__E(ti_sysbios_syncs_SyncSem_Object *__obj, int __ec);
+__extern void ti_sysbios_syncs_SyncSem_Instance_finalize__E(ti_sysbios_syncs_SyncSem_Object *obj, int ec);
 
 /* create */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_create, "ti_sysbios_syncs_SyncSem_create")
-__extern ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_create( const ti_sysbios_syncs_SyncSem_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_create( const ti_sysbios_syncs_SyncSem_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* construct */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_construct, "ti_sysbios_syncs_SyncSem_construct")
-__extern void ti_sysbios_syncs_SyncSem_construct( ti_sysbios_syncs_SyncSem_Struct *__obj, const ti_sysbios_syncs_SyncSem_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern void ti_sysbios_syncs_SyncSem_construct(ti_sysbios_syncs_SyncSem_Struct *obj, const ti_sysbios_syncs_SyncSem_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* delete */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_delete, "ti_sysbios_syncs_SyncSem_delete")
@@ -328,50 +330,50 @@ __extern void ti_sysbios_syncs_SyncSem_destruct(ti_sysbios_syncs_SyncSem_Struct 
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Handle__label__S, "ti_sysbios_syncs_SyncSem_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_syncs_SyncSem_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_syncs_SyncSem_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Module__startupDone__S, "ti_sysbios_syncs_SyncSem_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_syncs_SyncSem_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_syncs_SyncSem_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Object__create__S, "ti_sysbios_syncs_SyncSem_Object__create__S")
-__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__create__S( xdc_CPtr __aa, const xdc_UChar *__pa, xdc_SizeT __psz, xdc_runtime_Error_Block *__eb );
+__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Object__delete__S, "ti_sysbios_syncs_SyncSem_Object__delete__S")
-__extern xdc_Void ti_sysbios_syncs_SyncSem_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_sysbios_syncs_SyncSem_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Object__get__S, "ti_sysbios_syncs_SyncSem_Object__get__S")
-__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Object__first__S, "ti_sysbios_syncs_SyncSem_Object__first__S")
-__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Object__next__S, "ti_sysbios_syncs_SyncSem_Object__next__S")
-__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_syncs_SyncSem_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_Params__init__S, "ti_sysbios_syncs_SyncSem_Params__init__S")
-__extern xdc_Void ti_sysbios_syncs_SyncSem_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_syncs_SyncSem_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* query__E */
 #define ti_sysbios_syncs_SyncSem_query ti_sysbios_syncs_SyncSem_query__E
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_query__E, "ti_sysbios_syncs_SyncSem_query")
-__extern xdc_Bool ti_sysbios_syncs_SyncSem_query__E( ti_sysbios_syncs_SyncSem_Handle __inst, xdc_Int qual );
+__extern xdc_Bool ti_sysbios_syncs_SyncSem_query__E( ti_sysbios_syncs_SyncSem_Handle instp, xdc_Int qual);
 
 /* signal__E */
 #define ti_sysbios_syncs_SyncSem_signal ti_sysbios_syncs_SyncSem_signal__E
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_signal__E, "ti_sysbios_syncs_SyncSem_signal")
-__extern xdc_Void ti_sysbios_syncs_SyncSem_signal__E( ti_sysbios_syncs_SyncSem_Handle __inst );
+__extern xdc_Void ti_sysbios_syncs_SyncSem_signal__E( ti_sysbios_syncs_SyncSem_Handle instp);
 
 /* wait__E */
 #define ti_sysbios_syncs_SyncSem_wait ti_sysbios_syncs_SyncSem_wait__E
 xdc__CODESECT(ti_sysbios_syncs_SyncSem_wait__E, "ti_sysbios_syncs_SyncSem_wait")
-__extern xdc_Int ti_sysbios_syncs_SyncSem_wait__E( ti_sysbios_syncs_SyncSem_Handle __inst, xdc_UInt timeout, xdc_runtime_Error_Block *eb );
+__extern xdc_Int ti_sysbios_syncs_SyncSem_wait__E( ti_sysbios_syncs_SyncSem_Handle instp, xdc_UInt timeout, xdc_runtime_Error_Block *eb);
 
 
 /*
@@ -403,7 +405,7 @@ static inline ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_Handle_do
 static inline ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_Handle_downCast(xdc_runtime_knl_ISync_Handle i)
 {
     xdc_runtime_knl_ISync_Handle i2 = (xdc_runtime_knl_ISync_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_sysbios_syncs_SyncSem_Module__FXNS__C ? (ti_sysbios_syncs_SyncSem_Handle)i : (ti_sysbios_syncs_SyncSem_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_sysbios_syncs_SyncSem_Module__FXNS__C) ? (ti_sysbios_syncs_SyncSem_Handle)i : (ti_sysbios_syncs_SyncSem_Handle)NULL;
 }
 
 /* Handle_from_xdc_runtime_knl_ISync */
@@ -432,23 +434,23 @@ static inline CT__ti_sysbios_syncs_SyncSem_Module__id ti_sysbios_syncs_SyncSem_M
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_syncs_SyncSem_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_syncs_SyncSem_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_syncs_SyncSem_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_syncs_SyncSem_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_syncs_SyncSem_Module__diagsMask__C != (CT__ti_sysbios_syncs_SyncSem_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_syncs_SyncSem_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_syncs_SyncSem_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_syncs_SyncSem_Module_getMask(void)
 {
-    return ti_sysbios_syncs_SyncSem_Module__diagsMask__C != NULL ? *ti_sysbios_syncs_SyncSem_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_syncs_SyncSem_Module__diagsMask__C != (CT__ti_sysbios_syncs_SyncSem_Module__diagsMask)NULL) ? *ti_sysbios_syncs_SyncSem_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_syncs_SyncSem_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_syncs_SyncSem_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_syncs_SyncSem_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_syncs_SyncSem_Module__diagsMask__C != (CT__ti_sysbios_syncs_SyncSem_Module__diagsMask)NULL) {
         *ti_sysbios_syncs_SyncSem_Module__diagsMask__C = mask;
     }
 }
@@ -457,8 +459,8 @@ static inline xdc_Void ti_sysbios_syncs_SyncSem_Module_setMask(xdc_Bits16 mask)
 static inline void ti_sysbios_syncs_SyncSem_Params_init(ti_sysbios_syncs_SyncSem_Params *prms);
 static inline void ti_sysbios_syncs_SyncSem_Params_init( ti_sysbios_syncs_SyncSem_Params *prms ) 
 {
-    if (prms) {
-        ti_sysbios_syncs_SyncSem_Params__init__S(prms, 0, sizeof(ti_sysbios_syncs_SyncSem_Params), sizeof(xdc_runtime_IInstance_Params));
+    if (prms != NULL) {
+        ti_sysbios_syncs_SyncSem_Params__init__S(prms, NULL, sizeof(ti_sysbios_syncs_SyncSem_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
 
@@ -466,7 +468,7 @@ static inline void ti_sysbios_syncs_SyncSem_Params_init( ti_sysbios_syncs_SyncSe
 static inline void ti_sysbios_syncs_SyncSem_Params_copy(ti_sysbios_syncs_SyncSem_Params *dst, const ti_sysbios_syncs_SyncSem_Params *src);
 static inline void ti_sysbios_syncs_SyncSem_Params_copy(ti_sysbios_syncs_SyncSem_Params *dst, const ti_sysbios_syncs_SyncSem_Params *src) 
 {
-    if (dst) {
+    if (dst != NULL) {
         ti_sysbios_syncs_SyncSem_Params__init__S(dst, (const void *)src, sizeof(ti_sysbios_syncs_SyncSem_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
@@ -478,8 +480,8 @@ static inline void ti_sysbios_syncs_SyncSem_Params_copy(ti_sysbios_syncs_SyncSem
 #define ti_sysbios_syncs_SyncSem_Object_sizeof() ti_sysbios_syncs_SyncSem_Object__sizeof__C
 
 /* Object_get */
-static inline ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_Object_get(ti_sysbios_syncs_SyncSem_Instance_State *oarr, int i);
-static inline ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_Object_get(ti_sysbios_syncs_SyncSem_Instance_State *oarr, int i) 
+static inline ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_Object_get(ti_sysbios_syncs_SyncSem_Object *oarr, int i);
+static inline ti_sysbios_syncs_SyncSem_Handle ti_sysbios_syncs_SyncSem_Object_get(ti_sysbios_syncs_SyncSem_Object *oarr, int i) 
 {
     return (ti_sysbios_syncs_SyncSem_Handle)ti_sysbios_syncs_SyncSem_Object__get__S(oarr, i);
 }

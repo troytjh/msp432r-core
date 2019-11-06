@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,6 +45,8 @@
 
 static unsigned char * diskMem = NULL;
 static unsigned numSectors = 0;
+
+extern int32_t fatfs_getFatTime(void);
 
 void ramdisk_init(unsigned char * data, int numBytes)
 {
@@ -120,7 +122,8 @@ DRESULT disk_ioctl(BYTE drive, BYTE cmd, void * buf)
     return (result);
 }
 
-DWORD get_fattime()
+DWORD get_fattime(void)
 {
-    return (0x23556622);
+    /* call TI dummy implementation or user defined hook function */
+    return (fatfs_getFatTime());
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ var buildInstrumentedLibrary = false; /* don't build instrumented libraries */
 function makeLibs(name, targets, objects, cOpts)
 {
     var lib;
-    var target;
+    var gccOpts;
     var attrs = {
         copts: "",
         profile: "release"
@@ -57,19 +57,67 @@ function makeLibs(name, targets, objects, cOpts)
         /* Load target module */
         var target = xdc.module(targetName);
 
+        var objs = objects.concat();
+
+        /*
+         *  Exlude incompatible assembly files from the object list.
+         *  The objects parameter includes the super-set list. We prune that here.
+         *  This code assumes that assembly files follow the form xyz_ccs.asm,
+         *  xyz_gnu.asm, and xyz_iar.asm.
+         */
+        if (!targetName.match('clang')) {
+            for (var i = objs.length - 1; i >= 0; i--) {
+                if (objs[i].match('_clang.asm')) {
+                    objs.splice(i, 1);
+                }
+            }
+        }
+        if (!targetName.match('ti.targets') || targetName.match('clang')) {
+            for (var i = objs.length - 1; i >= 0; i--) {
+                if (objs[i].match('_ccs.asm')) {
+                    objs.splice(i, 1);
+                }
+            }
+        }
+        if (!targetName.match('gnu.targets')) {
+            for (var i = objs.length - 1; i >= 0; i--) {
+                if (objs[i].match('_gnu.asm')) {
+                    objs.splice(i, 1);
+                }
+            }
+        }
+        if (!targetName.match('iar.targets')) {
+            for (var i = objs.length - 1; i >= 0; i--) {
+                if (objs[i].match('_iar.asm')) {
+                    objs.splice(i, 1);
+                }
+            }
+        }
+
+        /*
+         *  Suppress GCC 4.90's auto check-for-null-pointer-dereference
+         *  'UDF' instruction generation
+         */
+        if (targetName.match('gnu.targets')) {
+            gccOpts = " -fno-isolate-erroneous-paths-dereference ";
+        }
+        else {
+            gccOpts = "";
+        }
+
         /* Disable asserts & logs for the non-instrumented library */
-        attrs.copts = cOpts +
+        attrs.copts = cOpts + gccOpts +
             " -Dxdc_runtime_Log_DISABLE_ALL -Dxdc_runtime_Assert_DISABLE_ALL";
         lib = Pkg.addLibrary(name, target, attrs);
-        lib.addObjects(objects);
+        lib.addObjects(objs);
 
         if (buildInstrumentedLibrary) {
             /* Enable asserts & logs for the instrumented library */
-            attrs.copts = cOpts +
+            attrs.copts = cOpts + gccOpts +
                 " -Dxdc_runtime_Assert_DISABLE_CONDITIONAL_ASSERT" +
                 " -DDebugP_ASSERT_ENABLED -DDebugP_LOG_ENABLED";
             lib = Pkg.addLibrary(name + "_instrumented", target, attrs);
-            lib.addObjects(objects);
+            lib.addObjects(objs);
         }
     }
 }
@@ -87,7 +135,16 @@ var m4Targets = [
 ];
 
 var m4fTargets = [
+    "ti.targets.arm.clang.M4F",
     "ti.targets.arm.elf.M4F",
     "gnu.targets.arm.M4F",
     "iar.targets.arm.M4F",
+];
+
+var m33fTargets = [
+    "ti.targets.arm.clang.M33F",
+];
+
+var m33Targets = [
+    "ti.targets.arm.clang.M33",
 ];

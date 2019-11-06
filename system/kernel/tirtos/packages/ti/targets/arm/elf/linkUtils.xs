@@ -29,7 +29,7 @@ function genElfSymbols(prog)
     return (res);
 }
 /*
- *  @(#) ti.targets.arm.elf; 1, 0, 0,1; 7-27-2017 11:47:35; /db/ztree/library/trees/xdctargets/xdctargets-o04/src/ xlibrary
+ *  @(#) ti.targets.arm.elf; 1, 0, 0,0; 8-9-2019 17:15:05; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

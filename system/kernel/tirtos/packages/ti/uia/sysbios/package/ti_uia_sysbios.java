@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_uia_sysbios
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -744,7 +744,7 @@ public class ti_uia_sysbios
         sizes.add(Global.newArray("buffer", "UPtr"));
         sizes.add(Global.newArray("write", "UPtr"));
         sizes.add(Global.newArray("end", "UPtr"));
-        sizes.add(Global.newArray("maxEventSizeInBits32", "USize"));
+        sizes.add(Global.newArray("maxEventSizeUArg", "USize"));
         sizes.add(Global.newArray("maxEventSize", "USize"));
         sizes.add(Global.newArray("droppedEvents", "TInt"));
         sizes.add(Global.newArray("seqNumber", "UInt16"));
@@ -1323,10 +1323,10 @@ public class ti_uia_sysbios
                 po.addFld("context", new Proto.Adr("xdc_UArg", "Pv"), $$UNDEF, "w");
                 po.addFld("primeStatus", $$T_Bool, $$UNDEF, "w");
                 po.addFld("bufSize", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "w");
-                po.addFld("buffer", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("write", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("end", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("maxEventSizeInBits32", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
+                po.addFld("buffer", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("write", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("end", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("maxEventSizeUArg", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
                 po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
                 po.addFld("droppedEvents", Proto.Elm.newCNum("(xdc_Int)"), $$UNDEF, "w");
                 po.addFld("seqNumber", Proto.Elm.newCNum("(xdc_UInt16)"), $$UNDEF, "w");
@@ -1978,10 +1978,10 @@ public class ti_uia_sysbios
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerStreamer.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.sysbios.LoggerStreamer.Object", "ti.uia.sysbios"));
         vo.bind("MODULE_STARTUP$", 1);
@@ -2124,10 +2124,10 @@ public class ti_uia_sysbios
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray("A_invalidBuffer"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerStreamer2.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.sysbios.LoggerStreamer2.Object", "ti.uia.sysbios"));
         vo.bind("MODULE_STARTUP$", 1);
@@ -2247,8 +2247,8 @@ public class ti_uia_sysbios
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", "./LoggerIdle.xdt");
         atmap.setElem("", true);
+        atmap.setElem("", "./LoggerIdle.xdt");
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.sysbios.LoggerIdle.Object", "ti.uia.sysbios"));
         vo.bind("MODULE_STARTUP$", 0);

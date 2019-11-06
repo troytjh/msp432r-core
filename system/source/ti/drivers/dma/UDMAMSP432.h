@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@
  *
  *  @brief      uDMA driver implementation for MSP432.
  *
- *  This driver is intended for use only by TI-RTOS drivers that use the uDMA
+ *  This driver is intended for use only by drivers that use the uDMA
  *  peripheral (e.g., SPI).  This driver is mainly used for management of
  *  the control table base address of the UDMA peripheral, and to create
  *  the DMA error Hwi.
@@ -53,14 +53,14 @@
 #ifndef ti_drivers_dma_UDMAMSP432__include
 #define ti_drivers_dma_UDMAMSP432__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 
 #include <ti/drivers/dpl/HwiP.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*!
  *  @brief      UDMA error function pointer
@@ -93,15 +93,7 @@ typedef void (*UDMAMSP432_ErrorFxn)(uintptr_t arg);
  *
  *  #include <ti/devices/msp432p4xx/driverlib/udma.h>
  *
- *  #if defined(__TI_COMPILER_VERSION__)
- *  #pragma DATA_ALIGN(dmaControlTable, 1024)
- *  #elif defined(__IAR_SYSTEMS_ICC__)
- *  #pragma data_alignment=1024
- *  #elif defined(__GNUC__)
- *  __attribute__ ((aligned (1024)))
- *  #endif
- *
- *  static tDMAControlTable dmaControlTable[64];
+ *  static tDMAControlTable dmaControlTable[64] __attribute__ ((aligned (1024)));
  *
  *  #include <ti/drivers/dma/UDMAMSP432.h>
  *
@@ -116,7 +108,7 @@ typedef void (*UDMAMSP432_ErrorFxn)(uintptr_t arg);
  *  @endcode
  *
  */
-typedef struct UDMAMSP432_HWAttrs {
+typedef struct {
     void           *controlBaseAddr; /*!< uDMA control registers base address */
     UDMAMSP432_ErrorFxn dmaErrorFxn; /*!< uDMA error interrupt handler */
     uint8_t         intNum;          /*!< uDMA error interrupt number */
@@ -132,7 +124,7 @@ typedef struct UDMAMSP432_HWAttrs {
  *  This structure needs to be defined before calling UDMAMSP432_init() and
  *  it must not be changed thereafter.
  */
-typedef struct UDMAMSP432_Config {
+typedef struct {
     void              *object;            /*!< Pointer to UDMAMSP432 object */
     void const        *hwAttrs;           /*!< Pointer to hardware attributes */
 } UDMAMSP432_Config;
@@ -140,20 +132,56 @@ typedef struct UDMAMSP432_Config {
 /*!
  *  @brief      A handle that is returned from a UDMAMSP432_open() call.
  */
-typedef struct UDMAMSP432_Config      *UDMAMSP432_Handle;
+typedef UDMAMSP432_Config *UDMAMSP432_Handle;
 
 /*!
  *  @brief  UDMAMSP432 object
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct UDMAMSP432_Object {
-    bool             isOpen;          /* Flag for open/close status */
-    HwiP_Handle      hwiHandle;       /* DMA error Hwi */
+typedef struct {
+    bool unused;
 } UDMAMSP432_Object;
 
 /*!
- *  @brief  Function to close the DMA driver.
+ *  @brief  UDMAMSP432 Transfer configuration
+ *
+ *  The UDMAMSP432_Transfer structure contains parameters for initializing a
+ *  DMA transfer using a given DMA channel number.
+ *
+ *  This struct is used in UDMAMSP432_setupTransfer().
+ */
+typedef struct {
+    uint32_t         dmaChannel;                 /*!< DMA channel */
+    uint32_t         structSelect;               /*!< */
+    uint32_t         ctlOptions;                 /*!< DMA control options */
+    uint32_t         transferMode;               /*!< DMA transfer mode. Basic or PingPong */
+    void             *dmaTransferSource;         /*!< Source of DMA transfer */
+    void             *dmaTransferDestination;    /*!< Destination of DMA transfer */
+    uint32_t         transferSize;               /*!< Size of DMA transfer */
+} UDMAMSP432_Transfer;
+
+/*!
+ *  @brief  UDMAMSP432 Ping Pong Transfer configuration
+ *
+ *  The UDMAMSP432_Transfer structure contains parameters for initializing a
+ *  DMA ping pong transfer using a given DMA channel number.
+ *
+ *  This struct is used in UDMAMSP432_setupPingPongTransfer() and
+ *  UDMAMSP432_PingPongToggleBuffer().
+ */
+typedef struct {
+    uint32_t         dmaChannel;                  /*!< DMA channel */
+    uint32_t         ctlOptions;                  /*!< DMA control options */
+    uint32_t         transferMode;                /*!< DMA transfer mode. Basic or PingPong */
+    void             *dmaTransferSource;          /*!< Source of DMA transfer */
+    void             *dmaPrimaryDestination;      /*!< Primary Destination of DMA transfer */
+    void             *dmaAlternateDestination;    /*!< Alternate Destination of DMA transfer */
+    uint32_t         transferSize;                /*!< Size of DMA transfer */
+} UDMAMSP432_PingPongTransfer;
+
+/*!
+ *  @brief  Function to close the DMA driver
  *
  *  Close a DMA handle returned from UDMAMSP432_open().
  *
@@ -161,13 +189,14 @@ typedef struct UDMAMSP432_Object {
  *          Calling context: Task
  *
  *  @param  handle  A UDMAMSP432_Handle returned from UDMAMSP432_open()
+ *  @param  channelNum  A DMA channel defined in dma.h (e.g. DMA_CH0_EUSCIB0TX0)
+ *  @param  intNum   DMA_INT0 - DMA_INT3 associated with the channelNum
  *
  *  @return none
  *
  *  @sa     UDMAMSP432_open
  */
-extern void UDMAMSP432_close(UDMAMSP432_Handle handle);
-
+extern void UDMAMSP432_close(UDMAMSP432_Handle handle, uint32_t channelNum, uint8_t intNum);
 /*!
  *  @brief  Function to initialize the MSP432 DMA driver
  *
@@ -181,17 +210,69 @@ extern void UDMAMSP432_close(UDMAMSP432_Handle handle);
 extern void UDMAMSP432_init();
 
 /*!
- *  @brief  Function to initialize the MSP432 DMA peripheral
+ *  @brief  Function to initialize the MSP432 DMA peripheral and corresponding interrupt
  *
- *  UDMAMSP432_open() can be called multiple times. *
+ *  UDMAMSP432_open() opens the DMA peripheral. It calls UDMAMSP432_setupInterrupt()
+ *  This function can be called multiple times.
  *  @pre    UDMAMSP432_init() has to be called first.
  *          Calling context: Task
+ *
+ *  @param  channelNum  A DMA channel defined in dma.h (e.g. DMA_CH0_EUSCIB0TX0)
+ *  @param  intNum      The DMA interrupt to be used for the module (DMA_INT0 - DMA_INT3)
+ *  @param  priority    The interrupt priority used in the module
+ *  @param  hwiFxn      A pointer to the desired ISR to call
+ *  @param  arg         A pointer to a struct of args for the ISR
  *
  *  @return UDMAMSP432_Handle on success or NULL if an error has occurred.
  *
  *  @sa     UDMAMSP432_close()
  */
-extern UDMAMSP432_Handle UDMAMSP432_open();
+extern UDMAMSP432_Handle UDMAMSP432_open(uint32_t channelNum, uint8_t intNum, uint32_t priority,
+            void (*hwiFxn)(uintptr_t), uintptr_t arg);
+
+/*!
+ *  @brief  Function to set up a DMA channel for data transfer
+ *
+ *  The function will set the channel control, set the channel transfer,
+ *  assign the channel, and enable the channel.
+ *
+ *  @pre    UDMAMSP432_open() has to be called first.
+ *
+ *  @param  transfer  Pointer to a UDMAMSP432_Transfer param struct
+ *
+ *  @return true on success or false if an error has occurred
+ */
+extern bool UDMAMSP432_setupTransfer(UDMAMSP432_Transfer *transfer);
+
+/*!
+ *  @brief  Function to set up a DMA channel for ping pong data transfer
+ *
+ *  The function will set the channel control, set the channel transfer,
+ *  assign the channel, and enable the channel. It will also set up the
+ *  alternate data structure for use with ping pong mode. For continuous
+ *  transfering, set transfer.transferMode = UDMA_MODE_PING_PONG. For
+ *  one-shot across two buffers, set transfer.transferMode = UDMA_MODE_BASIC.
+ *
+ *  @pre    UDMAMSP432_open() has to be called first.
+ *
+ *  @param  transfer  Pointer to a UDMAMSP432_PingPongTransfer param struct
+ *
+ *  @return true on success or false if an error has occurred
+ */
+extern bool UDMAMSP432_setupPingPongTransfer(UDMAMSP432_PingPongTransfer *transfer);
+
+/*!
+ *  @brief  Function to toggle between two buffers during ping pong mode
+ *
+ *  The function will alternate setting the destination buffer between transfer's
+ *  dmaTransferDestinationOne and dmaTransferDestinationTwo parameters. This should be called in the ISR that the peripheral
+ *  using DMA is using.
+ *
+ *  @pre    UDMAMSP432_setupPingPongTransfer() has to be called first.
+ *
+ *  @param  transfer  Pointer to a UDMAMSP432_PingPongTransfer param struct
+ */
+extern void UDMAMSP432_PingPongToggleBuffer(UDMAMSP432_PingPongTransfer *transfer);
 
 #ifdef __cplusplus
 }

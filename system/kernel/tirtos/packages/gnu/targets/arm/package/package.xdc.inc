@@ -13,9 +13,8 @@ IM.xs
 M3.xdc
 M3.xs
 M4.xdc
-M4.xs
 M4F.xdc
-M4F.xs
+M33F.xdc
 A8F.xdc
 A8F.xs
 A9F.xdc
@@ -28,7 +27,7 @@ package/gnu.targets.arm.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-D20
+package/.xdc-H25
 package/gnu_targets_arm.java
 package/gnu_targets_arm.class
 package/package_gnu.targets.arm.c
@@ -42,6 +41,7 @@ IM.h
 M3.h
 M4.h
 M4F.h
+M33F.h
 A8F.h
 A9F.h
 A15F.h

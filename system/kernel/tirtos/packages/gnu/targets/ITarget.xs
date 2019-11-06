@@ -96,7 +96,7 @@ function link(goal)
      * Acceptable values for this field are "nosys" and "rdimon".
      */
     if (("bspLib" in target) && target.bspLib != null) {
-        lib = " -Wl,--start-group -l" + target.bspLib + " -Wl,--end-group";
+        lib = " --specs=" + target.bspLib + ".specs";
     }
 
     if (tool2cmd != null) {
@@ -481,7 +481,7 @@ function initVers()
     target.$private.vers = true;
 }
 /*
- *  @(#) gnu.targets; 1, 0, 1,1; 7-27-2017 11:46:51; /db/ztree/library/trees/xdctargets/xdctargets-o04/src/ xlibrary
+ *  @(#) gnu.targets; 1, 0, 1,0; 8-9-2019 17:14:48; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

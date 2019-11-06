@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_knl_Idle__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_knl_Idle___VERS 200
@@ -228,10 +230,10 @@ __extern __FAR__ const CT__ti_sysbios_knl_Idle_Object__table ti_sysbios_knl_Idle
 
 /* funcList */
 typedef ti_sysbios_knl_Idle_FuncPtr __T1_ti_sysbios_knl_Idle_funcList;
-typedef struct { int length; ti_sysbios_knl_Idle_FuncPtr *elem; } __ARRAY1_ti_sysbios_knl_Idle_funcList;
-typedef struct { int length; ti_sysbios_knl_Idle_FuncPtr const *elem; } __CARRAY1_ti_sysbios_knl_Idle_funcList;
-typedef __CARRAY1_ti_sysbios_knl_Idle_funcList __TA_ti_sysbios_knl_Idle_funcList;
-typedef __CARRAY1_ti_sysbios_knl_Idle_funcList CT__ti_sysbios_knl_Idle_funcList;
+typedef struct { int length; ti_sysbios_knl_Idle_FuncPtr *elem; } ARRAY1_ti_sysbios_knl_Idle_funcList;
+typedef struct { int length; ti_sysbios_knl_Idle_FuncPtr const *elem; } CARRAY1_ti_sysbios_knl_Idle_funcList;
+typedef CARRAY1_ti_sysbios_knl_Idle_funcList __TA_ti_sysbios_knl_Idle_funcList;
+typedef CARRAY1_ti_sysbios_knl_Idle_funcList CT__ti_sysbios_knl_Idle_funcList;
 __extern __FAR__ const CT__ti_sysbios_knl_Idle_funcList ti_sysbios_knl_Idle_funcList__C;
 #ifdef ti_sysbios_knl_Idle_funcList__CR
 #define ti_sysbios_knl_Idle_funcList (*((CT__ti_sysbios_knl_Idle_funcList*)(xdcRomConstPtr + ti_sysbios_knl_Idle_funcList__C_offset)))
@@ -241,10 +243,10 @@ __extern __FAR__ const CT__ti_sysbios_knl_Idle_funcList ti_sysbios_knl_Idle_func
 
 /* coreList */
 typedef xdc_UInt __T1_ti_sysbios_knl_Idle_coreList;
-typedef struct { int length; xdc_UInt *elem; } __ARRAY1_ti_sysbios_knl_Idle_coreList;
-typedef struct { int length; xdc_UInt const *elem; } __CARRAY1_ti_sysbios_knl_Idle_coreList;
-typedef __CARRAY1_ti_sysbios_knl_Idle_coreList __TA_ti_sysbios_knl_Idle_coreList;
-typedef __CARRAY1_ti_sysbios_knl_Idle_coreList CT__ti_sysbios_knl_Idle_coreList;
+typedef struct { int length; xdc_UInt *elem; } ARRAY1_ti_sysbios_knl_Idle_coreList;
+typedef struct { int length; xdc_UInt const *elem; } CARRAY1_ti_sysbios_knl_Idle_coreList;
+typedef CARRAY1_ti_sysbios_knl_Idle_coreList __TA_ti_sysbios_knl_Idle_coreList;
+typedef CARRAY1_ti_sysbios_knl_Idle_coreList CT__ti_sysbios_knl_Idle_coreList;
 __extern __FAR__ const CT__ti_sysbios_knl_Idle_coreList ti_sysbios_knl_Idle_coreList__C;
 #ifdef ti_sysbios_knl_Idle_coreList__CR
 #define ti_sysbios_knl_Idle_coreList (*((CT__ti_sysbios_knl_Idle_coreList*)(xdcRomConstPtr + ti_sysbios_knl_Idle_coreList__C_offset)))
@@ -262,17 +264,17 @@ __extern __FAR__ const CT__ti_sysbios_knl_Idle_coreList ti_sysbios_knl_Idle_core
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_knl_Idle_Module__startupDone__S, "ti_sysbios_knl_Idle_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_knl_Idle_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_knl_Idle_Module__startupDone__S( void);
 
 /* loop__E */
 #define ti_sysbios_knl_Idle_loop ti_sysbios_knl_Idle_loop__E
 xdc__CODESECT(ti_sysbios_knl_Idle_loop__E, "ti_sysbios_knl_Idle_loop")
-__extern xdc_Void ti_sysbios_knl_Idle_loop__E( xdc_UArg arg1, xdc_UArg arg2 );
+__extern xdc_Void ti_sysbios_knl_Idle_loop__E( xdc_UArg arg1, xdc_UArg arg2);
 
 /* run__E */
 #define ti_sysbios_knl_Idle_run ti_sysbios_knl_Idle_run__E
 xdc__CODESECT(ti_sysbios_knl_Idle_run__E, "ti_sysbios_knl_Idle_run")
-__extern xdc_Void ti_sysbios_knl_Idle_run__E( void );
+__extern xdc_Void ti_sysbios_knl_Idle_run__E( void);
 
 
 /*
@@ -297,23 +299,23 @@ static inline CT__ti_sysbios_knl_Idle_Module__id ti_sysbios_knl_Idle_Module_id( 
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_knl_Idle_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_knl_Idle_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_knl_Idle_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_knl_Idle_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_knl_Idle_Module__diagsMask__C != (CT__ti_sysbios_knl_Idle_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_knl_Idle_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_knl_Idle_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_knl_Idle_Module_getMask(void)
 {
-    return ti_sysbios_knl_Idle_Module__diagsMask__C != NULL ? *ti_sysbios_knl_Idle_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_knl_Idle_Module__diagsMask__C != (CT__ti_sysbios_knl_Idle_Module__diagsMask)NULL) ? *ti_sysbios_knl_Idle_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_knl_Idle_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_knl_Idle_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_knl_Idle_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_knl_Idle_Module__diagsMask__C != (CT__ti_sysbios_knl_Idle_Module__diagsMask)NULL) {
         *ti_sysbios_knl_Idle_Module__diagsMask__C = mask;
     }
 }

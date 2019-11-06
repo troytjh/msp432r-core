@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 #ifndef ti_uia_family_c66_TimestampC66XLocal__INTERNAL__
@@ -166,7 +166,7 @@
 
 /* Object__sizingError */
 #line 1 "Error_inconsistent_object_size_in_ti.uia.family.c66.TimestampC66XLocal"
-typedef char ti_uia_family_c66_TimestampC66XLocal_Object__sizingError[sizeof(ti_uia_family_c66_TimestampC66XLocal_Object) > sizeof(ti_uia_family_c66_TimestampC66XLocal_Struct) ? -1 : 1];
+typedef char ti_uia_family_c66_TimestampC66XLocal_Object__sizingError[(sizeof(ti_uia_family_c66_TimestampC66XLocal_Object) > sizeof(ti_uia_family_c66_TimestampC66XLocal_Struct)) ? -1 : 1];
 
 
 #endif /* ti_uia_family_c66_TimestampC66XLocal__INTERNAL____ */

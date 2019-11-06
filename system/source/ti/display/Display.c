@@ -177,6 +177,8 @@ void Display_doPrintf(Display_Handle handle, uint8_t line, uint8_t column,
     va_start(va, fmt);
 
     handle->fxnTablePtr->vprintfFxn(handle, line, column, fmt, va);
+
+    va_end(va);
 }
 
 /*

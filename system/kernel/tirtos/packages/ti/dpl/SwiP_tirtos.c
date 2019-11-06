@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,7 @@
 #include <xdc/std.h>
 #include <xdc/runtime/Error.h>
 
+#include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Swi.h>
 
 /*
@@ -50,10 +51,10 @@
  */
 void SwiP_Params_init(SwiP_Params *params)
 {
-    params->arg0 = NULL;
-    params->arg1 = NULL;
-    params->trigger = 0;
-    params->priority = ~0;
+    params->arg0 = 0U;
+    params->arg1 = 0U;
+    params->trigger = 0U;
+    params->priority = ~0U;
 }
 
 /*
@@ -167,6 +168,21 @@ void SwiP_dec(SwiP_Handle handle)
 void SwiP_inc(SwiP_Handle handle)
 {
     Swi_inc((Swi_Handle)handle);
+}
+
+/*
+ *  ======== SwiP_inISR ========
+ */
+bool SwiP_inISR(void)
+{
+    BIOS_ThreadType threadType;
+
+    threadType = BIOS_getThreadType();
+    if (threadType == BIOS_ThreadType_Swi) {
+        return (true);
+    }
+
+    return (false);
 }
 
 /*

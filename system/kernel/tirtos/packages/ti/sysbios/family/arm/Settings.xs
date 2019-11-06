@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017, Texas Instruments Incorporated
+ * Copyright (c) 2014-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -557,7 +557,7 @@ deviceTable["ti.catalog.arm.cortexm3"]["CC26.*"]  = deviceTable["ti.catalog.arm.
 deviceTable["ti.catalog.arm.cortexm3"]["CC13.*"]  = deviceTable["ti.catalog.arm.cortexm3"]["CC2650"];
 
 /* CC3220 M4 devices */
-deviceTable["ti.catalog.arm.cortexm4"]["CC322.*"] = deviceTable["ti.catalog.arm.cortexm4"]["CC3200"];
+deviceTable["ti.catalog.arm.cortexm4"]["CC32.*"] = deviceTable["ti.catalog.arm.cortexm4"]["CC3200"];
 
 /* Tiva devices */
 deviceTable["ti.catalog.arm.cortexm4"]["TM4.*"]     = deviceTable["ti.catalog.arm.cortexm4"]["TM4C129CNCPDT"];

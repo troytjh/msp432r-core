@@ -28,46 +28,46 @@
         <srcFile name="package.mak" src="package.bld"/>
         <srcFile name="package/package.xdc.dep" src="package.xdc"/>
         <srcFile name="package/package.cfg.dep" src="package.xdc"/>
-        <srcFile name="lib/sysbios/debug/ti.sysbios.gates.aem4f.mak" src="package.bld"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/package/package_ti.sysbios.gates.oem4f.dep" src="package/package_ti.sysbios.gates.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateHwi.oem4f.dep" src="GateHwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateAll.oem4f.dep" src="GateAll.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateSwi.oem4f.dep" src="GateSwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateTask.oem4f.dep" src="GateTask.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateTest.oem4f.dep" src="GateTest.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateMutex.oem4f.dep" src="GateMutex.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateMutexPri.oem4f.dep" src="GateMutexPri.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateSpinlock.oem4f.dep" src="GateSpinlock.c"/>
-        <srcFile name="lib/sysbios/debug/ti.sysbios.gates.am4fg.mak" src="package.bld"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/package/package_ti.sysbios.gates.om4fg.dep" src="package/package_ti.sysbios.gates.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateHwi.om4fg.dep" src="GateHwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateAll.om4fg.dep" src="GateAll.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateSwi.om4fg.dep" src="GateSwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateTask.om4fg.dep" src="GateTask.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateTest.om4fg.dep" src="GateTest.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateMutex.om4fg.dep" src="GateMutex.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateMutexPri.om4fg.dep" src="GateMutexPri.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateSpinlock.om4fg.dep" src="GateSpinlock.c"/>
-        <srcFile name="lib/sysbios/debug/ti.sysbios.gates.arm4f.mak" src="package.bld"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/package/package_ti.sysbios.gates.orm4f.dep" src="package/package_ti.sysbios.gates.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateHwi.orm4f.dep" src="GateHwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateAll.orm4f.dep" src="GateAll.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateSwi.orm4f.dep" src="GateSwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateTask.orm4f.dep" src="GateTask.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateTest.orm4f.dep" src="GateTest.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateMutex.orm4f.dep" src="GateMutex.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateMutexPri.orm4f.dep" src="GateMutexPri.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.gates/GateSpinlock.orm4f.dep" src="GateSpinlock.c"/>
+        <srcFile name="lib/debug/ti.sysbios.gates.aem4f.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/package/package_ti.sysbios.gates.oem4f.dep" src="package/package_ti.sysbios.gates.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateHwi.oem4f.dep" src="GateHwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateAll.oem4f.dep" src="GateAll.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateSwi.oem4f.dep" src="GateSwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateTask.oem4f.dep" src="GateTask.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateTest.oem4f.dep" src="GateTest.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateMutex.oem4f.dep" src="GateMutex.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateMutexPri.oem4f.dep" src="GateMutexPri.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateSpinlock.oem4f.dep" src="GateSpinlock.c"/>
+        <srcFile name="lib/debug/ti.sysbios.gates.am4fg.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/package/package_ti.sysbios.gates.om4fg.dep" src="package/package_ti.sysbios.gates.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateHwi.om4fg.dep" src="GateHwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateAll.om4fg.dep" src="GateAll.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateSwi.om4fg.dep" src="GateSwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateTask.om4fg.dep" src="GateTask.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateTest.om4fg.dep" src="GateTest.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateMutex.om4fg.dep" src="GateMutex.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateMutexPri.om4fg.dep" src="GateMutexPri.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateSpinlock.om4fg.dep" src="GateSpinlock.c"/>
+        <srcFile name="lib/debug/ti.sysbios.gates.arm4f.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/package/package_ti.sysbios.gates.orm4f.dep" src="package/package_ti.sysbios.gates.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateHwi.orm4f.dep" src="GateHwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateAll.orm4f.dep" src="GateAll.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateSwi.orm4f.dep" src="GateSwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateTask.orm4f.dep" src="GateTask.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateTest.orm4f.dep" src="GateTest.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateMutex.orm4f.dep" src="GateMutex.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateMutexPri.orm4f.dep" src="GateMutexPri.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.gates/GateSpinlock.orm4f.dep" src="GateSpinlock.c"/>
         <srcFile name="package/rel/ti_sysbios_gates.tar.dep" src="package/rel/ti_sysbios_gates.xdc.inc"/>
     </makefiles>
     <targets>
         <target name="ti.targets.arm.elf.M4F"
-            version="ti.targets.arm.elf.M4F{1,0,16.9,4"
-            rawVersion="16.9.4"
+            version="ti.targets.arm.elf.M4F{1,0,18.12,3"
+            rawVersion="18.12.3"
             platform="ti.platforms.tiva:TM4C1294NCPDT:1"
             isa="v7M4"
             suffix="em4f"
-            rootDir="/db/vendors/ti/arm/16.9.4.LTS/Linux"
+            rootDir="/db/vendors/ti/arm/18.12.3.LTS/Linux"
             os="undefined"
             rts="ti.targets.arm.rtsarm">
             <model endian="little"
@@ -75,12 +75,12 @@
                 dataModel="undefined"/>
         </target>
         <target name="gnu.targets.arm.M4F"
-            version="gnu.targets.arm.M4F{1,0,6.3,1"
-            rawVersion="6.3.1"
+            version="gnu.targets.arm.M4F{1,0,7.2,1"
+            rawVersion="7.2.1"
             platform="ti.platforms.tiva:TM4C1294NCPDT"
             isa="v7M4"
             suffix="m4fg"
-            rootDir="/db/vendors/linaro/gcc-arm-none-eabi-6-2017-q1-update"
+            rootDir="/db/vendors/linaro/gcc-arm-none-eabi-7-2017-q4-major"
             os="undefined"
             rts="gnu.targets.arm.rtsv7M">
             <model endian="little"
@@ -88,12 +88,12 @@
                 dataModel="undefined"/>
         </target>
         <target name="iar.targets.arm.M4F"
-            version="iar.targets.arm.M4F{1,0,8.11,1"
-            rawVersion="8.11.1.47"
+            version="iar.targets.arm.M4F{1,0,8.32,2"
+            rawVersion="8.32.2.178"
             platform="ti.platforms.tiva:TM4C1294NCPDT:1"
             isa="v7M4"
             suffix="rm4f"
-            rootDir="/db/vendors/iar/arm/8.11.1.47/Linux"
+            rootDir="/db/vendors/iar/arm/8.32.2/Linux"
             os="undefined"
             rts="iar.targets.arm.rts">
             <model endian="little"
@@ -102,16 +102,16 @@
         </target>
     </targets>
     <libraries>
-    <library name="lib/sysbios/debug/ti.sysbios.gates"
-        pname="lib/sysbios/debug/ti.sysbios.gates.aem4f"
+    <library name="lib/debug/ti.sysbios.gates"
+        pname="lib/debug/ti.sysbios.gates.aem4f"
         profile="debug"
         target="ti.targets.arm.elf.M4F"/>
-    <library name="lib/sysbios/debug/ti.sysbios.gates"
-        pname="lib/sysbios/debug/ti.sysbios.gates.am4fg"
+    <library name="lib/debug/ti.sysbios.gates"
+        pname="lib/debug/ti.sysbios.gates.am4fg"
         profile="debug"
         target="gnu.targets.arm.M4F"/>
-    <library name="lib/sysbios/debug/ti.sysbios.gates"
-        pname="lib/sysbios/debug/ti.sysbios.gates.arm4f"
+    <library name="lib/debug/ti.sysbios.gates"
+        pname="lib/debug/ti.sysbios.gates.arm4f"
         profile="debug"
         target="iar.targets.arm.M4F"/>
     </libraries>
@@ -138,7 +138,7 @@
         <file name="GateAll.xml"/>
         <file name="GateSpinlock.xml"/>
         <file name="package/package.cfg.xdc.inc"/>
-        <file name="lib/sysbios/debug/ti.sysbios.gates.aem4f"/>
+        <file name="lib/debug/ti.sysbios.gates.aem4f"/>
         <file name="package/package_ti.sysbios.gates.c"/>
         <file name="GateHwi.c"/>
         <file name="GateAll.c"/>
@@ -148,8 +148,8 @@
         <file name="GateMutex.c"/>
         <file name="GateMutexPri.c"/>
         <file name="GateSpinlock.c"/>
-        <file name="lib/sysbios/debug/ti.sysbios.gates.am4fg"/>
-        <file name="lib/sysbios/debug/ti.sysbios.gates.arm4f"/>
+        <file name="lib/debug/ti.sysbios.gates.am4fg"/>
+        <file name="lib/debug/ti.sysbios.gates.arm4f"/>
     </release>
     </releases>
     <repositories>

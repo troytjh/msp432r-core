@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 #ifndef ti_uia_runtime_LoggerSM__INTERNAL__
@@ -197,7 +197,7 @@
 
 /* Object__sizingError */
 #line 1 "Error_inconsistent_object_size_in_ti.uia.runtime.LoggerSM"
-typedef char ti_uia_runtime_LoggerSM_Object__sizingError[sizeof(ti_uia_runtime_LoggerSM_Object) > sizeof(ti_uia_runtime_LoggerSM_Struct) ? -1 : 1];
+typedef char ti_uia_runtime_LoggerSM_Object__sizingError[(sizeof(ti_uia_runtime_LoggerSM_Object) > sizeof(ti_uia_runtime_LoggerSM_Struct)) ? -1 : 1];
 
 
 #endif /* ti_uia_runtime_LoggerSM__INTERNAL____ */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,13 @@
 #include <xdc/std.h>
 #include <xdc/runtime/Error.h>
 
+#include <ti/sysbios/BIOS.h>
+
+#if defined(xdc_target__isaCompatible_v8M)
+#include <ti/sysbios/family/arm/v8m/Hwi.h>
+#else
 #include <ti/sysbios/family/arm/m3/Hwi.h>
+#endif
 
 /*
  *  ======== HwiP_clearInterrupt ========
@@ -149,6 +155,21 @@ void HwiP_enableInterrupt(int interruptNum)
 }
 
 /*
+ *  ======== HwiP_inISR ========
+ */
+bool HwiP_inISR(void)
+{
+    BIOS_ThreadType threadType;
+
+    threadType = BIOS_getThreadType();
+    if (threadType == BIOS_ThreadType_Hwi) {
+        return (true);
+    }
+
+    return (false);
+}
+
+/*
  *  ======== HwiP_post ========
  */
 void HwiP_post(int interruptNum)
@@ -161,7 +182,11 @@ void HwiP_post(int interruptNum)
  */
 void HwiP_setFunc(HwiP_Handle hwiP, HwiP_Fxn fxn, uintptr_t arg)
 {
+    uintptr_t key;
+
+    key = Hwi_disable();
     Hwi_setFunc((Hwi_Handle)hwiP, fxn, arg);
+    Hwi_restore(key);
 }
 
 /*

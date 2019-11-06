@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
  */
 /*!*****************************************************************************
  *  @file       UART.h
- *  @brief      UART driver interface
+ *  @brief      Universal Asynchronous Receiver-Transmitter (UART) Driver
  *
  *  To use the UART driver, ensure that the correct driver library for your
  *  device is linked in and include this header file as follows:
@@ -43,22 +43,68 @@
  *  is to redirect the UART APIs to specific driver implementations
  *  which are specified using a pointer to a #UART_FxnTable.
  *
- *  # Overview #
+ *  @anchor ti_drivers_UART_Overview
+ *  # Overview
  *  A UART is used to translate data between the chip and a serial port.
  *  The UART driver simplifies reading and writing to any of the UART
  *  peripherals on the board, with multiple modes of operation and performance.
  *  These include blocking, non-blocking, and polling, as well as text/binary
  *  mode, echo and return characters.
  *
- *  The APIs in this driver serve as an interface to a typical RTOS
+ *  The UART driver interface provides device independent APIs, data types,
+ *  and macros. The APIs in this driver serve as an interface to a typical RTOS
  *  application. The specific peripheral implementations are responsible for
  *  creating all the RTOS specific primitives to allow for thread-safe
  *  operation.
  *
- *  # Usage #
+ *  <hr>
+ *  @anchor ti_drivers_UART_Usage
+ *  # Usage
  *
- *  The UART driver interface provides device independent APIs, data types,
- *  and macros.  The following code example opens a UART instance, reads
+ *  This documentation provides a basic @ref ti_drivers_UART_Synopsis
+ *  "usage summary" and a set of @ref ti_drivers_UART_Examples "examples"
+ *  in the form of commented code fragments.  Detailed descriptions of the
+ *  APIs are provided in subsequent sections.
+ *
+ *  @anchor ti_drivers_UART_Synopsis
+ *  ## Synopsis
+ *  @anchor ti_drivers_UART_Synopsis_Code
+ *  @code
+ *  // Import the UART driver definitions
+ *  #include <ti/drivers/UART.h>
+ *
+ *  // One-time initialization of UART driver
+ *  UART_init();
+ *
+ *  // Initialize UART parameters
+ *  UART_Params params;
+ *  UART_Params_init(&params);
+ *  params.baudRate = 9600;
+ *  params.readMode = UART_MODE_BLOCKING;
+ *  params.writeMode = UART_MODE_BLOCKING;
+ *  params.readTimeout = UART_WAIT_FOREVER;
+ *  params.writeTimeout = UART_WAIT_FOREVER;
+ *
+ *  // Open the UART
+ *  UART_Handle uart;
+ *  uart = UART_open(CONFIG_UART0, &params);
+ *
+ *  // Read from the UART
+ *  int32_t readCount;
+ *  uint8_t buffer[BUFSIZE];
+ *  readCount = UART_read(uart, buffer, BUFSIZE);
+ *
+ *  // Write to the UART
+ *  UART_write(uart, buffer, BUFSIZE);
+ *
+ *  // Close the UART
+ *  UART_close(uart);
+ *  @endcode
+ *
+ *  <hr>
+ *  @anchor ti_drivers_UART_Examples
+ *  # Examples
+ *  The following code example opens a UART instance, reads
  *  a byte from the UART, and then writes the byte back to the UART.
  *
  *  @code
@@ -66,7 +112,8 @@
  *    UART_Handle uart;
  *    UART_Params uartParams;
  *
- *    // Initialize the UART driver.
+ *    // Initialize the UART driver.  UART_init() must be called before
+ *    // calling any other UART APIs.
  *    UART_init();
  *
  *    // Create a UART with data processing off.
@@ -75,10 +122,10 @@
  *    uartParams.readDataMode = UART_DATA_BINARY;
  *    uartParams.readReturnMode = UART_RETURN_FULL;
  *    uartParams.readEcho = UART_ECHO_OFF;
- *    uartParams.baudRate = 9600;
+ *    uartParams.baudRate = 115200;
  *
  *    // Open an instance of the UART drivers
- *    uart = UART_open(Board_UART0, &uartParams);
+ *    uart = UART_open(CONFIG_UART0, &uartParams);
  *
  *    if (uart == NULL) {
  *        // UART_open() failed
@@ -94,42 +141,6 @@
  *
  *  Details for the example code above are described in the following
  *  subsections.
- *
- *
- *  ### UART Driver Configuration #
- *
- *  In order to use the UART APIs, the application is required
- *  to provide device-specific UART configuration in the Board.c file.
- *  The UART driver interface defines a configuration data structure:
- *
- *  @code
- *  typedef struct UART_Config_ {
- *      UART_FxnTable const    *fxnTablePtr;
- *      void                   *object;
- *      void          const    *hwAttrs;
- *  } UART_Config;
- *  @endcode
- *
- *  The application must declare an array of UART_Config elements, named
- *  UART_config[].  Each element of UART_config[] are populated with
- *  pointers to a device specific UART driver implementation's function
- *  table, driver object, and hardware attributes.  The hardware attributes
- *  define properties such as the UART peripheral's base address, and
- *  the pins for RX and TX.  Each element in UART_config[] corresponds to
- *  a UART instance, and none of the elements should have NULL pointers.
- *  There is no correlation between the index and the peripheral designation
- *  (such as UART0 or UART1).  For example, it is possible to use
- *  UART_config[0] for UART1.
- *
- *  You will need to check the device-specific UART driver implementation's
- *  header file for example configuration.  Please also refer to the
- *  Board.c file of any of your examples to see the UART configuration.
- *
- *  ### Initializing the UART Driver #
- *
- *  UART_init() must be called before any other UART APIs.  This function
- *  calls the device implementation's UART initialization function, for each
- *  element of UART_config[].
  *
  *  ### Opening the UART Driver #
  *
@@ -147,8 +158,8 @@
  *  time with the same index previosly passed to UART_open() will result in
  *  an error.  You can, though, re-use the index if the instance is closed
  *  via UART_close().
- *  In the example code, Board_UART0 is passed to UART_open().  This macro
- *  is defined in the example's Board.h file.
+ *  In the example code, CONFIG_UART0 is passed to UART_open().  This macro
+ *  is defined in the example's ti_drivers_config.h file.
  *
  *
  *  ### Modes of Operation #
@@ -197,7 +208,7 @@
  *  - #UART_RETURN_FULL:  The read action unblocks or returns when the buffer
  *    is full.
  *  - #UART_RETURN_NEWLINE:  The read action unblocks or returns when a
- *    newline character if read, before the buffer is full.
+ *    newline character is read, before the buffer is full.
  *
  *  Options for the readEcho parameter are #UART_ECHO_OFF and #UART_ECHO_ON.
  *  This parameter determines whether the driver echoes data back to the
@@ -222,55 +233,33 @@
  *  to issue multiple concurrent operations in the same direction.
  *  For example, if one thread calls UART_read(uart0, buffer0...),
  *  any other thread attempting UART_read(uart0, buffer1...) will result in
- *  an error of UART_ERROR, until all the data from the first UART_read()
+ *  an error of UART_STATUS_ERROR, until all the data from the first UART_read()
  *  has been transferred to buffer0. This applies to both blocking and
  *  and callback modes. So applications must either synchronize
  *  UART_read() (or UART_write()) calls that use the same UART handle, or
- *  check for the UART_ERROR return code indicating that a transfer is still
- *  ongoing.
+ *  check for the UART_STATUS_ERROR return code indicating that a transfer is
+ *  still ongoing.
  *
- *  # Implementation #
+ *  <hr>
+ *  @anchor ti_drivers_UART_Configuration
+ *  # Configuration
  *
- *  The UART driver interface module is joined (at link time) to an
- *  array of UART_Config data structures named *UART_config*.
- *  UART_config is implemented in the application with each entry being an
- *  instance of a UART peripheral. Each entry in *UART_config* contains a:
- *  - (UART_FxnTable *) to a set of functions that implement a UART peripheral
- *  - (void *) data object that is associated with the UART_FxnTable
- *  - (void *) hardware attributes that are associated with the UART_FxnTable
+ *  Refer to the @ref driver_configuration "Driver's Configuration" section
+ *  for driver configuration information.
+ *  <hr>
  *
- *  The UART APIs are redirected to the device specific implementations
- *  using the UART_FxnTable pointer of the UART_config entry.
- *  In order to use device specific functions of the UART driver directly,
- *  link in the correct driver library for your device and include the
- *  device specific UART driver header file (which in turn includes UART.h).
- *  For example, for the MSP432 family of devices, you would include the
- *  following header file:
- *    @code
- *    #include <ti/drivers/uart/UARTMSP432.h>
- *    @endcode
- *
- *  ### Stack Requirements #
- *  It is STRONGLY discouraged to perform UART_read() or UART_write()
- *  calls within the driver's own callback function when in
- *  #UART_MODE_CALLBACK mode. Doing so will incur additional task or system
- *  stack size requirements. See the peripheral implementations'
- *  documentation for stack size estimations.  It is expected that the
- *  user perform their own stack and usage analysis when choosing to
- *  nest these calls.
- *
- *******************************************************************************
+ *  ============================================================================
  */
 
 #ifndef ti_drivers_UART__include
 #define ti_drivers_UART__include
 
+#include <stddef.h>
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stddef.h>
-#include <stdint.h>
 
 /**
  *  @defgroup UART_CONTROL UART_control command and status codes
@@ -352,7 +341,7 @@ extern "C" {
  * This command is used to read the next unsigned char from the UART's circular
  * buffer without removing it. With this command code, @b arg is a pointer to an
  * integer. @b *arg contains the next @c unsigned @c char read if data is
- * present, else @b *arg is set to #UART_ERROR.
+ * present, else @b *arg is set to #UART_STATUS_ERROR.
  */
 #define UART_CMD_PEEK               (0)
 
@@ -423,12 +412,6 @@ typedef struct UART_Config_    *UART_Handle;
  *              when used in #UART_MODE_CALLBACK
  *              The callback can occur in task or HWI context.
  *
- *  @warning    Making UART_read() or UART_write() calls within its own callback
- *              routines are STRONGLY discouraged as it will impact Task and
- *              System stack size requirements! See the documentation for the
- *              specific driver implementations for additional estimated stack
- *              requirements.
- *
  *  @param      UART_Handle             UART_Handle
  *
  *  @param      buf                     Pointer to read/write buffer
@@ -442,7 +425,7 @@ typedef void (*UART_Callback) (UART_Handle handle, void *buf, size_t count);
  *
  *  This enum defines the read and write modes for the configured UART.
  */
-typedef enum UART_Mode_ {
+typedef enum {
     /*!
       *  Uses a semaphore to block while data is being sent.  Context of the call
       *  must be a Task.
@@ -475,7 +458,7 @@ typedef enum UART_Mode_ {
  *
  *  @pre        UART driver must be used in #UART_DATA_TEXT mode.
  */
-typedef enum UART_ReturnMode_ {
+typedef enum {
     /*! Unblock/callback when buffer is full. */
     UART_RETURN_FULL,
 
@@ -497,7 +480,7 @@ typedef enum UART_ReturnMode_ {
  *  effectively treats all device line endings as LF, and all host PC line
  *  endings as CRLF.
  */
-typedef enum UART_DataMode_ {
+typedef enum {
     UART_DATA_BINARY = 0, /*!< Data is not processed */
     UART_DATA_TEXT = 1    /*!< Data is processed according to above */
 } UART_DataMode;
@@ -515,7 +498,7 @@ typedef enum UART_DataMode_ {
  *
  *  @pre        UART driver must be used in #UART_DATA_TEXT mode.
  */
-typedef enum UART_Echo_ {
+typedef enum {
     UART_ECHO_OFF = 0,  /*!< Data is not echoed */
     UART_ECHO_ON = 1    /*!< Data is echoed */
 } UART_Echo;
@@ -525,7 +508,7 @@ typedef enum UART_Echo_ {
  *
  *  This enumeration defines the UART data lengths.
  */
-typedef enum UART_LEN_ {
+typedef enum {
     UART_LEN_5 = 0,  /*!< Data length is 5 bits */
     UART_LEN_6 = 1,  /*!< Data length is 6 bits */
     UART_LEN_7 = 2,  /*!< Data length is 7 bits */
@@ -537,7 +520,7 @@ typedef enum UART_LEN_ {
  *
  *  This enumeration defines the UART stop bits.
  */
-typedef enum UART_STOP_ {
+typedef enum {
     UART_STOP_ONE = 0,  /*!< One stop bit */
     UART_STOP_TWO = 1   /*!< Two stop bits */
 } UART_STOP;
@@ -547,7 +530,7 @@ typedef enum UART_STOP_ {
  *
  *  This enumeration defines the UART parity types.
  */
-typedef enum UART_PAR_ {
+typedef enum {
     UART_PAR_NONE = 0,  /*!< No parity */
     UART_PAR_EVEN = 1,  /*!< Parity bit is even */
     UART_PAR_ODD  = 2,  /*!< Parity bit is odd */
@@ -563,7 +546,7 @@ typedef enum UART_PAR_ {
  *
  *  @sa       UART_Params_init()
  */
-typedef struct UART_Params_ {
+typedef struct {
     UART_Mode       readMode;        /*!< Mode for all read calls */
     UART_Mode       writeMode;       /*!< Mode for all write calls */
     uint32_t        readTimeout;     /*!< Timeout for read calls in blocking mode. */
@@ -649,7 +632,7 @@ typedef void (*UART_WriteCancelFxn) (UART_Handle handle);
  *              required set of functions to control a specific UART driver
  *              implementation.
  */
-typedef struct UART_FxnTable_ {
+typedef struct {
     /*! Function to close the specified peripheral */
     UART_CloseFxn        closeFxn;
 
@@ -850,7 +833,7 @@ extern void UART_Params_init(UART_Params *params);
  *                      to the UART
  *
  *  @return Returns the number of bytes that have been written to the UART.
- *          If an error occurs, #UART_ERROR is returned.
+ *          If an error occurs, #UART_STATUS_ERROR is returned.
  *          In #UART_MODE_CALLBACK mode, the return value is always 0.
  */
 extern int_fast32_t UART_write(UART_Handle handle, const void *buffer, size_t size);
@@ -876,7 +859,7 @@ extern int_fast32_t UART_write(UART_Handle handle, const void *buffer, size_t si
  *                      to the UART
  *
  *  @return Returns the number of bytes that have been written to the UART.
- *          If an error occurs, #UART_ERROR is returned.
+ *          If an error occurs, #UART_STATUS_ERROR is returned.
  */
 extern int_fast32_t UART_writePolling(UART_Handle handle, const void *buffer, size_t size);
 
@@ -927,7 +910,7 @@ extern void UART_writeCancel(UART_Handle handle);
  *  @param  size        The number of bytes to be written into buffer
  *
  *  @return Returns the number of bytes that have been read from the UART,
- *          #UART_ERROR on an error.
+ *          #UART_STATUS_ERROR on an error.
  */
 extern int_fast32_t UART_read(UART_Handle handle, void *buffer, size_t size);
 
@@ -949,7 +932,7 @@ extern int_fast32_t UART_read(UART_Handle handle, void *buffer, size_t size);
  *  @param  size        The number of bytes to be written into buffer
  *
  *  @return Returns the number of bytes that have been read from the UART,
- *          #UART_ERROR on an error.
+ *          #UART_STATUS_ERROR on an error.
  */
 extern int_fast32_t UART_readPolling(UART_Handle handle, void *buffer, size_t size);
 

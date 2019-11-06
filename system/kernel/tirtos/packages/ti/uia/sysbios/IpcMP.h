@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_uia_sysbios_IpcMP__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_sysbios_IpcMP___VERS 200
@@ -76,21 +78,21 @@
 
 /* Module_State */
 typedef xdc_UInt32 __T1_ti_uia_sysbios_IpcMP_Module_State__replyMQ;
-typedef xdc_UInt32 *__ARRAY1_ti_uia_sysbios_IpcMP_Module_State__replyMQ;
-typedef const xdc_UInt32 *__CARRAY1_ti_uia_sysbios_IpcMP_Module_State__replyMQ;
-typedef __ARRAY1_ti_uia_sysbios_IpcMP_Module_State__replyMQ __TA_ti_uia_sysbios_IpcMP_Module_State__replyMQ;
+typedef xdc_UInt32 *ARRAY1_ti_uia_sysbios_IpcMP_Module_State__replyMQ;
+typedef const xdc_UInt32 *CARRAY1_ti_uia_sysbios_IpcMP_Module_State__replyMQ;
+typedef ARRAY1_ti_uia_sysbios_IpcMP_Module_State__replyMQ __TA_ti_uia_sysbios_IpcMP_Module_State__replyMQ;
 typedef xdc_UInt32 __T1_ti_uia_sysbios_IpcMP_Module_State__period;
-typedef xdc_UInt32 *__ARRAY1_ti_uia_sysbios_IpcMP_Module_State__period;
-typedef const xdc_UInt32 *__CARRAY1_ti_uia_sysbios_IpcMP_Module_State__period;
-typedef __ARRAY1_ti_uia_sysbios_IpcMP_Module_State__period __TA_ti_uia_sysbios_IpcMP_Module_State__period;
+typedef xdc_UInt32 *ARRAY1_ti_uia_sysbios_IpcMP_Module_State__period;
+typedef const xdc_UInt32 *CARRAY1_ti_uia_sysbios_IpcMP_Module_State__period;
+typedef ARRAY1_ti_uia_sysbios_IpcMP_Module_State__period __TA_ti_uia_sysbios_IpcMP_Module_State__period;
 typedef xdc_UInt32 __T1_ti_uia_sysbios_IpcMP_Module_State__scheduled;
-typedef xdc_UInt32 *__ARRAY1_ti_uia_sysbios_IpcMP_Module_State__scheduled;
-typedef const xdc_UInt32 *__CARRAY1_ti_uia_sysbios_IpcMP_Module_State__scheduled;
-typedef __ARRAY1_ti_uia_sysbios_IpcMP_Module_State__scheduled __TA_ti_uia_sysbios_IpcMP_Module_State__scheduled;
+typedef xdc_UInt32 *ARRAY1_ti_uia_sysbios_IpcMP_Module_State__scheduled;
+typedef const xdc_UInt32 *CARRAY1_ti_uia_sysbios_IpcMP_Module_State__scheduled;
+typedef ARRAY1_ti_uia_sysbios_IpcMP_Module_State__scheduled __TA_ti_uia_sysbios_IpcMP_Module_State__scheduled;
 typedef xdc_Bool __T1_ti_uia_sysbios_IpcMP_Module_State__reqEnergy;
-typedef xdc_Bool *__ARRAY1_ti_uia_sysbios_IpcMP_Module_State__reqEnergy;
-typedef const xdc_Bool *__CARRAY1_ti_uia_sysbios_IpcMP_Module_State__reqEnergy;
-typedef __ARRAY1_ti_uia_sysbios_IpcMP_Module_State__reqEnergy __TA_ti_uia_sysbios_IpcMP_Module_State__reqEnergy;
+typedef xdc_Bool *ARRAY1_ti_uia_sysbios_IpcMP_Module_State__reqEnergy;
+typedef const xdc_Bool *CARRAY1_ti_uia_sysbios_IpcMP_Module_State__reqEnergy;
+typedef ARRAY1_ti_uia_sysbios_IpcMP_Module_State__reqEnergy __TA_ti_uia_sysbios_IpcMP_Module_State__reqEnergy;
 
 
 /*
@@ -323,82 +325,82 @@ __extern xdc_Int ti_uia_sysbios_IpcMP_Module_startup__F( xdc_Int state );
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_sysbios_IpcMP_Module__startupDone__S, "ti_uia_sysbios_IpcMP_Module__startupDone__S")
-__extern xdc_Bool ti_uia_sysbios_IpcMP_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_sysbios_IpcMP_Module__startupDone__S( void);
 
 /* freePacket__E */
 #define ti_uia_sysbios_IpcMP_freePacket ti_uia_sysbios_IpcMP_freePacket__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_freePacket__E, "ti_uia_sysbios_IpcMP_freePacket")
-__extern xdc_Void ti_uia_sysbios_IpcMP_freePacket__E( ti_uia_runtime_UIAPacket_Hdr *packet );
+__extern xdc_Void ti_uia_sysbios_IpcMP_freePacket__E( ti_uia_runtime_UIAPacket_Hdr *packet);
 
 /* getFreePacket__E */
 #define ti_uia_sysbios_IpcMP_getFreePacket ti_uia_sysbios_IpcMP_getFreePacket__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_getFreePacket__E, "ti_uia_sysbios_IpcMP_getFreePacket")
-__extern ti_uia_runtime_UIAPacket_Hdr *ti_uia_sysbios_IpcMP_getFreePacket__E( ti_uia_runtime_UIAPacket_HdrType type, xdc_UInt timeout );
+__extern ti_uia_runtime_UIAPacket_Hdr *ti_uia_sysbios_IpcMP_getFreePacket__E( ti_uia_runtime_UIAPacket_HdrType type, xdc_UInt timeout);
 
 /* requestEnergy__E */
 #define ti_uia_sysbios_IpcMP_requestEnergy ti_uia_sysbios_IpcMP_requestEnergy__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_requestEnergy__E, "ti_uia_sysbios_IpcMP_requestEnergy")
-__extern xdc_Void ti_uia_sysbios_IpcMP_requestEnergy__E( xdc_Int id );
+__extern xdc_Void ti_uia_sysbios_IpcMP_requestEnergy__E( xdc_Int id);
 
 /* sendPacket__E */
 #define ti_uia_sysbios_IpcMP_sendPacket ti_uia_sysbios_IpcMP_sendPacket__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_sendPacket__E, "ti_uia_sysbios_IpcMP_sendPacket")
-__extern xdc_Bool ti_uia_sysbios_IpcMP_sendPacket__E( ti_uia_runtime_UIAPacket_Hdr *packet );
+__extern xdc_Bool ti_uia_sysbios_IpcMP_sendPacket__E( ti_uia_runtime_UIAPacket_Hdr *packet);
 
 /* setPeriod__E */
 #define ti_uia_sysbios_IpcMP_setPeriod ti_uia_sysbios_IpcMP_setPeriod__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_setPeriod__E, "ti_uia_sysbios_IpcMP_setPeriod")
-__extern xdc_Void ti_uia_sysbios_IpcMP_setPeriod__E( xdc_Int id, xdc_UInt32 periodInMs );
+__extern xdc_Void ti_uia_sysbios_IpcMP_setPeriod__E( xdc_Int id, xdc_UInt32 periodInMs);
 
 /* rxTaskFxn__E */
 #define ti_uia_sysbios_IpcMP_rxTaskFxn ti_uia_sysbios_IpcMP_rxTaskFxn__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_rxTaskFxn__E, "ti_uia_sysbios_IpcMP_rxTaskFxn")
-__extern xdc_Void ti_uia_sysbios_IpcMP_rxTaskFxn__E( xdc_UArg arg0, xdc_UArg arg1 );
+__extern xdc_Void ti_uia_sysbios_IpcMP_rxTaskFxn__E( xdc_UArg arg0, xdc_UArg arg1);
 
 /* transferAgentFxn__E */
 #define ti_uia_sysbios_IpcMP_transferAgentFxn ti_uia_sysbios_IpcMP_transferAgentFxn__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_transferAgentFxn__E, "ti_uia_sysbios_IpcMP_transferAgentFxn")
-__extern xdc_Void ti_uia_sysbios_IpcMP_transferAgentFxn__E( xdc_UArg arg0, xdc_UArg arg1 );
+__extern xdc_Void ti_uia_sysbios_IpcMP_transferAgentFxn__E( xdc_UArg arg0, xdc_UArg arg1);
 
 /* clockFxn__E */
 #define ti_uia_sysbios_IpcMP_clockFxn ti_uia_sysbios_IpcMP_clockFxn__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_clockFxn__E, "ti_uia_sysbios_IpcMP_clockFxn")
-__extern xdc_Void ti_uia_sysbios_IpcMP_clockFxn__E( xdc_UArg arg0 );
+__extern xdc_Void ti_uia_sysbios_IpcMP_clockFxn__E( xdc_UArg arg0);
 
 /* start__E */
 #define ti_uia_sysbios_IpcMP_start ti_uia_sysbios_IpcMP_start__E
 xdc__CODESECT(ti_uia_sysbios_IpcMP_start__E, "ti_uia_sysbios_IpcMP_start")
-__extern xdc_Int ti_uia_sysbios_IpcMP_start__E( xdc_UArg arg, xdc_UInt16 value );
+__extern xdc_Int ti_uia_sysbios_IpcMP_start__E( xdc_UArg arg, xdc_UInt16 value);
 
 /* startOrig__I */
 #define ti_uia_sysbios_IpcMP_startOrig ti_uia_sysbios_IpcMP_startOrig__I
 xdc__CODESECT(ti_uia_sysbios_IpcMP_startOrig__I, "ti_uia_sysbios_IpcMP_startOrig")
-__extern xdc_Int ti_uia_sysbios_IpcMP_startOrig__I( xdc_Ptr *ptr, xdc_UInt16 value );
+__extern xdc_Int ti_uia_sysbios_IpcMP_startOrig__I( xdc_Ptr *ptr, xdc_UInt16 value);
 
 /* giveEnergy__I */
 #define ti_uia_sysbios_IpcMP_giveEnergy ti_uia_sysbios_IpcMP_giveEnergy__I
 xdc__CODESECT(ti_uia_sysbios_IpcMP_giveEnergy__I, "ti_uia_sysbios_IpcMP_giveEnergy")
-__extern xdc_Void ti_uia_sysbios_IpcMP_giveEnergy__I( void );
+__extern xdc_Void ti_uia_sysbios_IpcMP_giveEnergy__I( void);
 
 /* handleMsg__I */
 #define ti_uia_sysbios_IpcMP_handleMsg ti_uia_sysbios_IpcMP_handleMsg__I
 xdc__CODESECT(ti_uia_sysbios_IpcMP_handleMsg__I, "ti_uia_sysbios_IpcMP_handleMsg")
-__extern xdc_Void ti_uia_sysbios_IpcMP_handleMsg__I( xdc_Ptr msg );
+__extern xdc_Void ti_uia_sysbios_IpcMP_handleMsg__I( xdc_Ptr msg);
 
 /* prime__I */
 #define ti_uia_sysbios_IpcMP_prime ti_uia_sysbios_IpcMP_prime__I
 xdc__CODESECT(ti_uia_sysbios_IpcMP_prime__I, "ti_uia_sysbios_IpcMP_prime")
-__extern xdc_Void ti_uia_sysbios_IpcMP_prime__I( xdc_Ptr handle, xdc_Int size, xdc_Int count );
+__extern xdc_Void ti_uia_sysbios_IpcMP_prime__I( xdc_Ptr handle, xdc_Int size, xdc_Int count);
 
 /* registerWithMaster__I */
 #define ti_uia_sysbios_IpcMP_registerWithMaster ti_uia_sysbios_IpcMP_registerWithMaster__I
 xdc__CODESECT(ti_uia_sysbios_IpcMP_registerWithMaster__I, "ti_uia_sysbios_IpcMP_registerWithMaster")
-__extern xdc_Void ti_uia_sysbios_IpcMP_registerWithMaster__I( void );
+__extern xdc_Void ti_uia_sysbios_IpcMP_registerWithMaster__I( void);
 
 /* requestEvents__I */
 #define ti_uia_sysbios_IpcMP_requestEvents ti_uia_sysbios_IpcMP_requestEvents__I
 xdc__CODESECT(ti_uia_sysbios_IpcMP_requestEvents__I, "ti_uia_sysbios_IpcMP_requestEvents")
-__extern xdc_Void ti_uia_sysbios_IpcMP_requestEvents__I( void );
+__extern xdc_Void ti_uia_sysbios_IpcMP_requestEvents__I( void);
 
 
 /*
@@ -438,23 +440,23 @@ static inline CT__ti_uia_sysbios_IpcMP_Module__id ti_uia_sysbios_IpcMP_Module_id
 
 /* Module_hasMask */
 static inline xdc_Bool ti_uia_sysbios_IpcMP_Module_hasMask(void);
-static inline xdc_Bool ti_uia_sysbios_IpcMP_Module_hasMask(void) 
+static inline xdc_Bool ti_uia_sysbios_IpcMP_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_uia_sysbios_IpcMP_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_uia_sysbios_IpcMP_Module__diagsMask__C != (CT__ti_uia_sysbios_IpcMP_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_uia_sysbios_IpcMP_Module_getMask(void);
-static inline xdc_Bits16 ti_uia_sysbios_IpcMP_Module_getMask( void ) 
+static inline xdc_Bits16 ti_uia_sysbios_IpcMP_Module_getMask(void)
 {
-    return ti_uia_sysbios_IpcMP_Module__diagsMask__C != NULL ? *ti_uia_sysbios_IpcMP_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_uia_sysbios_IpcMP_Module__diagsMask__C != (CT__ti_uia_sysbios_IpcMP_Module__diagsMask)NULL) ? *ti_uia_sysbios_IpcMP_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_uia_sysbios_IpcMP_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_uia_sysbios_IpcMP_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_uia_sysbios_IpcMP_Module__diagsMask__C != NULL) {
+    if (ti_uia_sysbios_IpcMP_Module__diagsMask__C != (CT__ti_uia_sysbios_IpcMP_Module__diagsMask)NULL) {
         *ti_uia_sysbios_IpcMP_Module__diagsMask__C = mask;
     }
 }

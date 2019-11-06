@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -33,10 +33,12 @@
 #define ti_uia_events_IUIACtx__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_events_IUIACtx___VERS 200
@@ -60,7 +62,7 @@
  */
 
 /* IsLoggingEnabledFxn */
-typedef xdc_Bool (*ti_uia_events_IUIACtx_IsLoggingEnabledFxn)(xdc_Int __arg1);
+typedef xdc_Bool (*ti_uia_events_IUIACtx_IsLoggingEnabledFxn)(xdc_Int arg1);
 
 
 /*
@@ -118,12 +120,12 @@ static inline ti_uia_events_IUIACtx_Module ti_uia_events_IUIACtx_Module_downCast
 static inline ti_uia_events_IUIACtx_Module ti_uia_events_IUIACtx_Module_downCast(ti_uia_events_IUIAEvent_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_events_IUIACtx_Interface__BASE__C) {
             return (ti_uia_events_IUIACtx_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_ti_uia_events_IUIAEvent */

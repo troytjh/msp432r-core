@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_uia_loggers
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -192,7 +192,7 @@ public class ti_uia_loggers
         om.bind("ti.uia.loggers.LoggerRunMode.isUploadRequired", new Extern("ti_uia_loggers_LoggerRunMode_isUploadRequired__E", "xdc_Bool(*)(xdc_Void)", true, false));
         om.bind("ti.uia.loggers.LoggerRunMode.idleHook", new Extern("ti_uia_loggers_LoggerRunMode_idleHook__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.uia.loggers.LoggerRunMode.filterOutEvent", new Extern("ti_uia_loggers_LoggerRunMode_filterOutEvent__I", "xdc_Bool(*)(xdc_Bits16)", true, false));
-        om.bind("ti.uia.loggers.LoggerRunMode.writeStart", new Extern("ti_uia_loggers_LoggerRunMode_writeStart__I", "xdc_Ptr(*)(ti_uia_loggers_LoggerRunMode_Object*,xdc_runtime_Log_Event,xdc_Bits16,xdc_UInt16)", true, false));
+        om.bind("ti.uia.loggers.LoggerRunMode.writeStart", new Extern("ti_uia_loggers_LoggerRunMode_writeStart__I", "xdc_UArg*(*)(ti_uia_loggers_LoggerRunMode_Object*,xdc_runtime_Log_Event,xdc_Bits16,xdc_UInt16)", true, false));
     }
 
     void LoggerMin$$CONSTS()
@@ -457,7 +457,7 @@ public class ti_uia_loggers
         sizes.add(Global.newArray("buffer", "UPtr"));
         sizes.add(Global.newArray("write", "UPtr"));
         sizes.add(Global.newArray("end", "UPtr"));
-        sizes.add(Global.newArray("maxEventSizeInBits32", "USize"));
+        sizes.add(Global.newArray("maxEventSizeUArgs", "USize"));
         sizes.add(Global.newArray("maxEventSize", "USize"));
         sizes.add(Global.newArray("numBytesInPrevEvent", "UInt16"));
         sizes.add(Global.newArray("droppedEvents", "UInt32"));
@@ -503,7 +503,7 @@ public class ti_uia_loggers
         sizes.add(Global.newArray("buffer", "UPtr"));
         sizes.add(Global.newArray("write", "UPtr"));
         sizes.add(Global.newArray("end", "UPtr"));
-        sizes.add(Global.newArray("maxEventSizeInBits32", "USize"));
+        sizes.add(Global.newArray("maxEventSizeUArgs", "USize"));
         sizes.add(Global.newArray("maxEventSize", "USize"));
         sizes.add(Global.newArray("numBytesInPrevEvent", "UInt16"));
         sizes.add(Global.newArray("droppedEvents", "UInt32"));
@@ -704,10 +704,10 @@ public class ti_uia_loggers
                 po.addFld("enabled", $$T_Bool, $$UNDEF, "w");
                 po.addFld("instanceId", Proto.Elm.newCNum("(xdc_Int16)"), $$UNDEF, "w");
                 po.addFld("bufSize", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "w");
-                po.addFld("buffer", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("write", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("end", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("maxEventSizeInBits32", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
+                po.addFld("buffer", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("write", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("end", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("maxEventSizeUArgs", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
                 po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
                 po.addFld("numBytesInPrevEvent", Proto.Elm.newCNum("(xdc_UInt16)"), $$UNDEF, "w");
                 po.addFld("droppedEvents", Proto.Elm.newCNum("(xdc_Bits32)"), $$UNDEF, "w");
@@ -869,10 +869,10 @@ public class ti_uia_loggers
                 po.addFld("instanceId", Proto.Elm.newCNum("(xdc_Int16)"), $$UNDEF, "w");
                 po.addFld("primeStatus", $$T_Bool, $$UNDEF, "w");
                 po.addFld("bufSize", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "w");
-                po.addFld("buffer", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("write", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("end", new Proto.Adr("xdc_UInt32*", "Pn"), $$UNDEF, "w");
-                po.addFld("maxEventSizeInBits32", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
+                po.addFld("buffer", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("write", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("end", new Proto.Adr("xdc_UArg*", "PPv"), $$UNDEF, "w");
+                po.addFld("maxEventSizeUArgs", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
                 po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "w");
                 po.addFld("numBytesInPrevEvent", Proto.Elm.newCNum("(xdc_UInt16)"), $$UNDEF, "w");
                 po.addFld("droppedEvents", Proto.Elm.newCNum("(xdc_Bits32)"), $$UNDEF, "w");
@@ -1204,10 +1204,10 @@ public class ti_uia_loggers
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerStopMode.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.loggers.LoggerStopMode.Object", "ti.uia.loggers"));
         vo.bind("MODULE_STARTUP$", 1);
@@ -1345,10 +1345,10 @@ public class ti_uia_loggers
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerRunMode.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.loggers.LoggerRunMode.Object", "ti.uia.loggers"));
         vo.bind("MODULE_STARTUP$", 1);
@@ -1468,10 +1468,10 @@ public class ti_uia_loggers
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerMin.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.loggers.LoggerMin.Object", "ti.uia.loggers"));
         vo.bind("MODULE_STARTUP$", 1);

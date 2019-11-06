@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -769,6 +769,26 @@ function generateCpuClockEntry(cpuClkMSW, cpuClkLSW, canFrequencyBeChanged)
 }
 
 /*
+ *  ======== generateTargetDataEntry ========
+ */
+function generateTargetDataEntry()
+{
+    var indent = 3;
+    var ptrSize = Program.build.target.stdTypes.t_Ptr.size;
+    var argSize = Program.build.target.stdTypes.t_IArg.size;
+    var wordSize = Program.build.target.stdTypes.t_Int.size;
+
+    /* Target size of UArg and Int (bytes) */
+    genXmlEntryOpen(indent,"targetData");
+    indent += 3;
+    genXmlEntry(indent, "ptrSize", "" + ptrSize);
+    genXmlEntry(indent, "argSize", "" + argSize);
+    genXmlEntry(indent, "wordSize", "" + wordSize);
+    indent -= 3;
+    genXmlEntryClose(indent,"targetData");
+}
+
+/*
  *  ======== generateTimestampEntry ========
  */
 function generateTimestampEntry(deviceName, ctsMod, timerMSW, timerLSW, cyclesPerTick, eventCorrelation)
@@ -1310,6 +1330,8 @@ function generate(isGenerateLinuxFiles, linuxFilesRootDir) {
         timerLSW = timestampFreq.lo;
         timerMSW = timestampFreq.hi;
 
+        genXmlComment(3, "Target settings for " + deviceName + " " + catalogName + " device.");
+        generateTargetDataEntry();
         genXmlComment(3, "CPU Clock settings for " + deviceName + " " + catalogName + " device.");
         generateCpuClockEntry(0, cpuClkLSW, false);
         generateTimestampEntry(catalogName, null, 0, timerLSW, 1, false);

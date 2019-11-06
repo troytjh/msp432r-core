@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_posix
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -60,7 +60,6 @@ public class ti_sysbios_posix
     {
         Global.callFxn("loadPackage", xdcO, "xdc");
         Global.callFxn("loadPackage", xdcO, "xdc.corevers");
-        Global.callFxn("loadPackage", xdcO, "xdc.runtime");
     }
 
     void $$OBJECTS()
@@ -100,9 +99,6 @@ public class ti_sysbios_posix
 
     void Settings$$SIZES()
     {
-        Proto.Str so;
-        Object fxn;
-
     }
 
     void Settings$$TYPES()
@@ -116,21 +112,16 @@ public class ti_sysbios_posix
         cap = (Scriptable)Global.callFxn("loadCapsule", xdcO, "ti/sysbios/posix/Settings.xs");
         om.bind("ti.sysbios.posix.Settings$$capsule", cap);
         po = (Proto.Obj)om.findStrict("ti.sysbios.posix.Settings.Module", "ti.sysbios.posix");
-        po.init("ti.sysbios.posix.Settings.Module", om.findStrict("xdc.runtime.IModule.Module", "ti.sysbios.posix"));
-                po.addFld("$hostonly", $$T_Num, 0, "r");
-        if (isCFG) {
-            po.addFld("supportsMutexPriority", $$T_Bool, false, "w");
-            po.addFld("debug", $$T_Bool, false, "w");
-        }//isCFG
+        po.init("ti.sysbios.posix.Settings.Module", $$Module);
+                po.addFld("$hostonly", $$T_Num, 1, "r");
+        po.addFld("supportsMutexPriority", $$T_Bool, false, "wh");
+        po.addFld("debug", $$T_Bool, false, "wh");
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("ti.sysbios.posix.Settings$$module$use", true);
         if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);
         fxn = Global.get(cap, "module$meta$init");
         if (fxn != null) om.bind("ti.sysbios.posix.Settings$$module$meta$init", true);
         if (fxn != null) po.addFxn("module$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$static$init");
-        if (fxn != null) om.bind("ti.sysbios.posix.Settings$$module$static$init", true);
-        if (fxn != null) po.addFxn("module$static$init", $$T_Met, fxn);
         fxn = Global.get(cap, "module$validate");
         if (fxn != null) om.bind("ti.sysbios.posix.Settings$$module$validate", true);
         if (fxn != null) po.addFxn("module$validate", $$T_Met, fxn);
@@ -138,31 +129,12 @@ public class ti_sysbios_posix
 
     void Settings$$ROV()
     {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.sysbios.posix.Settings", "ti.sysbios.posix");
     }
 
     void $$SINGLETONS()
     {
         pkgP.init("ti.sysbios.posix.Package", (Proto.Obj)om.findStrict("xdc.IPackage.Module", "ti.sysbios.posix"));
-        Scriptable cap = (Scriptable)Global.callFxn("loadCapsule", xdcO, "ti/sysbios/posix/package.xs");
-        om.bind("xdc.IPackage$$capsule", cap);
-        Object fxn;
-                fxn = Global.get(cap, "init");
-                if (fxn != null) pkgP.addFxn("init", (Proto.Fxn)om.findStrict("xdc.IPackage$$init", "ti.sysbios.posix"), fxn);
-                fxn = Global.get(cap, "close");
-                if (fxn != null) pkgP.addFxn("close", (Proto.Fxn)om.findStrict("xdc.IPackage$$close", "ti.sysbios.posix"), fxn);
-                fxn = Global.get(cap, "validate");
-                if (fxn != null) pkgP.addFxn("validate", (Proto.Fxn)om.findStrict("xdc.IPackage$$validate", "ti.sysbios.posix"), fxn);
-                fxn = Global.get(cap, "exit");
-                if (fxn != null) pkgP.addFxn("exit", (Proto.Fxn)om.findStrict("xdc.IPackage$$exit", "ti.sysbios.posix"), fxn);
-                fxn = Global.get(cap, "getLibs");
-                if (fxn != null) pkgP.addFxn("getLibs", (Proto.Fxn)om.findStrict("xdc.IPackage$$getLibs", "ti.sysbios.posix"), fxn);
-                fxn = Global.get(cap, "getSects");
-                if (fxn != null) pkgP.addFxn("getSects", (Proto.Fxn)om.findStrict("xdc.IPackage$$getSects", "ti.sysbios.posix"), fxn);
-        pkgP.bind("$capsule", cap);
+        pkgP.bind("$capsule", $$UNDEF);
         pkgV.init2(pkgP, "ti.sysbios.posix", Value.DEFAULT, false);
         pkgV.bind("$name", "ti.sysbios.posix");
         pkgV.bind("$category", "Package");
@@ -182,14 +154,8 @@ public class ti_sysbios_posix
             sb.append("pkg.packageRepository = xdc.om['ti.sysbios.posix$$stat$root'];\n");
         sb.append("}\n");
         sb.append("pkg.build.libraries = [\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.posix.aem4f',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.posix.am4fg',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.posix.arm4f',\n");
         sb.append("];\n");
         sb.append("pkg.build.libDesc = [\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.posix.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.posix.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.posix.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
         sb.append("];\n");
         Global.eval(sb.toString());
     }
@@ -211,74 +177,29 @@ public class ti_sysbios_posix
         mcfgs.clear();
         icfgs.clear();
         inherits.clear();
-        mcfgs.add("Module__diagsEnabled");
-        icfgs.add("Module__diagsEnabled");
-        mcfgs.add("Module__diagsIncluded");
-        icfgs.add("Module__diagsIncluded");
-        mcfgs.add("Module__diagsMask");
-        icfgs.add("Module__diagsMask");
-        mcfgs.add("Module__gateObj");
-        icfgs.add("Module__gateObj");
-        mcfgs.add("Module__gatePrms");
-        icfgs.add("Module__gatePrms");
-        mcfgs.add("Module__id");
-        icfgs.add("Module__id");
-        mcfgs.add("Module__loggerDefined");
-        icfgs.add("Module__loggerDefined");
-        mcfgs.add("Module__loggerObj");
-        icfgs.add("Module__loggerObj");
-        mcfgs.add("Module__loggerFxn0");
-        icfgs.add("Module__loggerFxn0");
-        mcfgs.add("Module__loggerFxn1");
-        icfgs.add("Module__loggerFxn1");
-        mcfgs.add("Module__loggerFxn2");
-        icfgs.add("Module__loggerFxn2");
-        mcfgs.add("Module__loggerFxn4");
-        icfgs.add("Module__loggerFxn4");
-        mcfgs.add("Module__loggerFxn8");
-        icfgs.add("Module__loggerFxn8");
-        mcfgs.add("Object__count");
-        icfgs.add("Object__count");
-        mcfgs.add("Object__heap");
-        icfgs.add("Object__heap");
-        mcfgs.add("Object__sizeof");
-        icfgs.add("Object__sizeof");
-        mcfgs.add("Object__table");
-        icfgs.add("Object__table");
-        mcfgs.add("supportsMutexPriority");
-        mcfgs.add("debug");
         vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
         vo.bind("$$proxies", Global.newArray(proxies.toArray()));
         vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
         vo.bind("$$icfgs", Global.newArray(icfgs.toArray()));
-        inherits.add("xdc.runtime");
         vo.bind("$$inherits", Global.newArray(inherits.toArray()));
         ((Value.Arr)pkgV.getv("$modules")).add(vo);
         ((Value.Arr)om.findStrict("$modules", "ti.sysbios.posix")).add(vo);
         vo.bind("$$instflag", 0);
-        vo.bind("$$iobjflag", 0);
+        vo.bind("$$iobjflag", 1);
         vo.bind("$$sizeflag", 1);
         vo.bind("$$dlgflag", 0);
         vo.bind("$$iflag", 0);
         vo.bind("$$romcfgs", "|");
         vo.bind("$$nortsflag", 0);
-        if (isCFG) {
-            Proto.Str ps = (Proto.Str)vo.find("Module_State");
-            if (ps != null) vo.bind("$object", ps.newInstance());
-            vo.bind("$$meta_iobj", 1);
-        }//isCFG
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_posix_Settings_Module__startupDone__E"));
+        Proto.Str ps = (Proto.Str)vo.find("Module_State");
+        if (ps != null) vo.bind("$object", ps.newInstance());
+        vo.bind("$$meta_iobj", om.has("ti.sysbios.posix.Settings$$instance$static$init", null) ? 1 : 0);
+        vo.bind("$$fxntab", Global.newArray());
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", "./Settings.xdt");
         atmap.seal("length");
-        vo.bind("MODULE_STARTUP$", 0);
-        vo.bind("PROXY$", 0);
-        loggables.clear();
-        vo.bind("$$loggables", loggables.toArray());
-        vo.bind("TEMPLATE$", "./Settings.xdt");
         pkgV.bind("Settings", vo);
         ((Value.Arr)pkgV.getv("$unitNames")).add("Settings");
     }

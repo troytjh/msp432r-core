@@ -33,8 +33,8 @@
  * ======== imagetosrc.c ========
  *
  * Converts a RAM disk image into a C array with symbolName.  This C file may
- * then be compiled into a ti.sysbios.fatfs application and loaded as the
- * initial RAM disk for that application.
+ * then be compiled into an application and loaded as the initial RAM disk for
+ * that application.
  *
  * Usage:
  *

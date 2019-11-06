@@ -2,8 +2,8 @@
 * @file     system_msp432p411v.h
 * @brief    CMSIS Cortex-M4F Device Peripheral Access Layer Header File for
 *           MSP432P411V
-* @version  3.202
-* @date     08/03/17
+* @version  3.231
+* @date     01/26/18
 *
 * @note     View configuration instructions embedded in comments
 *

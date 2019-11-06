@@ -18,6 +18,8 @@ F28M35x.xdc
 F28M35x.xs
 Tiva.xdc
 Tiva.xs
+CortexM.xdc
+CortexM.xs
 CortexM3.xdc
 CortexM3.xs
 ITI813X.xdc
@@ -31,7 +33,7 @@ package/ti.catalog.arm.cortexm3.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-D20
+package/.xdc-H25
 package/ti_catalog_arm_cortexm3.java
 package/ti_catalog_arm_cortexm3.class
 package/package_ti.catalog.arm.cortexm3.c

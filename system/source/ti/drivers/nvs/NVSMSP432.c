@@ -68,7 +68,9 @@
  #define FLASH_END_ADDRESS (0x001fffff)
 #endif
 
-#define FLASH_SECTOR_SIZE  (0x1000)  /* 4-KB */
+/* 4-KB FLASH sector size */
+#define FLASH_SECTOR_SIZE  (0x1000)
+#define SECTOR_BASE_MASK   (~(FLASH_SECTOR_SIZE - 1))
 
 static int_fast16_t checkEraseRange(NVS_Handle handle, size_t offset, size_t size);
 static int_fast16_t doErase(NVS_Handle handle, size_t offset, size_t size);
@@ -94,9 +96,6 @@ const NVS_FxnTable NVSMSP432_fxnTable = {
  *  Semaphore to synchronize access to flash region.
  */
 static SemaphoreP_Handle  writeSem;
-
-static size_t sectorSize;         /* fetched during init() */
-static size_t sectorBaseMask;     /* for efficient argument checking */
 
 /*
  *  ======== NVSMSP432_close ========
@@ -145,7 +144,7 @@ void NVSMSP432_getAttrs(NVS_Handle handle, NVS_Attrs *attrs)
     /* FlashSectorSizeGet() returns the size of a flash sector in bytes. */
     attrs->regionBase  = hwAttrs->regionBase;
     attrs->regionSize  = hwAttrs->regionSize;
-    attrs->sectorSize  = sectorSize;
+    attrs->sectorSize  = FLASH_SECTOR_SIZE;
 }
 
 /*
@@ -155,10 +154,6 @@ void NVSMSP432_init()
 {
     unsigned int key;
     SemaphoreP_Handle sem;
-
-    /* initialize energy saving variables */
-    sectorSize = FLASH_SECTOR_SIZE;
-    sectorBaseMask = ~(sectorSize - 1);
 
     /* speculatively create a binary semaphore for thread safety */
     sem = SemaphoreP_createBinary(1);
@@ -184,17 +179,10 @@ void NVSMSP432_init()
  */
 int_fast16_t NVSMSP432_lock(NVS_Handle handle, uint32_t timeout)
 {
-    switch (SemaphoreP_pend(writeSem, timeout)) {
-        case SemaphoreP_OK:
-            return (NVS_STATUS_SUCCESS);
-
-        case SemaphoreP_TIMEOUT:
-            return (NVS_STATUS_TIMEOUT);
-
-        case SemaphoreP_FAILURE:
-        default:
-            return (NVS_STATUS_ERROR);
+    if (SemaphoreP_pend(writeSem, timeout) != SemaphoreP_OK) {
+        return (NVS_STATUS_TIMEOUT);
     }
+    return (NVS_STATUS_SUCCESS);
 }
 
 /*
@@ -236,20 +224,20 @@ NVS_Handle NVSMSP432_open(uint_least8_t index, NVS_Params *params)
         return (NULL);
     }
 
-    /* The regionBase must be aligned on a flaah page boundary */
-    if ((size_t)(hwAttrs->regionBase) & (sectorSize - 1)) {
+    /* The regionBase must be aligned on a flash page boundary */
+    if ((size_t)(hwAttrs->regionBase) & (FLASH_SECTOR_SIZE - 1)) {
         SemaphoreP_post(writeSem);
         return (NULL);
     }
 
     /* The region cannot be smaller than a sector size */
-    if (hwAttrs->regionSize < sectorSize) {
+    if (hwAttrs->regionSize < FLASH_SECTOR_SIZE) {
         SemaphoreP_post(writeSem);
         return (NULL);
     }
 
     /* The region size must be a multiple of sector size */
-    if (hwAttrs->regionSize != (hwAttrs->regionSize & sectorBaseMask)) {
+    if (hwAttrs->regionSize != (hwAttrs->regionSize & SECTOR_BASE_MASK)) {
         SemaphoreP_post(writeSem);
         return (NULL);
     }
@@ -322,10 +310,15 @@ int_fast16_t NVSMSP432_write(NVS_Handle handle, size_t offset, void *buffer,
 
     /* If erase is set, erase destination sector(s) first */
     if (flags & NVS_WRITE_ERASE) {
-        retval = doErase(handle, offset & sectorBaseMask,
-                     (bufferSize + sectorSize) & sectorBaseMask);
+        size = bufferSize & SECTOR_BASE_MASK;
+        if (bufferSize & (~SECTOR_BASE_MASK)) {
+            size += FLASH_SECTOR_SIZE;
+        }
+
+        retval = doErase(handle, offset & SECTOR_BASE_MASK, size);
         if (retval != NVS_STATUS_SUCCESS) {
             SemaphoreP_post(writeSem);
+
             return (retval);
         }
     }
@@ -347,13 +340,12 @@ int_fast16_t NVSMSP432_write(NVS_Handle handle, size_t offset, void *buffer,
     }
 
     srcBuf = buffer;
-    size   = bufferSize;
     dstBuf = (uint8_t *)((uint32_t)(hwAttrs->regionBase) + offset);
 
     unprotectMemory((uint32_t)((uint8_t *)hwAttrs->regionBase + offset),
                     (uint32_t)((uint8_t *)hwAttrs->regionBase + offset + bufferSize));
 
-    status = programMemory((void *)srcBuf, (void *)dstBuf, size);
+    status = programMemory((void *)srcBuf, (void *)dstBuf, bufferSize);
 
     protectMemory((uint32_t)((uint8_t *)hwAttrs->regionBase + offset),
                   (uint32_t)((uint8_t *)hwAttrs->regionBase + offset + bufferSize));
@@ -365,7 +357,7 @@ int_fast16_t NVSMSP432_write(NVS_Handle handle, size_t offset, void *buffer,
         /*
          *  Note: This validates the entire region even on erase mode.
          */
-        for (i = 0; i < size; i++) {
+        for (i = 0; i < bufferSize; i++) {
             if (srcBuf[i] != dstBuf[i]) {
                 retval = NVS_STATUS_ERROR;
                 break;
@@ -385,7 +377,7 @@ static int_fast16_t checkEraseRange(NVS_Handle handle, size_t offset, size_t siz
 {
     NVSMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
 
-    if (offset != (offset & sectorBaseMask)) {
+    if (offset != (offset & SECTOR_BASE_MASK)) {
         return (NVS_STATUS_INV_ALIGNMENT);    /* poorly aligned start address */
     }
 
@@ -397,7 +389,7 @@ static int_fast16_t checkEraseRange(NVS_Handle handle, size_t offset, size_t siz
         return (NVS_STATUS_INV_SIZE);     /* size is too big */
     }
 
-    if (size != (size & sectorBaseMask)) {
+    if (size != (size & SECTOR_BASE_MASK)) {
         return (NVS_STATUS_INV_SIZE);     /* size is not a multiple of sector size */
     }
 
@@ -432,8 +424,8 @@ static int_fast16_t doErase(NVS_Handle handle, size_t offset, size_t size)
             break;
         }
 
-        sectorBase += sectorSize;
-        size -= sectorSize;
+        sectorBase += FLASH_SECTOR_SIZE;
+        size -= FLASH_SECTOR_SIZE;
     }
 
     protectMemory(sectorBase, sectorBase + size);
@@ -513,8 +505,8 @@ static bool protectMemory(uint32_t startAddr, uint32_t endAddr)
 
         MAP_FlashCtl_protectSector(bankNum, sectorMask);
 
-        startAddr += sectorSize;
-        size -= sectorSize;
+        startAddr += FLASH_SECTOR_SIZE;
+        size -= FLASH_SECTOR_SIZE;
     }
 
     return (true);
@@ -535,8 +527,8 @@ static bool unprotectMemory(uint32_t startAddr, uint32_t endAddr)
 
         MAP_FlashCtl_unprotectSector(bankNum, sectorMask);
 
-        startAddr += sectorSize;
-        size -= sectorSize;
+        startAddr += FLASH_SECTOR_SIZE;
+        size -= FLASH_SECTOR_SIZE;
     }
 
     return (true);

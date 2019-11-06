@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,9 +65,8 @@ import ti.uia.runtime.IUIATraceSyncClient;
  *
  *  Snapshot events are logged by a logger that implements the
  *  {@link ti.uia.runtime.ILoggerSnapshot ILoggerSnapshot}
- *  interface (e.g. {@link ti.uia.runtime.LoggerCircBuf LoggerCircBuf},
- *  {@link ti.uia.runtime.LoggerStopMode LoggerStopMode},
- *  {@link ti.uia.runtime.LoggerProbePoint LoggerProbePoint}).
+ *  interface (e.g. {@link ti.uia.loggers.LoggerStopMode LoggerStopMode},
+ *  {@link ti.uia.loggers.LoggerRunMode LoggerRunMode}).
  *  Rather than invoking the logger's APIs directly, the APIs are
  *  called indirectly via the LogSnapshot module's APIs so that different types
  *  of loggers can be used without having to recompile the source code that is
@@ -93,56 +92,6 @@ import ti.uia.runtime.IUIATraceSyncClient;
  * a logger has been configured for either the Main module or the Defaults module.
  * Since there is a logger for the Main module, the script configures the LogSnapshot
  * module to log events to the same logger instance.
- *
- *  @p(html)
- *  <hr />
- *  <B>Example 2: Using a dedicated low priority logger for snapshot events</B>
- *  @p
- * In some situations, the amount of data logged by the LogSnapshot
- * APIs may exceed the ability of the target to move the event data out of the
- * Main module's logger's circular buffer and up to the host.  One way of
- * ensuring that the other events that are logged are not dropped due to this
- * type of situation is to configure the LogSnapshot module to write events
- * to a separate lower priority logger.
- * @p
- * The following is an example of a
- * configuration script that configures a logger for use by the LogSnapshot
- * module.  This example uses a LoggerCircBuf logger, which is appropriate for
- * uploading events in real-time as the target executes using either
- * JTAG RunMode(C6X targets) or using a non-JTAG transport such as Ethernet.
- * Assigning this logger a {@link ti.uia.runtime.IUIATransferlow#Priority_LOW
- * low priority} causes the contents of this logger to be uploaded after
- * higher priority events (e.g. sync point events, context change events,
- * and error, warning, info events) have been uploaded.
- * @p
- * @p(code)
- * var Logger = xdc.useModule('ti.uia.runtime.LoggerCircBuf');
- * var LogSnapshot   = xdc.useModule('ti.uia.runtime.LogSnapshot');
- *
- * // Create a low priority logger and use it for snapshot events
- * var IUIATransfer = xdc.useModule('ti.uia.runtime.IUIATransfer');
- * var loggerParams = new Logger.Params();
- * loggerParams.priority = IUIATransfer.Priority_LOW;
- * // set the logger buffer size in bytes
- * loggerParams.transferBufSize = 32768;
- * var snapshotLogger = Logger.create(loggerParams);
- * snapshotLogger.instance.name = "SnapshotLog";
- * LogSnapshot.common$.logger = snapshotLogger;
- * @p
- * Using different types of loggers:
- * @p(blist)
- *      - To upload events by JTAG when the target halts (JTAG StopMode),
- * replace the first line in the example with
- * @p(code)
- * Logger = xdc.useModule('ti.uia.runtime.LoggerStopMode');
- * @p(blist)
- *      - To upload events by JTAG whenever an event is logged using probe point
- * breakpoints (i.e. momentarily halting the target while the event is uploaded
- * and then resuming execution), replace the first line in the example with
- * @p(code)
- * Logger = xdc.useModule('ti.uia.runtime.LoggerProbePoint');
- * @p
- *
  *
  *  @p(html)
  *  <hr />
@@ -189,7 +138,7 @@ module LogSnapshot inherits IUIATraceSyncClient {
         Types.Timestamp64 tstamp; /*! time event was written */
         Bits32 serial; /*! serial number of event */
         Types.Event evt; /*! target encoding of an Event */
-        Int snapshotId;
+        UArg snapshotId;
         IArg fmt;
         Ptr pData;
         UInt16 lengthInMAUs; /*! arguments passed via Log_write/print */
@@ -252,7 +201,8 @@ module LogSnapshot inherits IUIATraceSyncClient {
      *  @a(return)          value to use as snapshotId parameter for subsequent events
      */
     @Macro Void putMemoryRange(Types.Event evt, Types.ModuleId mid,
-      IArg fileName, IArg lineNum, UInt32 snapshotID, IArg fmt, IArg startAdrs, IArg lengthInMAUs);
+      IArg fileName, IArg lineNum, UArg snapshotID, IArg fmt, IArg startAdrs,
+            IArg lengthInMAUs);
 
     /*!
      *  ======== writeMemoryBlockWithIdTag ========
@@ -403,8 +353,8 @@ module LogSnapshot inherits IUIATraceSyncClient {
      *  @param(pString)    the start address of the string in memory
      *  @param(lengthInMAUs) the number of MAUs to log (e.g. strlen(pString))
      */
-    @Macro Void writeString(UInt32 snapshotID, IArg fmt, Ptr pString,
-    UInt16 lengthInMAUs);
+    @Macro Void writeString(UArg snapshotID, IArg fmt, Ptr pString,
+            UInt16 lengthInMAUs);
 
     /*!
      *  ======== nameOfReference ========
@@ -443,7 +393,7 @@ module LogSnapshot inherits IUIATraceSyncClient {
      *  @param(fmt)          a constant string that provides format specifiers
      *                       describing the string
      */
-    @Macro Void writeNameOfReference(UInt32 refID, IArg fmt, Ptr pString,
+    @Macro Void writeNameOfReference(UArg refID, IArg fmt, Ptr pString,
     UInt16 lengthInMAUs);
 
     /*!
@@ -473,7 +423,7 @@ module LogSnapshot inherits IUIATraceSyncClient {
      *    LogSnapshot APIs
      */
     @DirectCall
-    UInt32 getSnapshotId();
+    UArg getSnapshotId();
 
     /*!
      *  ======== doPrint ========

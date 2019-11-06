@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -81,6 +81,8 @@ typedef enum MSP_EXP432P401R_ADCBufName {
 typedef enum MSP_EXP432P401R_ADCBuf0ChannelName {
     MSP_EXP432P401R_ADCBUF0CHANNEL0 = 0,
     MSP_EXP432P401R_ADCBUF0CHANNEL1,
+    MSP_EXP432P401R_ADCBUF0CHANNEL2,
+    MSP_EXP432P401R_ADCBUF0CHANNEL3,
 
     MSP_EXP432P401R_ADCBUF0CHANNELCOUNT
 } MSP_EXP432P401R_ADCBuf0ChannelName;
@@ -104,6 +106,8 @@ typedef enum MSP_EXP432P401R_CaptureName {
 typedef enum MSP_EXP432P401R_GPIOName {
     MSP_EXP432P401R_GPIO_S1 = 0,
     MSP_EXP432P401R_GPIO_S2,
+    MSP_EXP432P401R_SPI_MASTER_READY,
+    MSP_EXP432P401R_SPI_SLAVE_READY,
     MSP_EXP432P401R_GPIO_LED1,
     MSP_EXP432P401R_GPIO_LED_RED,
     /*
@@ -111,8 +115,10 @@ typedef enum MSP_EXP432P401R_GPIOName {
      * PWM examples.  Uncomment the following lines if you would like to control
      * the LEDs with the GPIO driver.
      */
-    //MSP_EXP432P401R_GPIO_LED_GREEN,
-    //MSP_EXP432P401R_GPIO_LED_BLUE,
+    /* MSP_EXP432P401R_GPIO_LED_GREEN, */
+    /* MSP_EXP432P401R_GPIO_LED_BLUE, */
+
+    MSP_EXP432P401R_GPIO_TMP116_EN,
 
     /*
      * MSP_EXP432P401R_SPI_CS1 is used to control chip select pin for slave1
@@ -120,6 +126,13 @@ typedef enum MSP_EXP432P401R_GPIOName {
      */
     MSP_EXP432P401R_SPI_CS1,
     MSP_EXP432P401R_SPI_CS2,
+
+    MSP_EXP432P401R_SDSPI_CS,
+
+    /* Sharp LCD Pins */
+    MSP_EXP432P401R_LCD_CS,
+    MSP_EXP432P401R_LCD_POWER,
+    MSP_EXP432P401R_LCD_ENABLE,
 
     MSP_EXP432P401R_GPIOCOUNT
 } MSP_EXP432P401R_GPIOName;
@@ -168,14 +181,24 @@ typedef enum MSP_EXP432P401R_PWMName {
 } MSP_EXP432P401R_PWMName;
 
 /*!
- *  @def    MSP_EXP432P401R_SDSPIName
- *  @brief  Enum of SDSPI names on the MSP_EXP432P401R dev board
+ *  @def    MSP_EXP432P401R_SDFatFSName
+ *  @brief  Enum of SDFatFS names on the MSP_EXP432P401R dev board
  */
-typedef enum MSP_EXP432P401R_SDSPIName {
-    MSP_EXP432P401R_SDSPIB0 = 0,
+typedef enum MSP_EXP432P401R_SDFatFSName {
+    MSP_EXP432P401R_SDFatFS0 = 0,
 
-    MSP_EXP432P401R_SDSPICOUNT
-} EMSP_EXP432P401R_SDSPIName;
+    MSP_EXP432P401R_SDFatFSCOUNT
+} MSP_EXP432P401R_SDFatFSName;
+
+/*!
+ *  @def    MSP_EXP432P401R_SDName
+ *  @brief  Enum of SD names on the MSP_EXP432P401R dev board
+ */
+typedef enum MSP_EXP432P401R_SDName {
+    MSP_EXP432P401R_SDSPI0 = 0,
+
+    MSP_EXP432P401R_SDCOUNT
+} MSP_EXP432P401R_SDName;
 
 /*!
  *  @def    MSP_EXP432P401R_SPIName

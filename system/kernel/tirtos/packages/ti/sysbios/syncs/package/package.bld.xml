@@ -18,31 +18,31 @@
         <srcFile name="package.mak" src="package.bld"/>
         <srcFile name="package/package.xdc.dep" src="package.xdc"/>
         <srcFile name="package/package.cfg.dep" src="package.xdc"/>
-        <srcFile name="lib/sysbios/debug/ti.sysbios.syncs.aem4f.mak" src="package.bld"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/package/package_ti.sysbios.syncs.oem4f.dep" src="package/package_ti.sysbios.syncs.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncSem.oem4f.dep" src="SyncSem.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncSwi.oem4f.dep" src="SyncSwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncEvent.oem4f.dep" src="SyncEvent.c"/>
-        <srcFile name="lib/sysbios/debug/ti.sysbios.syncs.am4fg.mak" src="package.bld"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/package/package_ti.sysbios.syncs.om4fg.dep" src="package/package_ti.sysbios.syncs.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncSem.om4fg.dep" src="SyncSem.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncSwi.om4fg.dep" src="SyncSwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncEvent.om4fg.dep" src="SyncEvent.c"/>
-        <srcFile name="lib/sysbios/debug/ti.sysbios.syncs.arm4f.mak" src="package.bld"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/package/package_ti.sysbios.syncs.orm4f.dep" src="package/package_ti.sysbios.syncs.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncSem.orm4f.dep" src="SyncSem.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncSwi.orm4f.dep" src="SyncSwi.c"/>
-        <srcFile name="package/lib/lib/sysbios/debug/ti.sysbios.syncs/SyncEvent.orm4f.dep" src="SyncEvent.c"/>
+        <srcFile name="lib/debug/ti.sysbios.syncs.aem4f.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/package/package_ti.sysbios.syncs.oem4f.dep" src="package/package_ti.sysbios.syncs.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncSem.oem4f.dep" src="SyncSem.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncSwi.oem4f.dep" src="SyncSwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncEvent.oem4f.dep" src="SyncEvent.c"/>
+        <srcFile name="lib/debug/ti.sysbios.syncs.am4fg.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/package/package_ti.sysbios.syncs.om4fg.dep" src="package/package_ti.sysbios.syncs.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncSem.om4fg.dep" src="SyncSem.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncSwi.om4fg.dep" src="SyncSwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncEvent.om4fg.dep" src="SyncEvent.c"/>
+        <srcFile name="lib/debug/ti.sysbios.syncs.arm4f.mak" src="package.bld"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/package/package_ti.sysbios.syncs.orm4f.dep" src="package/package_ti.sysbios.syncs.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncSem.orm4f.dep" src="SyncSem.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncSwi.orm4f.dep" src="SyncSwi.c"/>
+        <srcFile name="package/lib/lib/debug/ti.sysbios.syncs/SyncEvent.orm4f.dep" src="SyncEvent.c"/>
         <srcFile name="package/rel/ti_sysbios_syncs.tar.dep" src="package/rel/ti_sysbios_syncs.xdc.inc"/>
     </makefiles>
     <targets>
         <target name="ti.targets.arm.elf.M4F"
-            version="ti.targets.arm.elf.M4F{1,0,16.9,4"
-            rawVersion="16.9.4"
+            version="ti.targets.arm.elf.M4F{1,0,18.12,3"
+            rawVersion="18.12.3"
             platform="ti.platforms.tiva:TM4C1294NCPDT:1"
             isa="v7M4"
             suffix="em4f"
-            rootDir="/db/vendors/ti/arm/16.9.4.LTS/Linux"
+            rootDir="/db/vendors/ti/arm/18.12.3.LTS/Linux"
             os="undefined"
             rts="ti.targets.arm.rtsarm">
             <model endian="little"
@@ -50,12 +50,12 @@
                 dataModel="undefined"/>
         </target>
         <target name="gnu.targets.arm.M4F"
-            version="gnu.targets.arm.M4F{1,0,6.3,1"
-            rawVersion="6.3.1"
+            version="gnu.targets.arm.M4F{1,0,7.2,1"
+            rawVersion="7.2.1"
             platform="ti.platforms.tiva:TM4C1294NCPDT"
             isa="v7M4"
             suffix="m4fg"
-            rootDir="/db/vendors/linaro/gcc-arm-none-eabi-6-2017-q1-update"
+            rootDir="/db/vendors/linaro/gcc-arm-none-eabi-7-2017-q4-major"
             os="undefined"
             rts="gnu.targets.arm.rtsv7M">
             <model endian="little"
@@ -63,12 +63,12 @@
                 dataModel="undefined"/>
         </target>
         <target name="iar.targets.arm.M4F"
-            version="iar.targets.arm.M4F{1,0,8.11,1"
-            rawVersion="8.11.1.47"
+            version="iar.targets.arm.M4F{1,0,8.32,2"
+            rawVersion="8.32.2.178"
             platform="ti.platforms.tiva:TM4C1294NCPDT:1"
             isa="v7M4"
             suffix="rm4f"
-            rootDir="/db/vendors/iar/arm/8.11.1.47/Linux"
+            rootDir="/db/vendors/iar/arm/8.32.2/Linux"
             os="undefined"
             rts="iar.targets.arm.rts">
             <model endian="little"
@@ -77,16 +77,16 @@
         </target>
     </targets>
     <libraries>
-    <library name="lib/sysbios/debug/ti.sysbios.syncs"
-        pname="lib/sysbios/debug/ti.sysbios.syncs.aem4f"
+    <library name="lib/debug/ti.sysbios.syncs"
+        pname="lib/debug/ti.sysbios.syncs.aem4f"
         profile="debug"
         target="ti.targets.arm.elf.M4F"/>
-    <library name="lib/sysbios/debug/ti.sysbios.syncs"
-        pname="lib/sysbios/debug/ti.sysbios.syncs.am4fg"
+    <library name="lib/debug/ti.sysbios.syncs"
+        pname="lib/debug/ti.sysbios.syncs.am4fg"
         profile="debug"
         target="gnu.targets.arm.M4F"/>
-    <library name="lib/sysbios/debug/ti.sysbios.syncs"
-        pname="lib/sysbios/debug/ti.sysbios.syncs.arm4f"
+    <library name="lib/debug/ti.sysbios.syncs"
+        pname="lib/debug/ti.sysbios.syncs.arm4f"
         profile="debug"
         target="iar.targets.arm.M4F"/>
     </libraries>
@@ -109,13 +109,13 @@
         <file name="SyncSem.xml"/>
         <file name="SyncSwi.xml"/>
         <file name="package/package.cfg.xdc.inc"/>
-        <file name="lib/sysbios/debug/ti.sysbios.syncs.aem4f"/>
+        <file name="lib/debug/ti.sysbios.syncs.aem4f"/>
         <file name="package/package_ti.sysbios.syncs.c"/>
         <file name="SyncSem.c"/>
         <file name="SyncSwi.c"/>
         <file name="SyncEvent.c"/>
-        <file name="lib/sysbios/debug/ti.sysbios.syncs.am4fg"/>
-        <file name="lib/sysbios/debug/ti.sysbios.syncs.arm4f"/>
+        <file name="lib/debug/ti.sysbios.syncs.am4fg"/>
+        <file name="lib/debug/ti.sysbios.syncs.arm4f"/>
     </release>
     </releases>
     <repositories>

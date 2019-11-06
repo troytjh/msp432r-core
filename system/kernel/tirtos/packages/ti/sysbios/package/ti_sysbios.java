@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -102,6 +102,8 @@ public class ti_sysbios
         vo = (Value.Obj)om.bind("ti.sysbios.Build", new Value.Obj("ti.sysbios.Build", po));
         pkgV.bind("Build", vo);
         // decls 
+        spo = (Proto.Obj)om.bind("ti.sysbios.Build$$Component", new Proto.Obj());
+        om.bind("ti.sysbios.Build.Component", new Proto.Str(spo, true));
     }
 
     void BIOS_RtsGateProxy$$OBJECTS()
@@ -145,7 +147,7 @@ public class ti_sysbios
         om.bind("ti.sysbios.BIOS.LibType_Debug", xdc.services.intern.xsr.Enum.make((Proto.Enm)om.findStrict("ti.sysbios.BIOS.LibType", "ti.sysbios"), "ti.sysbios.BIOS.LibType_Debug", 3));
         om.bind("ti.sysbios.BIOS.WAIT_FOREVER", Global.eval("~(0)"));
         om.bind("ti.sysbios.BIOS.NO_WAIT", 0L);
-        om.bind("ti.sysbios.BIOS.version", 0x65200L);
+        om.bind("ti.sysbios.BIOS.version", 0x68000L);
         om.bind("ti.sysbios.BIOS.linkedWithIncorrectBootLibrary", new Extern("ti_sysbios_BIOS_linkedWithIncorrectBootLibrary__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.BIOS.start", new Extern("ti_sysbios_BIOS_start__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.BIOS.exit", new Extern("ti_sysbios_BIOS_exit__E", "xdc_Void(*)(xdc_Int)", true, false));
@@ -350,7 +352,7 @@ public class ti_sysbios
                 po.addFld("$hostonly", $$T_Num, 0, "r");
                 po.addFld("WAIT_FOREVER", Proto.Elm.newCNum("(xdc_UInt)"), Global.eval("~(0)"), "rh");
                 po.addFld("NO_WAIT", Proto.Elm.newCNum("(xdc_UInt)"), 0L, "rh");
-                po.addFld("version", Proto.Elm.newCNum("(xdc_UInt32)"), 0x65200L, "rh");
+                po.addFld("version", Proto.Elm.newCNum("(xdc_UInt32)"), 0x68000L, "rh");
         if (isCFG) {
             po.addFld("rovViewInfo", (Proto)om.findStrict("xdc.rov.ViewInfo.Instance", "ti.sysbios"), $$UNDEF, "wh");
             po.addFld("libType", (Proto)om.findStrict("ti.sysbios.BIOS.LibType", "ti.sysbios"), om.find("ti.sysbios.BIOS.LibType_Instrumented"), "wh");
@@ -373,6 +375,7 @@ public class ti_sysbios
             po.addFld("startupFxns", new Proto.Arr(new Proto.Adr("xdc_Void(*)(xdc_Void)", "PFv"), false), Global.newArray(new Object[]{}), "wh");
             po.addFld("buildingAppLib", $$T_Bool, true, "wh");
             po.addFld("libDir", $$T_Str, null, "wh");
+            po.addFld("codeCoverageEnabled", $$T_Bool, false, "wh");
             po.addFld("bitsPerInt", Proto.Elm.newCNum("(xdc_Char)"), $$UNDEF, "wh");
             po.addFld("installedErrorHook", new Proto.Adr("xdc_Void(*)(xdc_runtime_Error_Block*)", "PFv"), $$UNDEF, "w");
             po.addFldV("RtsGateProxy", (Proto)om.findStrict("xdc.runtime.IGateProvider.Module", "ti.sysbios"), null, "wh", $$delegGet, $$delegSet);
@@ -460,6 +463,7 @@ public class ti_sysbios
         po.addFld("buildROMApp", $$T_Bool, false, "wh");
         po.addFld("includePaths", new Proto.Arr($$T_Str, false), $$DEFAULT, "wh");
         po.addFld("ccArgs", new Proto.Arr($$T_Str, false), $$DEFAULT, "wh");
+        po.addFld("annex", new Proto.Arr((Proto)om.findStrict("ti.sysbios.Build.Component", "ti.sysbios"), false), $$DEFAULT, "wh");
         fxn = Global.get(cap, "module$use");
         if (fxn != null) om.bind("ti.sysbios.Build$$module$use", true);
         if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);
@@ -478,6 +482,13 @@ public class ti_sysbios
                 po.addFxn("getCcArgs", (Proto.Fxn)om.findStrict("ti.sysbios.Build$$getCcArgs", "ti.sysbios"), Global.get(cap, "getCcArgs"));
                 po.addFxn("buildLibs", (Proto.Fxn)om.findStrict("ti.sysbios.Build$$buildLibs", "ti.sysbios"), Global.get(cap, "buildLibs"));
                 po.addFxn("getLibs", (Proto.Fxn)om.findStrict("ti.sysbios.Build$$getLibs", "ti.sysbios"), Global.get(cap, "getLibs"));
+        // struct Build.Component
+        po = (Proto.Obj)om.findStrict("ti.sysbios.Build$$Component", "ti.sysbios");
+        po.init("ti.sysbios.Build.Component", null);
+                po.addFld("$hostonly", $$T_Num, 1, "r");
+                po.addFld("repo", $$T_Str, $$UNDEF, "w");
+                po.addFld("incs", new Proto.Arr($$T_Str, false), $$DEFAULT, "w");
+                po.addFld("files", new Proto.Arr($$T_Str, false), $$DEFAULT, "w");
     }
 
     void BIOS_RtsGateProxy$$TYPES()
@@ -590,14 +601,14 @@ public class ti_sysbios
             sb.append("pkg.packageRepository = xdc.om['ti.sysbios$$stat$root'];\n");
         sb.append("}\n");
         sb.append("pkg.build.libraries = [\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.aem4f',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.am4fg',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.arm4f',\n");
+            sb.append("'lib/debug/ti.sysbios.aem4f',\n");
+            sb.append("'lib/debug/ti.sysbios.am4fg',\n");
+            sb.append("'lib/debug/ti.sysbios.arm4f',\n");
         sb.append("];\n");
         sb.append("pkg.build.libDesc = [\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
+            sb.append("['lib/debug/ti.sysbios.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
         sb.append("];\n");
         Global.eval(sb.toString());
     }
@@ -674,6 +685,7 @@ public class ti_sysbios
         mcfgs.add("useSK");
         icfgs.add("buildingAppLib");
         icfgs.add("libDir");
+        icfgs.add("codeCoverageEnabled");
         vo.bind("intSize", om.findStrict("ti.sysbios.BIOS.intSize", "ti.sysbios"));
         tdefs.add(om.findStrict("ti.sysbios.BIOS.intSize", "ti.sysbios"));
         icfgs.add("bitsPerInt");
@@ -769,6 +781,8 @@ public class ti_sysbios
         mcfgs.clear();
         icfgs.clear();
         inherits.clear();
+        vo.bind("Component", om.findStrict("ti.sysbios.Build.Component", "ti.sysbios"));
+        tdefs.add(om.findStrict("ti.sysbios.Build.Component", "ti.sysbios"));
         vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
         vo.bind("$$proxies", Global.newArray(proxies.toArray()));
         vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));

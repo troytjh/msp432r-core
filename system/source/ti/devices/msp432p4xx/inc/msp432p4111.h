@@ -1,6 +1,6 @@
 /******************************************************************************
 *
-* Copyright (C) 2012 - 2017 Texas Instruments Incorporated - http://www.ti.com/
+* Copyright (C) 2012 - 2018 Texas Instruments Incorporated - http://www.ti.com/
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
@@ -45,7 +45,7 @@
 *  - ADC14->CTL0 |= ADC14_CTL0_ENC;
 *  - BITBAND_PERI(ADC14->CTL0, ADC14_CTL0_ENC_OFS) = 1;
 *
-* File creation date: 2017-08-03
+* File creation date: 2018-01-26
 *
 ******************************************************************************/
 
@@ -59,7 +59,7 @@
  extern "C" {
 #endif
 
-#define __MSP432_HEADER_VERSION__ 3202
+#define __MSP432_HEADER_VERSION__ 3231
 
 /* Remap MSP432 intrinsics to ARM equivalents */
 #include "msp_compatibility.h"
@@ -317,9 +317,9 @@ typedef enum IRQn
 #define BITBAND_PERI_BASE                     ((uint32_t)(0x42000000))
 
 /* SRAM allows 32 bit bit band access */
-#define BITBAND_SRAM(x, b)  (*((__IO uint32_t *) (BITBAND_SRAM_BASE +  (((uint32_t)(uint32_t *)&(x)) - SRAM_BASE  )*32 + (b)*4)))
+#define BITBAND_SRAM(x, b)  (*((__IO uint32_t *) (BITBAND_SRAM_BASE +  (((uint32_t)(volatile const uint32_t *)&(x)) - SRAM_BASE  )*32 + (b)*4)))
 /* peripherals with 8 bit or 16 bit register access allow only 8 bit or 16 bit bit band access, so cast to 8 bit always */
-#define BITBAND_PERI(x, b)  (*((__IO  uint8_t *) (BITBAND_PERI_BASE +  (((uint32_t)(uint32_t *)&(x)) - PERIPH_BASE)*32 + (b)*4)))
+#define BITBAND_PERI(x, b)  (*((__IO  uint8_t *) (BITBAND_PERI_BASE +  (((uint32_t)(volatile const uint32_t *)&(x)) - PERIPH_BASE)*32 + (b)*4)))
 
 /******************************************************************************
 * Peripheral register definitions                                             *
@@ -329,8 +329,21 @@ typedef enum IRQn
   @{
 */
 
-#if defined ( __CC_ARM )
-#pragma anon_unions
+/* -------  Start of section using anonymous unions and disabling warnings  ------- */
+#if defined (__CC_ARM)
+  #pragma push
+  #pragma anon_unions
+#elif defined (__ICCARM__)
+  #pragma language=extended
+#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wc11-extensions"
+#elif defined (__GNUC__)
+  /* anonymous unions are enabled by default */
+#elif defined (__TI_ARM__)
+  /* anonymous unions are enabled by default */
+#else
+  #warning Not supported compiler type
 #endif
 
 
@@ -647,6 +660,7 @@ typedef struct {
   __IO uint8_t IE;                                                                /*!< Port Interrupt Enable */
   uint8_t RESERVED10;
   __IO uint8_t IFG;                                                               /*!< Port Interrupt Flag */
+  uint8_t RESERVED11;
 } DIO_PORT_Odd_Interruptable_Type;
 
 typedef struct {
@@ -1358,8 +1372,19 @@ typedef struct {
 /*@}*/ /* end of group WDT_A */
 
 
-#if defined ( __CC_ARM )
-#pragma no_anon_unions
+/* --------------------  End of section using anonymous unions  ------------------- */
+#if defined(__CC_ARM)
+  #pragma pop
+#elif defined(__ICCARM__)
+  /* leave anonymous unions enabled */
+#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+  /* anonymous unions are enabled by default */
+#elif defined(__TI_ARM__)
+  /* anonymous unions are enabled by default */
+#else
+  #warning Not supported compiler type
 #endif
 
 /*@}*/ /* end of group MSP432P4111_Peripherals */

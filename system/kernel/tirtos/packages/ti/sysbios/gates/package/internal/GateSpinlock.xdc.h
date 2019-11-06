@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_gates_GateSpinlock__INTERNAL__
@@ -159,7 +159,7 @@
 
 /* Object__sizingError */
 #line 1 "Error_inconsistent_object_size_in_ti.sysbios.gates.GateSpinlock"
-typedef char ti_sysbios_gates_GateSpinlock_Object__sizingError[sizeof(ti_sysbios_gates_GateSpinlock_Object) > sizeof(ti_sysbios_gates_GateSpinlock_Struct) ? -1 : 1];
+typedef char ti_sysbios_gates_GateSpinlock_Object__sizingError[(sizeof(ti_sysbios_gates_GateSpinlock_Object) > sizeof(ti_sysbios_gates_GateSpinlock_Struct)) ? -1 : 1];
 
 
 #endif /* ti_sysbios_gates_GateSpinlock__INTERNAL____ */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,9 +55,6 @@ package ti.uia.runtime [1,0,0,2] {
     module LogCtxChg;
     module LogSnapshot;
     module LogSync;
-    module LoggerCircBuf;
-    module LoggerProbePoint;
-    module LoggerStopMode;
     module LoggerSM;
     module LoggerTypes;
     module MultiCoreTypes;

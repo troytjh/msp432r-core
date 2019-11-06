@@ -6,10 +6,10 @@ SyncEvent.xml
 SyncSem.xml
 SyncSwi.xml
 package/package.cfg.xdc.inc
-lib/sysbios/debug/ti.sysbios.syncs.aem4f
+lib/debug/ti.sysbios.syncs.aem4f
 package/package_ti.sysbios.syncs.c
 SyncSem.c
 SyncSwi.c
 SyncEvent.c
-lib/sysbios/debug/ti.sysbios.syncs.am4fg
-lib/sysbios/debug/ti.sysbios.syncs.arm4f
+lib/debug/ti.sysbios.syncs.am4fg
+lib/debug/ti.sysbios.syncs.arm4f

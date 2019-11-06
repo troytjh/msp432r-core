@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_rts_gnu_ReentSupport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_rts_gnu_ReentSupport___VERS 200
@@ -263,32 +265,32 @@ __extern xdc_Int ti_sysbios_rts_gnu_ReentSupport_Module_startup__F( xdc_Int stat
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_rts_gnu_ReentSupport_Module__startupDone__S, "ti_sysbios_rts_gnu_ReentSupport_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_rts_gnu_ReentSupport_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_rts_gnu_ReentSupport_Module__startupDone__S( void);
 
 /* getReent__I */
 #define ti_sysbios_rts_gnu_ReentSupport_getReent ti_sysbios_rts_gnu_ReentSupport_getReent__I
 xdc__CODESECT(ti_sysbios_rts_gnu_ReentSupport_getReent__I, "ti_sysbios_rts_gnu_ReentSupport_getReent")
-__extern xdc_Ptr ti_sysbios_rts_gnu_ReentSupport_getReent__I( void );
+__extern xdc_Ptr ti_sysbios_rts_gnu_ReentSupport_getReent__I( void);
 
 /* initGlobalReent__I */
 #define ti_sysbios_rts_gnu_ReentSupport_initGlobalReent ti_sysbios_rts_gnu_ReentSupport_initGlobalReent__I
 xdc__CODESECT(ti_sysbios_rts_gnu_ReentSupport_initGlobalReent__I, "ti_sysbios_rts_gnu_ReentSupport_initGlobalReent")
-__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_initGlobalReent__I( void );
+__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_initGlobalReent__I( void);
 
 /* taskCreateHook__I */
 #define ti_sysbios_rts_gnu_ReentSupport_taskCreateHook ti_sysbios_rts_gnu_ReentSupport_taskCreateHook__I
 xdc__CODESECT(ti_sysbios_rts_gnu_ReentSupport_taskCreateHook__I, "ti_sysbios_rts_gnu_ReentSupport_taskCreateHook")
-__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_taskCreateHook__I( ti_sysbios_knl_Task_Handle task, xdc_runtime_Error_Block *eb );
+__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_taskCreateHook__I( ti_sysbios_knl_Task_Handle task, xdc_runtime_Error_Block *eb);
 
 /* taskDeleteHook__I */
 #define ti_sysbios_rts_gnu_ReentSupport_taskDeleteHook ti_sysbios_rts_gnu_ReentSupport_taskDeleteHook__I
 xdc__CODESECT(ti_sysbios_rts_gnu_ReentSupport_taskDeleteHook__I, "ti_sysbios_rts_gnu_ReentSupport_taskDeleteHook")
-__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_taskDeleteHook__I( ti_sysbios_knl_Task_Handle task );
+__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_taskDeleteHook__I( ti_sysbios_knl_Task_Handle task);
 
 /* taskRegHook__I */
 #define ti_sysbios_rts_gnu_ReentSupport_taskRegHook ti_sysbios_rts_gnu_ReentSupport_taskRegHook__I
 xdc__CODESECT(ti_sysbios_rts_gnu_ReentSupport_taskRegHook__I, "ti_sysbios_rts_gnu_ReentSupport_taskRegHook")
-__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_taskRegHook__I( xdc_Int id );
+__extern xdc_Void ti_sysbios_rts_gnu_ReentSupport_taskRegHook__I( xdc_Int id);
 
 
 /*
@@ -313,23 +315,23 @@ static inline CT__ti_sysbios_rts_gnu_ReentSupport_Module__id ti_sysbios_rts_gnu_
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_rts_gnu_ReentSupport_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_rts_gnu_ReentSupport_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_rts_gnu_ReentSupport_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C != (CT__ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_rts_gnu_ReentSupport_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_rts_gnu_ReentSupport_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_rts_gnu_ReentSupport_Module_getMask(void)
 {
-    return ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C != NULL ? *ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C != (CT__ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask)NULL) ? *ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_rts_gnu_ReentSupport_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_rts_gnu_ReentSupport_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C != (CT__ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask)NULL) {
         *ti_sysbios_rts_gnu_ReentSupport_Module__diagsMask__C = mask;
     }
 }

@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,48 +31,69 @@
  */
 
     var LoggerStopMode = xdc.module("ti.uia.loggers.LoggerStopMode");
-    var bits8InTS = (LoggerStopMode.isTimestampEnabled) ? 8 : 0;
 
-    var hdrOffsetInWords = 4;  // UIAPacket header takes 4 32-bit words
-    var bytesInEventWord = 4;
+    var bytesInPtr = Program.build.target.stdTypes.t_Ptr.size;
 
-    var eventType = (LoggerStopMode.isTimestampEnabled) ?
-        "ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWith64bTimestamp" :
-        "ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp";
+    // Number of UArg's in UIAPacket header
+    var hdrOffsetInWords = 16 / bytesInPtr;
 
-    var snapshotEventType = (LoggerStopMode.isTimestampEnabled) ?
-        "ti_uia_runtime_EventHdr_HdrType_SnapshotEventWithPrevLenAnd64bTimestamp" :
-        "ti_uia_runtime_EventHdr_HdrType_SnapshotEventWithPrevLen";
+    var eventType = "ti_uia_runtime_";
+    var snapshotEventType = "ti_uia_runtime_";
+
+    eventType = (LoggerStopMode.isTimestampEnabled) ?
+        eventType + "EventHdr_HdrType_EventWithPrevLenWith64bTimestamp" :
+        eventType + "EventHdr_HdrType_EventWithPrevLenWithNoTimestamp";
+
+    snapshotEventType = (LoggerStopMode.isTimestampEnabled) ?
+        snapshotEventType + "EventHdr_HdrType_SnapshotEventWithPrevLenAnd64bTimestamp" :
+        snapshotEventType + "EventHdr_HdrType_SnapshotEventWithPrevLen";
+
+    var bytesInEventWord;
+    var eventHdrUArgs;
+
+    if (bytesInPtr == 8) {
+        /* 64-bit target */
+        bytesInEventWord = 8;
+        eventHdrUArgs = (LoggerStopMode.isTimestampEnabled) ? 2 : 1;
+    }
+    else {
+        /* 32-bit target */
+        bytesInEventWord = 4;
+        eventHdrUArgs = (LoggerStopMode.isTimestampEnabled) ? 4 : 2;
+    }
 
     // Size in words
-    var write0EventSize = (LoggerStopMode.isTimestampEnabled) ? 4 : 2;
-    var write1EventSize = (LoggerStopMode.isTimestampEnabled) ? 5 : 3;
-    var write2EventSize = (LoggerStopMode.isTimestampEnabled) ? 6 : 4;
-    var write4EventSize = (LoggerStopMode.isTimestampEnabled) ? 8 : 6;
-    var write8EventSize = (LoggerStopMode.isTimestampEnabled) ? 12 : 10;
+    var write0EventSize = eventHdrUArgs;
+    var write1EventSize = write0EventSize + 1;
+    var write2EventSize = write0EventSize + 2;
+    var write4EventSize = write0EventSize + 4;
+    var write8EventSize = write0EventSize + 8;
 
-    var write0EventSizeInBytes = write0EventSize * bytesInEventWord;
-    var write1EventSizeInBytes = write1EventSize * bytesInEventWord;
-    var write2EventSizeInBytes = write2EventSize * bytesInEventWord;
-    var write4EventSizeInBytes = write4EventSize * bytesInEventWord;
-    var write8EventSizeInBytes = write8EventSize * bytesInEventWord;
+    var write0EventSizeInBytes = write0EventSize * bytesInPtr;
+    var write1EventSizeInBytes = write1EventSize * bytesInPtr;
+    var write2EventSizeInBytes = write2EventSize * bytesInPtr;
+    var write4EventSizeInBytes = write4EventSize * bytesInPtr;
+    var write8EventSizeInBytes = write8EventSize * bytesInPtr;
 
-    // Number of words in snapshot event header
-    // Bits8 in Timestamp + Bits8 in writeMemory + Bits8 in event header,
-    // converted to bits32
-    var headerSizeBits32 = (bits8InTS + 24 + 8) / 4;
+    //  The event header for a snapshot event contains 4 32-bit words
+    //  (timestamp enabled) or 2 32-bit words (timestamp not enabled), plus
+    //  6 UArgs.
+    //  plus a timestamp (if enabled):
+    //     word0 - Mask containing event type and length (32-bit)
+    //     word1 - Timestamp low                         (32-bit)
+    //     word2 - Timestamp high                        (32-bit)
+    //     word3 - Mask of Event ID and Module ID        (32-bit)
+    //     word4 - Filename pointer                      (UArg)
+    //     word5 - line number                           (UArg)
+    //     word6 - snapshot Id                           (UArg)
+    //     word7 - data address                          (UArg)
+    //     word8 - data length                           (UArg)
+    //     word9 - format pointer                        (UArg)
+    //
+    // For a 64-bit target, word0 - word3 are treated as 32-bit words.
+    var headerSizeUArgs = eventHdrUArgs + 6;
 
     var LoggerStopMode_module = "ti_uia_loggers_LoggerStopMode_Module__state__V";
-
-    function bits32ToMau(bits32)
-    {
-        return ("((" + bits32 + ") * sizeof(Bits32))");
-    }
-
-    function bits32ToBits8(bits32)
-    {
-        return ("((" + bits32 + ") * 4)");
-    }
 %%}
 %/*
 % *  ======== LoggerStopMode.xdt ========
@@ -105,90 +126,18 @@ extern volatile cregister UInt32 TSCL, TSCH;
 %if (LoggerStopMode.isTimestampEnabled) {
 static inline UInt32 *ti_uia_loggers_LoggerStopMode_fillInTimestamp(UInt32 *writePtr)
 {
-
 #ifndef xdc_target__isaCompatible_64P
     xdc_runtime_Types_Timestamp64 tstamp;
     xdc_runtime_Timestamp_get64(&tstamp);
-    *(writePtr++) = tstamp.lo;
-    *(writePtr++) = tstamp.hi;
+    *writePtr++ = tstamp.lo;
+    *writePtr++ = tstamp.hi;
 #else
-    *(writePtr++) = TSCL;
-    *(writePtr++) = TSCH;
+    *writePtr++ = TSCL;
+    *writePtr++ = TSCH;
 #endif
     return (writePtr);
 }
 %}
-
-/*
- *  ======== ti_uia_loggers_LoggerStopMode_writeStart ========
- */
-static inline Ptr ti_uia_loggers_LoggerStopMode_writeStart(
-        ti_uia_loggers_LoggerStopMode_Object *obj,
-        UInt32 *writePtr, UInt32 numBytes,
-        xdc_runtime_Log_Event evt,
-        xdc_runtime_Types_ModuleId mid)
-{
-% if (LoggerStopMode.supportLoggerDisable == true) {
-    if (!obj->enabled) {
-        return (NULL);
-    }
-%}
-
-% if (LoggerStopMode.filterByLevel == true) {
-    if (ti_uia_loggers_LoggerStopMode_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
-        return (NULL);
-    }
-%}
-
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-        numBytes,
-        obj->numBytesInPrevEvent,
-        obj->eventSequenceNum,
-        `eventType`);
-
-    obj->numBytesInPrevEvent = numBytes;
-
-% if (LoggerStopMode.isTimestampEnabled == true) {
-    writePtr = ti_uia_loggers_LoggerStopMode_fillInTimestamp(writePtr);
-%}
-    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
-
-    return (writePtr);
-}
-
-/*
- *  ======== ti_uia_loggers_LoggerStopMode_writeFinish ========
- */
-static inline Void ti_uia_loggers_LoggerStopMode_writeFinish(
-        ti_uia_loggers_LoggerStopMode_Object *obj,
-        UInt32 *writePtr)
-{
-    if (writePtr > obj->end) {
-        /* Set UIA packet length and sequence number */
-        ti_uia_runtime_UIAPacket_setEventLengthFast(
-                (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
-                (UInt32)((writePtr - obj->buffer) * `bytesInEventWord`));
-
-        /* Reset the write pointer to the beginning of the buffer */
-        obj->write = obj->buffer + `hdrOffsetInWords`;
-
-        /*
-         *  Update the sequence count after the packet has been fully written
-         *  in order to ensure that, if the target is halted it can decode the
-         *  partially written packet correctly
-         */
-        obj->pktSequenceNum++;
-        ti_uia_runtime_UIAPacket_setSequenceCounts(
-            (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
-            obj->pktSequenceNum,
-            obj->eventSequenceNum);
-    }
-    else {
-        obj->write = writePtr;
-    }
-    ((ti_uia_runtime_QueueDescriptor_Header *)obj->hdr)->partialPacketWritePtr =
-            (xdc_Bits32 *)obj->write;
-}
 
 /*
  *  ======== ti_uia_loggers_LoggerStopMode_filterOutEvent ========
@@ -231,10 +180,85 @@ Bool ti_uia_loggers_LoggerStopMode_filterOutEvent__I(xdc_runtime_Diags_Mask mask
     else {
         return (FALSE);
     }
+
 %}
 %else {
     return (FALSE);
 %}
+}
+
+/*
+ *  ======== ti_uia_loggers_LoggerStopMode_writeStart ========
+ */
+static inline UArg *ti_uia_loggers_LoggerStopMode_writeStart(
+        ti_uia_loggers_LoggerStopMode_Object *obj,
+        UArg *write, UInt32 numBytes,
+        xdc_runtime_Log_Event evt,
+        xdc_runtime_Types_ModuleId mid)
+{
+    UInt32 *writePtr = (UInt32 *)write;
+
+% if (LoggerStopMode.supportLoggerDisable == true) {
+    if (!obj->enabled) {
+        return (NULL);
+    }
+%}
+
+% if (LoggerStopMode.filterByLevel == true) {
+    if (ti_uia_loggers_LoggerStopMode_filterOutEvent__I(xdc_runtime_Log_getMask(evt))) {
+        return (NULL);
+    }
+%}
+
+    *writePtr++ = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+        numBytes,
+        obj->numBytesInPrevEvent,
+        obj->eventSequenceNum,
+        `eventType`);
+
+    obj->numBytesInPrevEvent = numBytes;
+
+% if (LoggerStopMode.isTimestampEnabled == true) {
+    writePtr = ti_uia_loggers_LoggerStopMode_fillInTimestamp(writePtr);
+%}
+    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
+
+    return ((UArg *)writePtr);
+}
+
+/*
+ *  ======== ti_uia_loggers_LoggerStopMode_writeFinish ========
+ */
+static inline Void ti_uia_loggers_LoggerStopMode_writeFinish(
+        ti_uia_loggers_LoggerStopMode_Object *obj,
+        UArg *writePtr)
+{
+    if (writePtr > obj->end) {
+        /* Set UIA packet length and sequence number */
+        ti_uia_runtime_UIAPacket_setEventLengthFast(
+                (ti_uia_runtime_UIAPacket_Hdr *)obj->buffer,
+                (writePtr - obj->buffer) * `bytesInPtr`);
+
+        /* Reset the write pointer to the beginning of the buffer */
+        obj->write = obj->buffer + `hdrOffsetInWords`;
+
+        /*
+         *  Update the sequence count after the packet has been fully written
+         *  in order to ensure that, if the target is halted it can decode the
+         *  partially written packet correctly
+         */
+        obj->pktSequenceNum++;
+        ti_uia_runtime_UIAPacket_setSequenceCounts(
+            (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
+            obj->pktSequenceNum,
+            obj->eventSequenceNum);
+    }
+    else {
+        obj->write = writePtr;
+    }
+
+    ((ti_uia_runtime_QueueDescriptor_Header *)obj->hdr)->partialPacketWritePtr =
+            (xdc_Bits32 *)obj->write;
 }
 
 /*
@@ -246,7 +270,7 @@ Void ti_uia_loggers_LoggerStopMode_write0__E(
                                     xdc_runtime_Types_ModuleId mid)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
     writePtr = ti_uia_loggers_LoggerStopMode_writeStart(obj, writePtr,
             `write0EventSizeInBytes`, evt, mid);
@@ -282,11 +306,10 @@ Void ti_uia_loggers_LoggerStopMode_write0__E(
 Void ti_uia_loggers_LoggerStopMode_write1__E(
                                     ti_uia_loggers_LoggerStopMode_Object *obj,
                                     xdc_runtime_Log_Event evt,
-                                    xdc_runtime_Types_ModuleId mid,
-                                    IArg a1)
+                                    xdc_runtime_Types_ModuleId mid, IArg a1)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
     writePtr = ti_uia_loggers_LoggerStopMode_writeStart(obj, writePtr,
             `write1EventSizeInBytes`, evt, mid);
@@ -297,7 +320,8 @@ Void ti_uia_loggers_LoggerStopMode_write1__E(
         return;
     }
 %}
-    *writePtr++ = a1;
+
+    *writePtr++ = (UArg)a1;
 
     obj->numBytesInPrevEvent = `write1EventSizeInBytes`;
     obj->eventSequenceNum++;
@@ -328,7 +352,7 @@ Void ti_uia_loggers_LoggerStopMode_write2__E(
                                     IArg a1, IArg a2)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
     writePtr = ti_uia_loggers_LoggerStopMode_writeStart(obj, writePtr,
             `write2EventSizeInBytes`, evt, mid);
@@ -339,8 +363,9 @@ Void ti_uia_loggers_LoggerStopMode_write2__E(
         return;
     }
 %}
-    *writePtr++ = a1;
-    *writePtr++ = a2;
+
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
 
     obj->numBytesInPrevEvent = `write2EventSizeInBytes`;
     obj->eventSequenceNum++;
@@ -371,7 +396,7 @@ Void ti_uia_loggers_LoggerStopMode_write4__E(
                                     IArg a1, IArg a2, IArg a3, IArg a4)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
     writePtr = ti_uia_loggers_LoggerStopMode_writeStart(obj, writePtr,
             `write4EventSizeInBytes`, evt, mid);
@@ -382,10 +407,11 @@ Void ti_uia_loggers_LoggerStopMode_write4__E(
         return;
     }
 %}
-    *writePtr++ = a1;
-    *writePtr++ = a2;
-    *writePtr++ = a3;
-    *writePtr++ = a4;
+
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
+    *writePtr++ = (UArg)a3;
+    *writePtr++ = (UArg)a4;
 
     obj->numBytesInPrevEvent = `write4EventSizeInBytes`;
     obj->eventSequenceNum++;
@@ -417,7 +443,7 @@ Void ti_uia_loggers_LoggerStopMode_write8__E(
         IArg a5, IArg a6, IArg a7, IArg a8)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
     writePtr = ti_uia_loggers_LoggerStopMode_writeStart(obj, writePtr,
             `write8EventSizeInBytes`, evt, mid);
@@ -428,14 +454,15 @@ Void ti_uia_loggers_LoggerStopMode_write8__E(
         return;
     }
 %}
-    *writePtr++ = a1;
-    *writePtr++ = a2;
-    *writePtr++ = a3;
-    *writePtr++ = a4;
-    *writePtr++ = a5;
-    *writePtr++ = a6;
-    *writePtr++ = a7;
-    *writePtr++ = a8;
+
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
+    *writePtr++ = (UArg)a3;
+    *writePtr++ = (UArg)a4;
+    *writePtr++ = (UArg)a5;
+    *writePtr++ = (UArg)a6;
+    *writePtr++ = (UArg)a7;
+    *writePtr++ = (UArg)a8;
 
     obj->numBytesInPrevEvent = `write8EventSizeInBytes`;
     obj->eventSequenceNum++;
@@ -558,7 +585,6 @@ xdc_runtime_Diags_Mask ti_uia_loggers_LoggerStopMode_getFilterLevel__E (ti_uia_l
 %else {
     return (0);
 %}
-
 }
 
 /*  ======== writeMemoryRange =========
@@ -573,56 +599,56 @@ Void ti_uia_loggers_LoggerStopMode_writeMemoryRange__E(ti_uia_loggers_LoggerStop
                 IArg startAdrs, UInt32 lengthInMAUs)
 {
     Int i;
-    UInt32 eventSizeBits32;
-    UInt32 dataSizeBits32;
+    SizeT eventSizeUArgs;
+    SizeT dataSizeUArgs;
     Ptr pAdrs = iargToPtr(startAdrs);
-    SizeT headerSizeBits32;
-    SizeT lenAdjustedBits32;
+    SizeT headerSizeUArgs;
+    SizeT lenAdjustedUArgs;
     Int numRecords;
     UInt key;
-    UInt32 *writePtr = obj->write;
-
+    UArg *writePtr = obj->write;
+    UInt32 *evtHdr = (UInt32 *)obj->write;
 
 %if (LoggerStopMode.supportLoggerDisable == true) {
     if (!obj->enabled) {
         return;
     }
 %}
-
 %if (LoggerStopMode.filterByLevel == true) {
-    if (ti_uia_loggers_LoggerStopMode_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
+    if (ti_uia_loggers_LoggerStopMode_filterOutEvent__I(xdc_runtime_Log_getMask(evt))) {
         return;
     }
 %}
-    if (obj->maxEventSizeInBits32 == 0) {
+    if (obj->maxEventSizeUArgs == 0) {
         return;
     }
 
-    /* Size of header in 32 bit words */
-    headerSizeBits32 = `headerSizeBits32`;
+    /* Size of header in UArgs */
+    headerSizeUArgs = `headerSizeUArgs`;
 
-    /* Round up to word boundary */
-    lenAdjustedBits32 = (lengthInMAUs + sizeof(Bits32) - 1) / sizeof(Bits32);
+    /* Round up to word (UArg) boundary */
+    lenAdjustedUArgs = (lengthInMAUs + sizeof(UArg) - 1) / sizeof(UArg);
 
-    numRecords = (lenAdjustedBits32 / (obj->maxEventSizeInBits32 - headerSizeBits32)) + 1;
+    numRecords = (lenAdjustedUArgs / (obj->maxEventSizeUArgs - headerSizeUArgs)) + 1;
 
     for (i = 0; i < numRecords; i++) {
-        if ((headerSizeBits32 + lenAdjustedBits32) > obj->maxEventSizeInBits32) {
-            dataSizeBits32 = obj->maxEventSizeInBits32 - headerSizeBits32;
-            lenAdjustedBits32 -= dataSizeBits32;
+        if ((headerSizeUArgs + lenAdjustedUArgs) > obj->maxEventSizeUArgs) {
+            dataSizeUArgs = obj->maxEventSizeUArgs - headerSizeUArgs;
+            lenAdjustedUArgs -= dataSizeUArgs;
         }
         else {
-            dataSizeBits32 = lenAdjustedBits32;
+            dataSizeUArgs = lenAdjustedUArgs;
         }
-        eventSizeBits32 = dataSizeBits32 + headerSizeBits32;
+        eventSizeUArgs = dataSizeUArgs + headerSizeUArgs;
 
         key = ti_sysbios_hal_Hwi_disable();
-        if ((writePtr + eventSizeBits32) >= obj->end) {
+
+        if ((writePtr + eventSizeUArgs) >= obj->end) {
             ti_uia_loggers_LoggerStopMode_flush(obj);
             writePtr = obj->write;
         }
 
-        if ((writePtr == NULL ) || ((writePtr + eventSizeBits32) >= obj->end)) {
+        if ((writePtr == NULL ) || ((writePtr + eventSizeUArgs) >= obj->end)) {
             obj->droppedEvents++;
             ti_sysbios_hal_Hwi_restore(key);
 
@@ -634,25 +660,27 @@ Void ti_uia_loggers_LoggerStopMode_writeMemoryRange__E(ti_uia_loggers_LoggerStop
          *  Use events with previous event length in header to allow events
          *  to be read from partially written packets
          */
-        *(writePtr++) = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            `bits32ToBits8("eventSizeBits32")`,
-            obj->numBytesInPrevEvent,
-            obj->eventSequenceNum, `snapshotEventType`);
+        *(evtHdr++) = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+                eventSizeUArgs * `bytesInPtr`,
+                obj->numBytesInPrevEvent,
+                obj->eventSequenceNum,
+                `snapshotEventType`);
 
 %if (LoggerStopMode.isTimestampEnabled == true) {
-        writePtr = ti_uia_loggers_LoggerStopMode_fillInTimestamp(writePtr);
+        evtHdr = ti_uia_loggers_LoggerStopMode_fillInTimestamp(evtHdr);
 %}
 
-        *(writePtr++) = ((evt) & 0xffff0000) | mid;
+        *(evtHdr++) = ((evt) & 0xffff0000) | mid;
+        writePtr = (UArg *)evtHdr;
         *(writePtr++) = fileName;
         *(writePtr++) = lineNum;
         *(writePtr++) = snapshotId;
-        *(writePtr++) = (Bits32)pAdrs;
-        *(writePtr++) = (((`bits32ToMau("dataSizeBits32")` & 0x0FFFF)<<16) | (lengthInMAUs & 0x0FFFF));
+        *(writePtr++) = (UArg)pAdrs;
+        *(writePtr++) = ((((dataSizeUArgs * sizeof(UArg)) & 0x0FFFF)<<16) | (lengthInMAUs & 0x0FFFF));
         *(writePtr++) = fmt;
 
-        memcpy((Ptr)writePtr, pAdrs, `bits32ToMau("dataSizeBits32")`);
-        writePtr = (Ptr)((Char *)writePtr + `bits32ToMau("dataSizeBits32")`);
+        memcpy((Ptr)writePtr, pAdrs, dataSizeUArgs * sizeof(UArg));
+        writePtr = writePtr + dataSizeUArgs;
 
         /*
          * Update serial number even if the buffer is full or disabled.
@@ -662,18 +690,18 @@ Void ti_uia_loggers_LoggerStopMode_writeMemoryRange__E(ti_uia_loggers_LoggerStop
          */
         obj->eventSequenceNum++;
 
-        obj->numBytesInPrevEvent = `bits32ToBits8("eventSizeBits32")`;
+        obj->numBytesInPrevEvent = eventSizeUArgs * `bytesInPtr`;
         *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            0,
-            obj->numBytesInPrevEvent,
-            obj->eventSequenceNum,
-            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
+                0,
+                obj->numBytesInPrevEvent,
+                obj->eventSequenceNum,
+                ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
 
         obj->write = writePtr;
 
         ((ti_uia_runtime_QueueDescriptor_Header *)obj->hdr)->partialPacketWritePtr =
-            (xdc_Bits32 *)writePtr;
-        pAdrs = (Ptr)((Char *)pAdrs + `bits32ToMau("dataSizeBits32")`);
+                (xdc_Bits32 *)writePtr;
+        pAdrs = (Ptr)((UArg *)pAdrs + dataSizeUArgs);
         ti_sysbios_hal_Hwi_restore(key);
     }
     obj->write = writePtr;

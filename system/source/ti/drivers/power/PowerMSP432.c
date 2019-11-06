@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,6 +63,8 @@
 #include <ti/devices/msp432p4xx/driverlib/wdt_a.h>
 #include <ti/devices/msp432p4xx/driverlib/rtc_c.h>
 #include <ti/devices/msp432p4xx/driverlib/pcm.h>
+#include <ti/devices/msp432p4xx/driverlib/cs.h>
+#include <ti/devices/msp432p4xx/driverlib/interrupt.h>
 
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
 /* MSP432P401xx devices */
@@ -96,6 +98,22 @@
 #define CSSRC 0x1
 #endif
 
+/* crystal startup timeout counts to allow for given MCLK speed */
+#define MCLK48_HF_TIMEOUT 12214
+#define MCLK48_LF_TIMEOUT 4767581
+#define MCLK24_HF_TIMEOUT 6107
+#define MCLK24_LF_TIMEOUT 2383791
+#define MCLK12_HF_TIMEOUT 3054
+#define MCLK12_LF_TIMEOUT 1191896
+#define MCLK6_HF_TIMEOUT  1527
+#define MCLK6_LF_TIMEOUT  595948
+#define MCLK3_HF_TIMEOUT  764
+#define MCLK3_LF_TIMEOUT  297974
+#define MCLK1_HF_TIMEOUT  255
+#define MCLK1_LF_TIMEOUT  99325
+#define HFXT 0
+#define LFXT 1
+
 /* Active states */
 #define AM_DCDC_VCORE0    PCM_AM_DCDC_VCORE0
 #define AM_DCDC_VCORE1    PCM_AM_DCDC_VCORE1
@@ -108,7 +126,8 @@
 #define REG32(x)          (*(volatile unsigned *)(x))
 #define CSKEY             (REG32(0x40010400))
 #define CSCTL2            (REG32(0x4001040C))
-#define HFXT_EN           (0x01000000)
+#define HFXT_EN_BIT       (0x01000000)
+#define LFXT_EN_BIT       (0x00000100)
 
 /* externs */
 extern const PowerMSP432_ConfigV1 PowerMSP432_config;
@@ -117,9 +136,14 @@ extern void PowerMSP432_schedulerRestore(void);
 extern void PowerMSP432_updateFreqs(PowerMSP432_Freqs *freqs);
 
 /* internal functions */
-static int_fast16_t notify(uint_fast16_t eventType, uintptr_t eventArg);
-static bool initPerfControl(unsigned int initLevel);
+static void disableFaultCounter(unsigned int type);
+static bool disableLFXT(void);
 static bool disableHFXT(void);
+static unsigned int getTimeoutXTAL(unsigned int cpuSpeed, unsigned int type);
+static bool initPerfControl(unsigned int initLevel);
+static bool isEnabledHFXT(void);
+static bool isEnabledLFXT(void);
+static int_fast16_t notify(uint_fast16_t eventType, uintptr_t eventArg);
 static void restartHFXT(void);
 
 /* ModuleState */
@@ -152,14 +176,9 @@ PowerMSP432_ModuleState PowerMSP432_module = {
  *    The levels for all device variants are defined below, via
  *    PowerMSP432_PerfLevel structures.
  *
- * 2) DCO is the only supported clock source (all clocks are derived from this;
- *    LF and HF XTALs are not used)
+ * 2) DCDC is assumed to be available
  *
- * 3) ACLK is fixed at 32768 Hz
- *
- * 4) DCDC is assumed to be available
- *
- * 5) Hardware interrupts are disabled during the change of performance level
+ * 3) Hardware interrupts are disabled during the change of performance level
  *
  */
 
@@ -170,58 +189,78 @@ PowerMSP432_ModuleState PowerMSP432_module = {
 PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_12,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_4,
       .DIVS = CS_CLOCK_DIVIDER_4,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 0,
       .enableFlashBuffer = false,
       .MCLK = 12000000,
       .HSMCLK = 3000000,
       .SMCLK = 3000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_24,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_4,
       .DIVS = CS_CLOCK_DIVIDER_4,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
       .MCLK = 24000000,
       .HSMCLK = 6000000,
       .SMCLK = 6000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_48,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_2,
       .DIVS = CS_CLOCK_DIVIDER_4,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
       .MCLK = 48000000,
       .HSMCLK = 24000000,
       .SMCLK = 12000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_48,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_1,
       .DIVS = CS_CLOCK_DIVIDER_2,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
       .MCLK = 48000000,
       .HSMCLK = 48000000,
       .SMCLK = 24000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
 };
@@ -233,44 +272,59 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
 PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_6,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_2,
       .DIVS = CS_CLOCK_DIVIDER_2,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 0,
       .enableFlashBuffer = false,
       .MCLK = 6000000,
       .HSMCLK = 3000000,
       .SMCLK = 3000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_12,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_1,
       .DIVS = CS_CLOCK_DIVIDER_2,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = true,
       .MCLK = 12000000,
       .HSMCLK = 12000000,
       .SMCLK = 6000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_24,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_1,
       .DIVS = CS_CLOCK_DIVIDER_2,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 2,
       .enableFlashBuffer = true,
       .MCLK = 24000000,
       .HSMCLK = 24000000,
       .SMCLK = 12000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
 };
@@ -282,58 +336,78 @@ PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
 PowerMSP432_PerfLevel PowerMSP432_perfLevels[NUMPERFLEVELS] = {
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_12,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_4,
       .DIVS = CS_CLOCK_DIVIDER_4,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 1,
       .enableFlashBuffer = false,
       .MCLK = 12000000,
       .HSMCLK = 3000000,
       .SMCLK = 3000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE0,
       .VCORE = 0,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_24,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_4,
       .DIVS = CS_CLOCK_DIVIDER_4,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 2,
       .enableFlashBuffer = true,
       .MCLK = 24000000,
       .HSMCLK = 6000000,
       .SMCLK = 6000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_48,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_2,
       .DIVS = CS_CLOCK_DIVIDER_4,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 3,
       .enableFlashBuffer = true,
       .MCLK = 48000000,
       .HSMCLK = 24000000,
       .SMCLK = 12000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
     { .activeState = AM_DCDC_VCORE1,
       .VCORE = 1,
-      .clockSource = CS_DCOCLK_SELECT,
       .DCORESEL = CS_DCO_FREQUENCY_48,
+      .SELM = CS_DCOCLK_SELECT,
       .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
       .DIVHS = CS_CLOCK_DIVIDER_1,
       .DIVS = CS_CLOCK_DIVIDER_2,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
       .flashWaitStates = 3,
       .enableFlashBuffer = true,
       .MCLK = 48000000,
       .HSMCLK = 48000000,
       .SMCLK = 24000000,
+      .BCLK = 32768,
       .ACLK = 32768
      },
 };
@@ -448,6 +522,8 @@ void Power_idleFunc()
  */
 int_fast16_t Power_init()
 {
+    HwiP_Params hwiParams;
+
     /* initialize the power manager state */
     if (!PowerMSP432_module.initialized) {
 
@@ -473,10 +549,21 @@ int_fast16_t Power_init()
         /* copy the Power policy function to module state */
         PowerMSP432_module.policyFxn = PowerMSP432_config.policyFxn;
 
-        /* if performance control is enabled, go to the initial level */
+        /* if performance level control is enabled, initialize it */
         if (PowerMSP432_config.enablePerf) {
+
+            /* now initialize performance control */
             PowerMSP432_module.perfInitialized =
                 initPerfControl(PowerMSP432_config.initialPerfLevel);
+
+            /* if CS interrupts are to be caught, configure interrupt and ISR */
+            if ((PowerMSP432_config.useExtendedPerf) &&
+                (PowerMSP432_config.enableInterruptsCS)) {
+                HwiP_Params_init(&hwiParams);
+                hwiParams.priority = PowerMSP432_config.priorityInterruptsCS;
+                HwiP_create(INT_CS, (HwiP_Fxn)PowerMSP432_config.isrCS,
+                    &hwiParams);
+            }
         }
 
         /* if there is a configured policy init function, call it now ... */
@@ -631,6 +718,12 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
     bool changedWaits = false;
     PowerMSP432_Freqs freqs;
     unsigned int constraints;
+    unsigned int timeout;
+    unsigned int xtDrive;
+    bool needHFXT = false;
+    bool needLFXT = false;
+    bool enabledHFXT;
+    bool enabledLFXT;
     unsigned int hwiKey;
 
     /* return immediately if performance control not enabled and initialized */
@@ -725,6 +818,9 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
             /* if new voltage is higher, change active state now */
             if (perfNew.VCORE > perfNow.VCORE) {
                 changedStateOK = MAP_PCM_setPowerState(perfNew.activeState);
+                if (!changedStateOK) {
+                    status = Power_EFAIL;
+                }
                 changedState = true;
             }
 
@@ -738,58 +834,146 @@ int_fast16_t Power_setPerformanceLevel(uint_fast16_t level)
                     changedWaits = true;
                 }
 
-                /* now change clocks and dividers */
-                MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
-                MAP_CS_initClockSignal(CS_MCLK, perfNew.clockSource,
-                    perfNew.DIVM);
-                MAP_CS_initClockSignal(CS_HSMCLK, perfNew.clockSource,
-                    perfNew.DIVHS);
-                MAP_CS_initClockSignal(CS_SMCLK, perfNew.clockSource,
-                    perfNew.DIVS);
+                /* configure crystals (if extended perf control is enabled) */
+                if (PowerMSP432_config.useExtendedPerf) {
 
-                /* if new flash waits not changed and different, set them now */
-                if ((changedWaits == false) &&
-                    (perfNew.flashWaitStates != perfNow.flashWaitStates)) {
-                    SET_WAIT_STATES(BANK0, perfNew.flashWaitStates);
-                    SET_WAIT_STATES(BANK1, perfNew.flashWaitStates);
+                    /* check if any clocks are to be sourced from HFXT */
+                    if ((perfNew.SELM == CS_HFXTCLK_SELECT) ||
+                        (perfNew.SELS == CS_HFXTCLK_SELECT) ||
+                        (perfNew.SELB == CS_HFXTCLK_SELECT) ||
+                        (perfNew.SELA == CS_HFXTCLK_SELECT)) {
+                        needHFXT = true;
+                    }
+
+                    /* check if any clocks are to be sourced from LFXT ... */
+                    if ((perfNew.SELM == CS_LFXTCLK_SELECT) ||
+                        (perfNew.SELS == CS_LFXTCLK_SELECT) ||
+                        (perfNew.SELB == CS_LFXTCLK_SELECT) ||
+                        (perfNew.SELA == CS_LFXTCLK_SELECT)) {
+                        needLFXT = true;
+                    }
+
+                    enabledHFXT = isEnabledHFXT();
+                    enabledLFXT = isEnabledLFXT();
+
+                    /* if need HFXT and not currently enabled, enable it */
+                    if (needHFXT && !enabledHFXT) {
+                        timeout = getTimeoutXTAL(perfNow.MCLK, HFXT);
+                        disableFaultCounter(HFXT);
+                        if (!MAP_CS_startHFXTWithTimeout(
+                            PowerMSP432_config.bypassHFXT, timeout)) {
+                            status = Power_EFAIL;
+                        }
+                        else {
+                            if (PowerMSP432_config.enableInterruptsCS) {
+                                MAP_CS_enableInterrupt(CS_HFXT_FAULT);
+                            }
+                        }
+                    }
+
+                    /* if need LFXT and not currently enabled, enable it */
+                    if (needLFXT && !enabledLFXT && (status == Power_SOK)) {
+                        xtDrive = PowerMSP432_config.bypassLFXT ?
+                            CS_LFXT_BYPASS : PowerMSP432_config.LFXTDRIVE;
+                        timeout = getTimeoutXTAL(perfNow.MCLK, LFXT);
+                        disableFaultCounter(LFXT);
+                        if (!MAP_CS_startLFXTWithTimeout(xtDrive, timeout)){
+                            status = Power_EFAIL;
+                        }
+                        else {
+                            if (PowerMSP432_config.enableInterruptsCS) {
+                                MAP_CS_enableInterrupt(CS_LFXT_FAULT);
+                            }
+                        }
+                    }
                 }
 
-                /* setup flash buffering */
-                if(perfNew.enableFlashBuffer) {
-                    ENABLE_READ_BUFFERING(BANK0, FLASH_D_READ);
-                    ENABLE_READ_BUFFERING(BANK0, FLASH_I_FETCH);
-                    ENABLE_READ_BUFFERING(BANK1, FLASH_D_READ);
-                    ENABLE_READ_BUFFERING(BANK1, FLASH_I_FETCH);
-                }
-                else {
-                    DISABLE_READ_BUFFERING(BANK0, FLASH_D_READ);
-                    DISABLE_READ_BUFFERING(BANK0, FLASH_I_FETCH);
-                    DISABLE_READ_BUFFERING(BANK1, FLASH_D_READ);
-                    DISABLE_READ_BUFFERING(BANK1, FLASH_I_FETCH);
-                }
+                /* now, set new clock sources and dividers */
+                if (status == Power_SOK) {
 
-                /* if new state not changed and is different, change it now */
-                if ((changedState == false) &&
-                    (perfNew.activeState != perfNow.activeState)) {
-                    changedStateOK = MAP_PCM_setPowerState(perfNew.activeState);
-                }
+                    /* now change clocks and dividers */
+                    if (perfNew.DCORESEL == CS_DCO_TUNE_FREQ) {
+                        MAP_CS_setDCOFrequency(perfNew.tuneFreqDCO);
+                    }
+                    else {
+                        MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+                    }
+                    MAP_CS_initClockSignal(CS_MCLK, perfNew.SELM, perfNew.DIVM);
+                    MAP_CS_initClockSignal(CS_HSMCLK, perfNew.SELS,
+                        perfNew.DIVHS);
+                    MAP_CS_initClockSignal(CS_SMCLK, perfNew.SELS,
+                        perfNew.DIVS);
+                    MAP_CS_initClockSignal(CS_BCLK, perfNew.SELB, 1);
+                    MAP_CS_initClockSignal(CS_ACLK, perfNew.SELA,
+                        perfNew.DIVA);
 
-                if (changedStateOK) {
+                    /* disable crystals if enabled but no longer needed */
+                    if (PowerMSP432_config.useExtendedPerf) {
+                        if (!needHFXT && enabledHFXT) {
+                            if (PowerMSP432_config.enableInterruptsCS) {
+                                MAP_CS_disableInterrupt(CS_HFXT_FAULT);
+                            }
+                            disableHFXT();
+                        }
+                        if (!needLFXT && enabledLFXT) {
+                            if (PowerMSP432_config.enableInterruptsCS) {
+                                MAP_CS_disableInterrupt(CS_LFXT_FAULT);
+                            }
+                            disableLFXT();
+                        }
+                    }
 
-                    /* success! update Power module state with new level */
-                    PowerMSP432_module.currentPerfLevel = level;
+                    /* if new waits not changed and different, set them now */
+                    if ((changedWaits == false) &&
+                        (perfNew.flashWaitStates != perfNow.flashWaitStates)) {
+                        SET_WAIT_STATES(BANK0, perfNew.flashWaitStates);
+                        SET_WAIT_STATES(BANK1, perfNew.flashWaitStates);
+                    }
 
-                    /* do callout to update frequencies */
-                    freqs.MCLK = perfNew.MCLK;
-                    freqs.HSMCLK = perfNew.HSMCLK;
-                    freqs.SMCLK = perfNew.SMCLK;
-                    freqs.ACLK = perfNew.ACLK;
-                    PowerMSP432_updateFreqs(&freqs);
+                    /* setup flash buffering */
+                    if(perfNew.enableFlashBuffer) {
+                        ENABLE_READ_BUFFERING(BANK0, FLASH_D_READ);
+                        ENABLE_READ_BUFFERING(BANK0, FLASH_I_FETCH);
+                        ENABLE_READ_BUFFERING(BANK1, FLASH_D_READ);
+                        ENABLE_READ_BUFFERING(BANK1, FLASH_I_FETCH);
+                    }
+                    else {
+                        DISABLE_READ_BUFFERING(BANK0, FLASH_D_READ);
+                        DISABLE_READ_BUFFERING(BANK0, FLASH_I_FETCH);
+                        DISABLE_READ_BUFFERING(BANK1, FLASH_D_READ);
+                        DISABLE_READ_BUFFERING(BANK1, FLASH_I_FETCH);
+                    }
 
-                    /* notify any done-change notification clients */
-                    status = notify(PowerMSP432_DONE_CHANGE_PERF_LEVEL, level);
+                    /* if new state not changed and is different, change it */
+                    if ((changedState == false) &&
+                        (perfNew.activeState != perfNow.activeState)) {
+                        changedStateOK =
+                            MAP_PCM_setPowerState(perfNew.activeState);
+                    }
 
-                    DebugP_log1("Power: set performance level (%d)", level);
+                    /* if success, update perf level state */
+                    if (changedStateOK) {
+
+                        /* success! update Power module state with new level */
+                        PowerMSP432_module.currentPerfLevel = level;
+
+                        /* do callout to update frequencies */
+                        freqs.MCLK = perfNew.MCLK;
+                        freqs.HSMCLK = perfNew.HSMCLK;
+                        freqs.SMCLK = perfNew.SMCLK;
+                        freqs.BCLK = perfNew.BCLK;
+                        freqs.ACLK = perfNew.ACLK;
+                        PowerMSP432_updateFreqs(&freqs);
+
+                        /* notify any done-change notification clients */
+                        status = notify(PowerMSP432_DONE_CHANGE_PERF_LEVEL,
+                            level);
+
+                        DebugP_log1("Power: set performance level (%d)", level);
+                    }
+                    else {
+                        status = Power_EFAIL;
+                    }
                 }
             }
         }
@@ -988,27 +1172,29 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
         /*
          *  Enable pull resistors for input pins in DEEPSLEEP_0 and DEEPSLEEP_1
          *
-         *  1. A bitmask is created with a zero in each bit position where the
-         *     pin is configured as input, with GPIO function:
-         *        mask = PxDIR | PxSEL0 | PxSEL1
+         *  1. A bitmask is created with a zero in each bit position for each
+         *     pin to be explicitly parked.  The conditions to be eligible to
+         *     be parked are: the pin is configured as input, with GPIO
+         *     function, and currently there is no pull resistor enabled for
+         *     the pin:
+         *        mask = PxDIR | PxSEL0 | PxSEL1 | PxREN
          *
          *  2. The current PxIN states are sampled:
          *        currState = PxIN
          *
-         *  3. The PxOUT bit is cleared for each input pin configured for GPIO;
-         *     this is a first step to enable the appropriate pull resistor:
+         *  3. The PxOUT bit is cleared for each eligible pin; this is a first
+         *     step to enable the appropriate pull resistor:
          *        tempOut = mask & PxOUT
          *
-         *  4. The PxOUT bit is set for each input pin that was sensed as
+         *  4. The PxOUT bit is set for each eligible pin that was sensed as
          *     logic 1, to enable a PU resistor; bits sensed as zero are left
          *     cleared, to enable a PD resistor:
          *        PxOUT = tempOut | (~mask & currState)
          *
-         *  5. The current PxREN state is saved:
+         *  5. The current pull enable bits in PxREN are saved:
          *        savePxREN = PxREN
          *
-         *  6. The pull resistors are enabled for all bits (this is a no-op
-         *     for output pins):
+         *  6. The pull resistors are enabled for all eligile pins:
          *        PxREN = PxREN | ~mask
          *
          *  Note: some register accesses are broken into multiple lines of code
@@ -1022,6 +1208,7 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
             mask = PA->DIR;
             mask |= PA->SEL0;
             mask |= PA->SEL1;
+            mask |= PA->REN;
             currState = PA->IN;
             tempOut = mask & PA->OUT;
             PA->OUT = tempOut | (~mask & currState);
@@ -1031,6 +1218,7 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
             mask = PB->DIR;
             mask |= PB->SEL0;
             mask |= PB->SEL1;
+            mask |= PB->REN;
             currState = PB->IN;
             tempOut = mask & PB->OUT;
             PB->OUT = tempOut | (~mask & currState);
@@ -1040,6 +1228,7 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
             mask = PC->DIR;
             mask |= PC->SEL0;
             mask |= PC->SEL1;
+            mask |= PC->REN;
             currState = PC->IN;
             tempOut = mask & PC->OUT;
             PC->OUT = tempOut | (~mask & currState);
@@ -1049,6 +1238,7 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
             mask = PD->DIR;
             mask |= PD->SEL0;
             mask |= PD->SEL1;
+            mask |= PD->REN;
             currState = PD->IN;
             tempOut = mask & PD->OUT;
             PD->OUT = tempOut | (~mask & currState);
@@ -1058,6 +1248,7 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
             mask = PE->DIR;
             mask |= PE->SEL0;
             mask |= PE->SEL1;
+            mask |= PE->REN;
             currState = PE->IN;
             tempOut = mask & PE->OUT;
             PE->OUT = tempOut | (~mask & currState);
@@ -1067,6 +1258,7 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
             mask = PJ->DIR;
             mask |= PJ->SEL0;
             mask |= PJ->SEL1;
+            mask |= PJ->REN;
             currState = PJ->IN;
             tempOut = mask & PJ->OUT;
             PJ->OUT = tempOut | (~mask & currState);
@@ -1132,7 +1324,7 @@ int_fast16_t Power_sleep(uint_fast16_t sleepState)
             PJ->REN = savePJREN;
         }
 
-        /* if HFXT was disable during sleep restart it ... */
+        /* if HFXT was disabled during sleep restart it ... */
         if (restoreHFXT) {
             restartHFXT();
         }
@@ -1205,6 +1397,7 @@ int_fast16_t PowerMSP432_getFreqs(uint_fast16_t level,
         freqs->MCLK = perfLevel.MCLK;
         freqs->HSMCLK = perfLevel.HSMCLK;
         freqs->SMCLK = perfLevel.SMCLK;
+        freqs->BCLK = perfLevel.BCLK;
         freqs->ACLK = perfLevel.ACLK;
     }
 
@@ -1223,6 +1416,47 @@ uint_fast16_t PowerMSP432_getNumPerfLevels(void)
 /*********************** internal functions **************************/
 
 /*
+ *  ======== disableFaultCounter ========
+ */
+static void disableFaultCounter(unsigned int type)
+{
+    /* unlock Clock System (CS) registers */
+    CSKEY = 0x695A;
+
+    if (type == HFXT) {
+        BITBAND_PERI(CS->CTL3, CS_CTL3_FCNTHF_EN_OFS) = 0;
+    }
+    else {
+        BITBAND_PERI(CS->CTL3, CS_CTL3_FCNTLF_EN_OFS) = 0;
+    }
+
+    /* re-lock CS register access */
+    CSKEY = 0;
+}
+
+/*
+ *  ======== disableLFXT ========
+ */
+static bool disableLFXT(void)
+{
+    bool disabled = false;
+
+    /* unlock Clock System (CS) registers */
+    CSKEY = 0x695A;
+
+    /* if LFXT is enabled, disable it */
+    if (CSCTL2 & LFXT_EN_BIT) {
+        BITBAND_PERI(CS->CTL2, CS_CTL2_LFXT_EN_OFS) = 0;
+        disabled = true;
+    }
+
+    /* re-lock CS register access */
+    CSKEY = 0;
+
+    return (disabled);
+}
+
+/*
  *  ======== disableHFXT ========
  */
 static bool disableHFXT(void)
@@ -1233,7 +1467,7 @@ static bool disableHFXT(void)
     CSKEY = 0x695A;
 
     /* if HFXT is enabled, disable it */
-    if (CSCTL2 & HFXT_EN) {
+    if (CSCTL2 & HFXT_EN_BIT) {
         BITBAND_PERI(CS->CTL2, CS_CTL2_HFXT_EN_OFS) = 0;
         disabled = true;
     }
@@ -1245,6 +1479,73 @@ static bool disableHFXT(void)
 }
 
 /*
+ *  ======== getTimeoutXTAL ========
+ */
+static unsigned int getTimeoutXTAL(unsigned int cpuSpeed, unsigned int type)
+{
+    unsigned int timeoutHFXT;
+    unsigned int timeoutLFXT;
+
+    if (cpuSpeed > 24000000) {
+        timeoutHFXT = MCLK48_HF_TIMEOUT;
+        timeoutLFXT = MCLK48_LF_TIMEOUT;
+    }
+    else if (cpuSpeed > 12000000) {
+        timeoutHFXT = MCLK24_HF_TIMEOUT;
+        timeoutLFXT = MCLK24_LF_TIMEOUT;
+    }
+    else if (cpuSpeed > 6000000) {
+        timeoutHFXT = MCLK12_HF_TIMEOUT;
+        timeoutLFXT = MCLK12_LF_TIMEOUT;
+    }
+    else if (cpuSpeed > 3000000) {
+        timeoutHFXT = MCLK6_HF_TIMEOUT;
+        timeoutLFXT = MCLK6_LF_TIMEOUT;
+    }
+    else if (cpuSpeed > 1000000) {
+        timeoutHFXT = MCLK3_HF_TIMEOUT;
+        timeoutLFXT = MCLK3_LF_TIMEOUT;
+    }
+    else {
+        timeoutHFXT = MCLK1_HF_TIMEOUT;
+        timeoutLFXT = MCLK1_LF_TIMEOUT;
+    }
+
+    if (type == HFXT) {
+        return (timeoutHFXT);
+    }
+    else {
+        return (timeoutLFXT);
+    }
+}
+
+/*
+ *  ======== isEnabledHFXT ========
+ */
+static bool isEnabledHFXT(void)
+{
+    if (CSCTL2 & HFXT_EN_BIT) {
+        return (true);
+    }
+    else {
+        return (false);
+    }
+}
+
+/*
+ *  ======== isEnabledLFXT ========
+ */
+static bool isEnabledLFXT(void)
+{
+    if (CSCTL2 & LFXT_EN_BIT) {
+        return (true);
+    }
+    else {
+        return (false);
+    }
+}
+
+/*
  *  ======== initPerfControl ========
  *  Initialize performance control (to be called during Power_init()).
  */
@@ -1252,10 +1553,11 @@ static bool initPerfControl(unsigned int initLevel)
 {
     PowerMSP432_PerfLevel perfNew;
     PowerMSP432_Freqs freqs;
+    unsigned int xtDrive;
     bool status = false;
     bool changedStateOK;
 
-    /* first validate the initial performance level */
+    /* first validate the specified initial performance level */
     if (initLevel < (NUMPERFLEVELS + PowerMSP432_config.numCustom)) {
 
         /*
@@ -1269,6 +1571,9 @@ static bool initPerfControl(unsigned int initLevel)
         MAP_CS_initClockSignal(CS_HSMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
         MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_2);
 
+        /* select 32768Hz for REFO */
+        MAP_CS_setReferenceOscillatorFrequency(CS_REFO_32KHZ);
+
         /* get perf level struct from either predefined or custom array */
         if (initLevel < NUMPERFLEVELS) {
             perfNew = PowerMSP432_perfLevels[initLevel];
@@ -1276,6 +1581,59 @@ static bool initPerfControl(unsigned int initLevel)
         else {
             perfNew = PowerMSP432_config.customPerfLevels[initLevel -
                 NUMPERFLEVELS];
+        }
+
+        /* start crystals if they are needed for the initial perf level  */
+        if (PowerMSP432_config.useExtendedPerf) {
+
+            /* configure pin for HFXT function? */
+            if (PowerMSP432_config.configurePinHFXT) {
+                PJ->SEL0 |= BIT3;
+                PJ->SEL1 &= ~BIT3;
+            }
+
+            /* configure pins for LFXT function? */
+            if (PowerMSP432_config.configurePinLFXT) {
+                PJ->SEL0 |= BIT0;
+                PJ->SEL1 &= ~BIT0;
+            }
+
+            /* inform driverlib of external LF and HF clock frequencies */
+            MAP_CS_setExternalClockSourceFrequency(32768,
+                PowerMSP432_config.HFXTFREQ);
+
+            /* if any clocks are to be sourced from HFXT... start HFXT now */
+            if ((perfNew.SELM == CS_HFXTCLK_SELECT) ||
+                (perfNew.SELS == CS_HFXTCLK_SELECT) ||
+                (perfNew.SELB == CS_HFXTCLK_SELECT) ||
+                (perfNew.SELA == CS_HFXTCLK_SELECT)) {
+
+                disableFaultCounter(HFXT);
+                if (!MAP_CS_startHFXTWithTimeout(PowerMSP432_config.bypassHFXT,
+                    MCLK6_HF_TIMEOUT)) {
+                    return(false); /* report fail if HF crystal did not start */
+                }
+                if (PowerMSP432_config.enableInterruptsCS) {
+                    MAP_CS_enableInterrupt(CS_HFXT_FAULT);
+                }
+            }
+
+            /* start LFXT now if any clocks are to be sourced from LFXT ... */
+            if ((perfNew.SELM == CS_LFXTCLK_SELECT) ||
+                (perfNew.SELS == CS_LFXTCLK_SELECT) ||
+                (perfNew.SELB == CS_LFXTCLK_SELECT) ||
+                (perfNew.SELA == CS_LFXTCLK_SELECT)) {
+
+                xtDrive = PowerMSP432_config.bypassLFXT ?
+                    CS_LFXT_BYPASS : PowerMSP432_config.LFXTDRIVE;
+                disableFaultCounter(LFXT);
+                if (!MAP_CS_startLFXTWithTimeout(xtDrive, MCLK6_LF_TIMEOUT)){
+                    return(false); /* report fail if LF crystal did not start */
+                }
+                if (PowerMSP432_config.enableInterruptsCS) {
+                    MAP_CS_enableInterrupt(CS_LFXT_FAULT);
+                }
+            }
         }
 
         /* now go the the power state for the initial performance level */
@@ -1302,16 +1660,23 @@ static bool initPerfControl(unsigned int initLevel)
             }
 
             /* now setup clocks */
-            MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
-            MAP_CS_initClockSignal(CS_MCLK, perfNew.clockSource, perfNew.DIVM);
-            MAP_CS_initClockSignal(CS_HSMCLK, perfNew.clockSource,
-                perfNew.DIVHS);
-            MAP_CS_initClockSignal(CS_SMCLK, perfNew.clockSource, perfNew.DIVS);
+            if (perfNew.DCORESEL == CS_DCO_TUNE_FREQ) {
+                MAP_CS_setDCOFrequency(perfNew.tuneFreqDCO);
+            }
+            else {
+                MAP_CS_setDCOCenteredFrequency(perfNew.DCORESEL);
+            }
+            MAP_CS_initClockSignal(CS_MCLK, perfNew.SELM, perfNew.DIVM);
+            MAP_CS_initClockSignal(CS_HSMCLK, perfNew.SELS, perfNew.DIVHS);
+            MAP_CS_initClockSignal(CS_SMCLK, perfNew.SELS, perfNew.DIVS);
+            MAP_CS_initClockSignal(CS_BCLK, perfNew.SELB, 1);
+            MAP_CS_initClockSignal(CS_ACLK, perfNew.SELA, perfNew.DIVA);
 
             /* do callout to update frequencies */
             freqs.MCLK = perfNew.MCLK;
             freqs.HSMCLK = perfNew.HSMCLK;
             freqs.SMCLK = perfNew.SMCLK;
+            freqs.BCLK = perfNew.BCLK;
             freqs.ACLK = perfNew.ACLK;
             PowerMSP432_updateFreqs(&freqs);
 
@@ -1383,8 +1748,11 @@ static void restartHFXT(void)
     /* read and save the SYS_NMI_CTLSTAT:CS_SRC value */
     enableNMI = GET_NMI_SOURCESTATUS & CSSRC;
 
-    /* temporarily disable CS interrupts from triggering an NMI */
+    /* temporarily disable CS from triggering interrupt or NMI */
     DISABLE_NMI_SOURCE(CSSRC);
+    if (PowerMSP432_config.enableInterruptsCS) {
+       MAP_CS_disableInterrupt(CS_HFXT_FAULT);
+    }
 
     /* enable HFXT, wait for stabilization */
     BITBAND_PERI(CS->CTL2, CS_CTL2_HFXT_EN_OFS) = 1;
@@ -1396,8 +1764,11 @@ static void restartHFXT(void)
     /* re-lock CS register access */
     CSKEY = 0;
 
-    /* restore SYS_NMI_CTLSTAT enable bit */
+    /* restore CS interrupt and SYS_NMI_CTLSTAT enable bits */
     ENABLE_NMI_SOURCE(enableNMI);
+    if (PowerMSP432_config.enableInterruptsCS) {
+       MAP_CS_enableInterrupt(CS_HFXT_FAULT);
+    }
 
     return;
 }

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_runtime_Transport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_Transport___VERS 200
@@ -64,11 +66,11 @@
 /* FxnSet */
 struct ti_uia_runtime_Transport_FxnSet {
     xdc_Void (*initFxn)(void);
-    xdc_Ptr (*startFxn)(ti_uia_runtime_UIAPacket_HdrType __arg1);
-    xdc_SizeT (*recvFxn)(xdc_Ptr __arg1, ti_uia_runtime_UIAPacket_Hdr** __arg2, xdc_SizeT __arg3);
-    xdc_Bool (*sendFxn)(xdc_Ptr __arg1, ti_uia_runtime_UIAPacket_Hdr** __arg2);
-    xdc_Void (*stopFxn)(xdc_Ptr __arg1);
-    xdc_Void (*exitFxn)(xdc_Void);
+    xdc_Ptr (*startFxn)(ti_uia_runtime_UIAPacket_HdrType arg1);
+    xdc_SizeT (*recvFxn)(xdc_Ptr arg1, ti_uia_runtime_UIAPacket_Hdr** arg2, xdc_SizeT arg3);
+    xdc_Bool (*sendFxn)(xdc_Ptr arg1, ti_uia_runtime_UIAPacket_Hdr** arg2);
+    xdc_Void (*stopFxn)(xdc_Ptr arg1);
+    xdc_Void (*exitFxn)(xdc_Void );
 };
 
 
@@ -244,7 +246,7 @@ __extern __FAR__ const CT__ti_uia_runtime_Transport_Object__table ti_uia_runtime
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_runtime_Transport_Module__startupDone__S, "ti_uia_runtime_Transport_Module__startupDone__S")
-__extern xdc_Bool ti_uia_runtime_Transport_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_runtime_Transport_Module__startupDone__S( void);
 
 
 /*
@@ -269,23 +271,23 @@ static inline CT__ti_uia_runtime_Transport_Module__id ti_uia_runtime_Transport_M
 
 /* Module_hasMask */
 static inline xdc_Bool ti_uia_runtime_Transport_Module_hasMask(void);
-static inline xdc_Bool ti_uia_runtime_Transport_Module_hasMask(void) 
+static inline xdc_Bool ti_uia_runtime_Transport_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_uia_runtime_Transport_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_uia_runtime_Transport_Module__diagsMask__C != (CT__ti_uia_runtime_Transport_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_uia_runtime_Transport_Module_getMask(void);
-static inline xdc_Bits16 ti_uia_runtime_Transport_Module_getMask( void ) 
+static inline xdc_Bits16 ti_uia_runtime_Transport_Module_getMask(void)
 {
-    return ti_uia_runtime_Transport_Module__diagsMask__C != NULL ? *ti_uia_runtime_Transport_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_uia_runtime_Transport_Module__diagsMask__C != (CT__ti_uia_runtime_Transport_Module__diagsMask)NULL) ? *ti_uia_runtime_Transport_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_uia_runtime_Transport_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_uia_runtime_Transport_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_uia_runtime_Transport_Module__diagsMask__C != NULL) {
+    if (ti_uia_runtime_Transport_Module__diagsMask__C != (CT__ti_uia_runtime_Transport_Module__diagsMask)NULL) {
         *ti_uia_runtime_Transport_Module__diagsMask__C = mask;
     }
 }

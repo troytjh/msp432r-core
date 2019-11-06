@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define gnu_targets_arm_rtsv7M_Settings__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define gnu_targets_arm_rtsv7M_Settings___VERS 200
@@ -233,7 +235,7 @@ __extern __FAR__ const CT__gnu_targets_arm_rtsv7M_Settings_Object__table gnu_tar
 
 /* Module__startupDone__S */
 xdc__CODESECT(gnu_targets_arm_rtsv7M_Settings_Module__startupDone__S, "gnu_targets_arm_rtsv7M_Settings_Module__startupDone__S")
-__extern xdc_Bool gnu_targets_arm_rtsv7M_Settings_Module__startupDone__S( void );
+__extern xdc_Bool gnu_targets_arm_rtsv7M_Settings_Module__startupDone__S( void);
 
 
 /*
@@ -258,23 +260,23 @@ static inline CT__gnu_targets_arm_rtsv7M_Settings_Module__id gnu_targets_arm_rts
 
 /* Module_hasMask */
 static inline xdc_Bool gnu_targets_arm_rtsv7M_Settings_Module_hasMask(void);
-static inline xdc_Bool gnu_targets_arm_rtsv7M_Settings_Module_hasMask(void) 
+static inline xdc_Bool gnu_targets_arm_rtsv7M_Settings_Module_hasMask(void)
 {
-    return (xdc_Bool)(gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C != (CT__gnu_targets_arm_rtsv7M_Settings_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 gnu_targets_arm_rtsv7M_Settings_Module_getMask(void);
-static inline xdc_Bits16 gnu_targets_arm_rtsv7M_Settings_Module_getMask( void ) 
+static inline xdc_Bits16 gnu_targets_arm_rtsv7M_Settings_Module_getMask(void)
 {
-    return gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C != NULL ? *gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C : (xdc_Bits16)0;
+    return (gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C != (CT__gnu_targets_arm_rtsv7M_Settings_Module__diagsMask)NULL) ? *gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void gnu_targets_arm_rtsv7M_Settings_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void gnu_targets_arm_rtsv7M_Settings_Module_setMask(xdc_Bits16 mask)
 {
-    if (gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C != NULL) {
+    if (gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C != (CT__gnu_targets_arm_rtsv7M_Settings_Module__diagsMask)NULL) {
         *gnu_targets_arm_rtsv7M_Settings_Module__diagsMask__C = mask;
     }
 }

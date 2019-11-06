@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -104,6 +104,8 @@ typedef enum MSP_EXP432P4111_CaptureName {
 typedef enum MSP_EXP432P4111_GPIOName {
     MSP_EXP432P4111_GPIO_S1 = 0,
     MSP_EXP432P4111_GPIO_S2,
+    MSP_EXP432P4111_SPI_MASTER_READY,
+    MSP_EXP432P4111_SPI_SLAVE_READY,
     MSP_EXP432P4111_GPIO_LED1,
     MSP_EXP432P4111_GPIO_LED_RED,
     /*
@@ -111,8 +113,10 @@ typedef enum MSP_EXP432P4111_GPIOName {
      * PWM examples.  Uncomment the following lines if you would like to control
      * the LEDs with the GPIO driver.
      */
-    //MSP_EXP432P4111_GPIO_LED_GREEN,
-    //MSP_EXP432P4111_GPIO_LED_BLUE,
+    /* MSP_EXP432P4111_GPIO_LED_GREEN, */
+    /* MSP_EXP432P4111_GPIO_LED_BLUE, */
+
+    MSP_EXP432P4111_GPIO_TMP116_EN,
 
     /*
      * MSP_EXP432P4111_SPI_CS1 is used to control chip select pin for slave1
@@ -120,6 +124,13 @@ typedef enum MSP_EXP432P4111_GPIOName {
      */
     MSP_EXP432P4111_SPI_CS1,
     MSP_EXP432P4111_SPI_CS2,
+
+    MSP_EXP432P4111_SDSPI_CS,
+
+    /* Sharp LCD Pins */
+    MSP_EXP432P4111_LCD_CS,
+    MSP_EXP432P4111_LCD_POWER,
+    MSP_EXP432P4111_LCD_ENABLE,
 
     MSP_EXP432P4111_GPIOCOUNT
 } MSP_EXP432P4111_GPIOName;
@@ -167,15 +178,24 @@ typedef enum MSP_EXP432P4111_PWMName {
 } MSP_EXP432P4111_PWMName;
 
 /*!
- *  @def    MSP_EXP432P4111_SDSPIName
- *  @brief  Enum of SDSPI names on the MSP_EXP432P4111 dev board
+ *  @def    MSP_EXP432P4111_SDFatFSName
+ *  @brief  Enum of SDFatFS names on the MSP_EXP432P4111 dev board
  */
-typedef enum MSP_EXP432P4111_SDSPIName {
-    MSP_EXP432P4111_SDSPIB0 = 0,
+typedef enum MSP_EXP432P4111_SDFatFSName {
+    MSP_EXP432P4111_SDFatFS0 = 0,
 
-    MSP_EXP432P4111_SDSPICOUNT
-} EMSP_EXP432P4111_SDSPIName;
+    MSP_EXP432P4111_SDFatFSCOUNT
+} MSP_EXP432P4111_SDFatFSName;
 
+/*!
+ *  @def    MSP_EXP432P4111_SDName
+ *  @brief  Enum of SD names on the MSP_EXP432P4111 dev board
+ */
+typedef enum MSP_EXP432P4111_SDName {
+    MSP_EXP432P4111_SDSPI0 = 0,
+
+    MSP_EXP432P4111_SDCOUNT
+} MSP_EXP432P4111_SDName;
 /*!
  *  @def    MSP_EXP432P4111_SPIName
  *  @brief  Enum of SPI names on the MSP_EXP432P4111 dev board

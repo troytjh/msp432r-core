@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2013, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,24 +32,69 @@
 
     var LoggerStreamer2 = xdc.module("ti.uia.sysbios.LoggerStreamer2");
 
-    // Size in words
-    var write8EventSize = (LoggerStreamer2.isTimestampEnabled) ? 12 : 10;
+    var bytesInPtr = Program.build.target.stdTypes.t_Ptr.size;
+
+    // Number of UArg's in UIAPacket header
+    var hdrOffsetInWords;
+
+    var eventType = "ti_uia_runtime_";
+    var snapshotEventType = "ti_uia_runtime_";
+
+    if (LoggerStreamer2.isTimestampEnabled) {
+        eventType += "EventHdr_HdrType_EventWithTimestamp";
+        snapshotEventType += "EventHdr_HdrType_EventWithSnapshotIdAndTimestamp";
+    }
+    else {
+        eventType += "EventHdr_HdrType_Event";
+        snapshotEventType += "EventHdr_HdrType_EventWithSnapshotId";
+    }
 
     var bits8InTS = (LoggerStreamer2.isTimestampEnabled) ? 8 : 0;
+    var eventHdrWords;
 
-    var hdrOffsetInWords = 4;
-    var bytesInWord = 4;
+    if (bytesInPtr == 8) {
+        hdrOffsetInWords = 2;
+        eventHdrWords = (LoggerStreamer2.isTimestampEnabled) ? 2 : 1;
+    }
+    else {
+        hdrOffsetInWords = 4;
+        eventHdrWords = (LoggerStreamer2.isTimestampEnabled) ? 4 : 2;
+    }
 
     // Bits8 in Timestamp + Bits8 in writeMemory + Bits8 in event header,
-    // converted to bits32
-    var headerSizeBits32 = (bits8InTS + 24 + 8) / 4;
+    // converted to UArgs
+    var headerSizeUArg = (bits8InTS + 8 + 6 * bytesInPtr) / bytesInPtr;
+
+    // Size in words
+    var write0EventSize = eventHdrWords;
+    var write1EventSize = write0EventSize + 1;
+    var write2EventSize = write0EventSize + 2;
+    var write4EventSize = write0EventSize + 4;
+    var write8EventSize = write0EventSize + 8;
+
+    var write0EventSizeInBytes = write0EventSize * bytesInPtr;
+    var write1EventSizeInBytes = write1EventSize * bytesInPtr;
+    var write2EventSizeInBytes = write2EventSize * bytesInPtr;
+    var write4EventSizeInBytes = write4EventSize * bytesInPtr;
+    var write8EventSizeInBytes = write8EventSize * bytesInPtr;
 
     function bits32ToMau(bits32)
     {
         return ("((" + bits32 + ") * sizeof(Bits32))");
     }
 
+
+    function uargToMau(uarg)
+    {
+        return ("((" + uarg + ") * sizeof(UArg))");
+    }
+
     function bits32ToBits8(bits32)
+    {
+        return ("((" + bits32 + ") * 4)");
+    }
+
+    function uargToBits8(uarg)
     {
         return ("((" + bits32 + ") * 4)");
     }
@@ -71,6 +116,8 @@
 #include <ti/uia/runtime/UIAPacket.h>
 #include <ti/uia/sysbios/LoggerStreamer2.h>
 
+#include <string.h>  /* For memcpy */
+
 #ifdef xdc_target__isaCompatible_64P
 #include <c6x.h>
 #endif
@@ -85,8 +132,11 @@ UInt16 ti_uia_sysbios_LoggerStreamer2_uiaPacketSequence = 0;
  *  ======== ti_uia_sysbios_LoggerStreamer2_fillInTimestamp =========
  */
 %if (LoggerStreamer2.isTimestampEnabled) {
-static inline UInt32 *ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(UInt32 *writePtr)
+static inline UInt32 *ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(
+                      UInt32 *ptr)
 {
+    UInt32 *writePtr = (UInt32 *)ptr;
+
 #ifndef xdc_target__isaCompatible_64P
     xdc_runtime_Types_Timestamp64 tstamp;
 
@@ -104,65 +154,18 @@ static inline UInt32 *ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(UInt32 *wri
 /*
  *  ======== LoggerStreamer2_fillInEventHdrSnapshot =========
  */
-static inline Bits32 *ti_uia_sysbios_LoggerStreamer2_fillInEventHdrSnapshot(Bits32 *writePtr,
-        SizeT numBits8ToWrite, Bits32 serial)
+static inline UInt32 *ti_uia_sysbios_LoggerStreamer2_fillInEventHdrSnapshot(
+        UInt32 *writePtr, SizeT numBits8ToWrite, Bits32 serial,
+        xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid)
 {
+    *(writePtr++) = ti_uia_runtime_EventHdr_genEventHdrWord1(numBits8ToWrite,
+            serial, `snapshotEventType`);
 %if (LoggerStreamer2.isTimestampEnabled == true) {
-    *(writePtr++) = ti_uia_runtime_EventHdr_genEventHdrWord1(numBits8ToWrite, serial,
-            ti_uia_runtime_EventHdr_HdrType_EventWithSnapshotIdAndTimestamp);
-    writePtr = ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
+    writePtr = (UInt32 *)ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
 %}
-%else {
-    *(writePtr++) = ti_uia_runtime_EventHdr_genEventHdrWord1(numBits8ToWrite, serial,
-            ti_uia_runtime_EventHdr_HdrType_EventWithSnapshotId);
-%}
+    *(writePtr++) = ((evt) & 0xffff0000) | mid;
+
     return (writePtr);
-}
-
-
-/*
- *  ======== ti_uia_sysbios_LoggerStreamer2_writeFinish ========
- */
-static inline Void ti_uia_sysbios_LoggerStreamer2_writeFinish(
-        ti_uia_sysbios_LoggerStreamer2_Object *obj,
-        UInt32 *writePtr)
-{
-    if (writePtr > obj->end) {
-        /* Set UIA packet length and sequence number */
-        ti_uia_runtime_UIAPacket_setEventLengthFast( (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
-                (UInt32)((writePtr - obj->buffer) * `bytesInWord`));
-        ti_uia_runtime_UIAPacket_setSequenceCountFast(
-                (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
-                ti_uia_sysbios_LoggerStreamer2_uiaPacketSequence);
-
-        /*
-         *  Check if there is garbage data after the UIA packet
-         *  and add an invalid UIA header
-         */
-        if (obj->end + `write8EventSize` - writePtr > 0) {
-            ti_uia_runtime_UIAPacket_setInvalidHdr(writePtr, (obj->end +
-                    `write8EventSize` - writePtr) * `bytesInWord`);
-        }
-
-%if (LoggerStreamer2.testForNullWrPtr) {
-        /* Set the module write ptr to NULL to prevent log calls in exchange */
-        obj->write = NULL;
-%}
-%if (LoggerStreamer2.isBadPacketDetectionEnabled) {
-        ti_uia_sysbios_LoggerStreamer2_validatePacket(obj, obj->buffer,
-                obj->bufSize);
-%}
-        /* Send filled buffer to exchange function */
-        obj->buffer = (UInt32*)obj->exchangeFxn(obj, (Ptr)obj->buffer);
-
-        /* Update ptrs to new buffer */
-        obj->write = obj->buffer + `hdrOffsetInWords`;
-        obj->end = obj->buffer + (obj->bufSize / sizeof(UInt32)) - `write8EventSize`;
-        ti_uia_sysbios_LoggerStreamer2_uiaPacketSequence++;
-    }
-    else {
-        obj->write = writePtr;
-    }
 }
 
 /*
@@ -179,7 +182,9 @@ Bool ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Diags_Mask mas
      */
     if (ti_uia_sysbios_LoggerStreamer2_Module__state__V.level1 & mask) {
         /* If the event is lower than level1, filter it out. */
-        return (xdc_runtime_Diags_compareLevels(xdc_runtime_Diags_getLevel(mask), xdc_runtime_Diags_LEVEL1));
+        return (xdc_runtime_Diags_compareLevels(
+                    xdc_runtime_Diags_getLevel(mask),
+                    xdc_runtime_Diags_LEVEL1));
     }
     /*
      * If filtering for the event's diags category is currently
@@ -187,7 +192,9 @@ Bool ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Diags_Mask mas
      */
     else if (ti_uia_sysbios_LoggerStreamer2_Module__state__V.level2 & mask) {
         /* If the event is lower than level2, filter it out. */
-        return (xdc_runtime_Diags_compareLevels(xdc_runtime_Diags_getLevel(mask), xdc_runtime_Diags_LEVEL2));
+        return (xdc_runtime_Diags_compareLevels(
+                    xdc_runtime_Diags_getLevel(mask),
+                    xdc_runtime_Diags_LEVEL2));
     }
     /*
      * If filtering for the event's diags category is currently
@@ -195,8 +202,9 @@ Bool ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Diags_Mask mas
      */
     else if (ti_uia_sysbios_LoggerStreamer2_Module__state__V.level3 & mask) {
         /* If the event is lower than level3, filter it out. */
-        return (xdc_runtime_Diags_compareLevels(xdc_runtime_Diags_getLevel(mask),
-                xdc_runtime_Diags_LEVEL3));
+        return (xdc_runtime_Diags_compareLevels(
+                    xdc_runtime_Diags_getLevel(mask),
+                    xdc_runtime_Diags_LEVEL3));
     }
     /*
      * Otherwise, the filter level must be level4, which means that events of
@@ -212,6 +220,93 @@ Bool ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Diags_Mask mas
 %}
 }
 
+/*
+ *  ======== LoggerStreamer2_writeStart ========
+ */
+static inline UArg *ti_uia_sysbios_LoggerStreamer2_writeStart(
+        ti_uia_sysbios_LoggerStreamer2_Object *obj,
+        xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid,
+        UInt16 numBytes)
+{
+    UInt32 *writePtr = (UInt32 *)obj->write;
+
+%if (LoggerStreamer2.testForNullWrPtr) {
+    if (writePtr == NULL) {
+        return (NULL);
+    }
+%}
+%if (LoggerStreamer2.supportLoggerDisable == true) {
+    if (!obj->enabled) {
+        return (NULL);
+    }
+%}
+
+%if (LoggerStreamer2.filterByLevel == true) {
+    if (ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(
+            xdc_runtime_Log_getMask(evt))) {
+        return (NULL);
+    }
+%}
+    obj->seqNumber++;
+
+    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
+            numBytes, obj->seqNumber, `eventType`);
+
+%if (LoggerStreamer2.isTimestampEnabled == true) {
+
+    writePtr = ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
+%}
+    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt),
+            mid);
+
+    return ((UArg *)writePtr);
+}
+
+/*
+ *  ======== ti_uia_sysbios_LoggerStreamer2_writeFinish ========
+ */
+static inline Void ti_uia_sysbios_LoggerStreamer2_writeFinish(
+        ti_uia_sysbios_LoggerStreamer2_Object *obj,
+        UArg *writePtr)
+{
+    if (writePtr > obj->end) {
+        /* Set UIA packet length and sequence number */
+        ti_uia_runtime_UIAPacket_setEventLengthFast(
+                (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
+                (UInt32)((writePtr - obj->buffer) * `bytesInPtr`));
+        ti_uia_runtime_UIAPacket_setSequenceCountFast(
+                (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
+                ti_uia_sysbios_LoggerStreamer2_uiaPacketSequence);
+
+        /*
+         *  Check if there is garbage data after the UIA packet
+         *  and add an invalid UIA header
+         */
+        if (obj->end + `write8EventSize` - writePtr > 0) {
+            ti_uia_runtime_UIAPacket_setInvalidHdr((UInt32 *)writePtr,
+                    (obj->end + `write8EventSize` - writePtr) * `bytesInPtr`);
+        }
+
+%if (LoggerStreamer2.testForNullWrPtr) {
+        /* Set the module write ptr to NULL to prevent log calls in exchange */
+        obj->write = NULL;
+%}
+%if (LoggerStreamer2.isBadPacketDetectionEnabled) {
+        ti_uia_sysbios_LoggerStreamer2_validatePacket(obj, obj->buffer,
+                obj->bufSize);
+%}
+        /* Send filled buffer to exchange function */
+        obj->buffer = (UArg *)obj->exchangeFxn(obj, (Ptr)obj->buffer);
+
+        /* Update ptrs to new buffer */
+        obj->write = obj->buffer + `hdrOffsetInWords`;
+        obj->end = obj->buffer + (obj->bufSize / sizeof(UArg)) - `write8EventSize`;
+        ti_uia_sysbios_LoggerStreamer2_uiaPacketSequence++;
+    }
+    else {
+        obj->write = writePtr;
+    }
+}
 
 /*
  *  ======== ti_uia_sysbios_LoggerStreamer2_write0__E =========
@@ -222,44 +317,19 @@ Void ti_uia_sysbios_LoggerStreamer2_write0__E(
                                     xdc_runtime_Types_ModuleId mid)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr;
 
-%if (LoggerStreamer2.testForNullWrPtr) {
+    writePtr = ti_uia_sysbios_LoggerStreamer2_writeStart(obj, evt, mid,
+            `write0EventSizeInBytes`);
+
+%if (LoggerStreamer2.testForNullWrPtr ||
+%        LoggerStreamer2.supportLoggerDisable ||
+%        LoggerStreamer2.filterByLevel) {
     if (writePtr == NULL) {
         ti_sysbios_hal_Hwi_restore(key);
         return;
     }
 %}
-
-%if (LoggerStreamer2.supportLoggerDisable == true) {
-    if (!obj->enabled) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-%if (LoggerStreamer2.filterByLevel == true) {
-    if (ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
-        return;
-    }
-%}
-    obj->seqNumber++;
-
-%if (LoggerStreamer2.isTimestampEnabled == true) {
-
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE0_SIZE_IN_BYTES + LoggerStreamer2.TIMESTAMP`,  /* write0 + timestamp size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_EventWithTimestamp);
-    writePtr = ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
-%}
-%else {
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE0_SIZE_IN_BYTES`,  /* write0 size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_Event);
-%}
-    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
 
     ti_uia_sysbios_LoggerStreamer2_writeFinish(obj, writePtr);
 
@@ -276,46 +346,21 @@ Void ti_uia_sysbios_LoggerStreamer2_write1__E(
                                     IArg a1)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
-%if (LoggerStreamer2.testForNullWrPtr) {
+    writePtr = ti_uia_sysbios_LoggerStreamer2_writeStart(obj, evt, mid,
+            `write1EventSizeInBytes`);
+
+%if (LoggerStreamer2.testForNullWrPtr ||
+%        LoggerStreamer2.supportLoggerDisable ||
+%        LoggerStreamer2.filterByLevel) {
     if (writePtr == NULL) {
         ti_sysbios_hal_Hwi_restore(key);
         return;
     }
 %}
 
-%if (LoggerStreamer2.supportLoggerDisable == true) {
-    if (!obj->enabled) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-%if (LoggerStreamer2.filterByLevel == true) {
-    if (ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
-        return;
-    }
-%}
-
-    obj->seqNumber++;
-
-%if (LoggerStreamer2.isTimestampEnabled == true) {
-
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE1_SIZE_IN_BYTES + LoggerStreamer2.TIMESTAMP`,  /* write1 + timestamp size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_EventWithTimestamp);
-    writePtr = ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
-%}
-%else {
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE1_SIZE_IN_BYTES`,  /* write1 size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_Event);
-%}
-    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
-    *writePtr++ = a1;
+    *writePtr++ = (UArg)a1;
 
     ti_uia_sysbios_LoggerStreamer2_writeFinish(obj, writePtr);
 
@@ -332,47 +377,21 @@ Void ti_uia_sysbios_LoggerStreamer2_write2__E(
                                     IArg a1, IArg a2)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
-%if (LoggerStreamer2.testForNullWrPtr) {
+    writePtr = ti_uia_sysbios_LoggerStreamer2_writeStart(obj, evt, mid,
+            `write2EventSizeInBytes`);
+
+%if (LoggerStreamer2.testForNullWrPtr ||
+%        LoggerStreamer2.supportLoggerDisable ||
+%        LoggerStreamer2.filterByLevel) {
     if (writePtr == NULL) {
         ti_sysbios_hal_Hwi_restore(key);
         return;
     }
 %}
-
-%if (LoggerStreamer2.supportLoggerDisable == true) {
-    if (!obj->enabled) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-%if (LoggerStreamer2.filterByLevel == true) {
-    if (ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
-        return;
-    }
-%}
-
-    obj->seqNumber++;
-
-%if (LoggerStreamer2.isTimestampEnabled == true) {
-
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE2_SIZE_IN_BYTES + LoggerStreamer2.TIMESTAMP`,  /* write2 + timestamp size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_EventWithTimestamp);
-    writePtr = ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
-%}
-%else {
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE2_SIZE_IN_BYTES`,  /* write2 size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_Event);
-%}
-    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
-    *writePtr++ = a1;
-    *writePtr++ = a2;
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
 
     ti_uia_sysbios_LoggerStreamer2_writeFinish(obj, writePtr);
 
@@ -389,49 +408,23 @@ Void ti_uia_sysbios_LoggerStreamer2_write4__E(
                                     IArg a1, IArg a2, IArg a3, IArg a4)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
-%if (LoggerStreamer2.testForNullWrPtr) {
+    writePtr = ti_uia_sysbios_LoggerStreamer2_writeStart(obj, evt, mid,
+            `write4EventSizeInBytes`);
+
+%if (LoggerStreamer2.testForNullWrPtr ||
+%        LoggerStreamer2.supportLoggerDisable ||
+%        LoggerStreamer2.filterByLevel) {
     if (writePtr == NULL) {
         ti_sysbios_hal_Hwi_restore(key);
         return;
     }
 %}
-
-%if (LoggerStreamer2.supportLoggerDisable == true) {
-    if (!obj->enabled) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-%if (LoggerStreamer2.filterByLevel == true) {
-    if (ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
-        return;
-    }
-%}
-
-    obj->seqNumber++;
-
-%if (LoggerStreamer2.isTimestampEnabled == true) {
-
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE4_SIZE_IN_BYTES + LoggerStreamer2.TIMESTAMP`,  /* write4 + timestamp size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_EventWithTimestamp);
-    writePtr = ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
-%}
-%else {
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE4_SIZE_IN_BYTES`,  /* write4 size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_Event);
-%}
-    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
-    *writePtr++ = a1;
-    *writePtr++ = a2;
-    *writePtr++ = a3;
-    *writePtr++ = a4;
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
+    *writePtr++ = (UArg)a3;
+    *writePtr++ = (UArg)a4;
 
     ti_uia_sysbios_LoggerStreamer2_writeFinish(obj, writePtr);
 
@@ -450,53 +443,27 @@ Void ti_uia_sysbios_LoggerStreamer2_write8__E(
         IArg a5, IArg a6, IArg a7, IArg a8)
 {
     UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
-%if (LoggerStreamer2.testForNullWrPtr) {
+    writePtr = ti_uia_sysbios_LoggerStreamer2_writeStart(obj, evt, mid,
+            `write8EventSizeInBytes`);
+
+%if (LoggerStreamer2.testForNullWrPtr ||
+%        LoggerStreamer2.supportLoggerDisable ||
+%        LoggerStreamer2.filterByLevel) {
     if (writePtr == NULL) {
         ti_sysbios_hal_Hwi_restore(key);
         return;
     }
 %}
-
-%if (LoggerStreamer2.supportLoggerDisable == true) {
-    if (!obj->enabled) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-%if (LoggerStreamer2.filterByLevel == true) {
-    if (ti_uia_sysbios_LoggerStreamer2_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
-        return;
-    }
-%}
-
-    obj->seqNumber++;
-
-%if (LoggerStreamer2.isTimestampEnabled == true) {
-
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE8_SIZE_IN_BYTES + LoggerStreamer2.TIMESTAMP`,  /* write8 + timestamp size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_EventWithTimestamp);
-    writePtr = ti_uia_sysbios_LoggerStreamer2_fillInTimestamp(writePtr);
-%}
-%else {
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            `LoggerStreamer2.WRITE8_SIZE_IN_BYTES`,  /* write8 size (bytes) */
-            obj->seqNumber,
-            ti_uia_runtime_EventHdr_HdrType_Event);
-%}
-    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
-    *writePtr++ = a1;
-    *writePtr++ = a2;
-    *writePtr++ = a3;
-    *writePtr++ = a4;
-    *writePtr++ = a5;
-    *writePtr++ = a6;
-    *writePtr++ = a7;
-    *writePtr++ = a8;
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
+    *writePtr++ = (UArg)a3;
+    *writePtr++ = (UArg)a4;
+    *writePtr++ = (UArg)a5;
+    *writePtr++ = (UArg)a6;
+    *writePtr++ = (UArg)a7;
+    *writePtr++ = (UArg)a8;
 
     ti_uia_sysbios_LoggerStreamer2_writeFinish(obj, writePtr);
 
@@ -632,14 +599,14 @@ Void ti_uia_sysbios_LoggerStreamer2_writeMemoryRange__E(ti_uia_sysbios_LoggerStr
                 IArg startAdrs, UInt32 lengthInMAUs)
 {
     Int i;
-    SizeT eventSizeBits32;
-    SizeT dataSizeBits32;
+    SizeT eventSizeUArg;
+    SizeT dataSizeUArg;
     Ptr pAdrs = (Ptr)startAdrs;
-    SizeT headerSizeBits32;
-    SizeT lenAdjustedBits32;
+    SizeT headerSizeUArg;
+    SizeT lenAdjustedUArg;
     Int numRecords;
     UInt key;
-    UInt32 *writePtr = obj->write;
+    UArg *writePtr = obj->write;
 
 %if (LoggerStreamer2.testForNullWrPtr) {
     if (writePtr == NULL) {
@@ -659,13 +626,13 @@ Void ti_uia_sysbios_LoggerStreamer2_writeMemoryRange__E(ti_uia_sysbios_LoggerStr
     }
 %}
 
-    /* Size of header in 32 bit words */
-    headerSizeBits32 = `headerSizeBits32`;
+    /* Size of header in UArgs */
+    headerSizeUArg = `headerSizeUArg`;
 
-    /* Round up to word boundary */
-    lenAdjustedBits32 = (lengthInMAUs + sizeof(Bits32) - 1) / sizeof(Bits32);
+    /* Round up to UArg boundary */
+    lenAdjustedUArg = (lengthInMAUs + sizeof(UArg) - 1) / sizeof(UArg);
 
-    numRecords = (lenAdjustedBits32 / (obj->maxEventSizeInBits32 - headerSizeBits32)) + 1;
+    numRecords = (lenAdjustedUArg / (obj->maxEventSizeUArg - headerSizeUArg)) + 1;
 
     for (i = 0; i < numRecords; i++) {
         /*
@@ -676,40 +643,40 @@ Void ti_uia_sysbios_LoggerStreamer2_writeMemoryRange__E(ti_uia_sysbios_LoggerStr
          */
         obj->seqNumber++;
 
-        if ((headerSizeBits32 + lenAdjustedBits32) > obj->maxEventSizeInBits32) {
-            dataSizeBits32 = obj->maxEventSizeInBits32 - headerSizeBits32;
-            lenAdjustedBits32 -= dataSizeBits32;
+        if ((headerSizeUArg + lenAdjustedUArg) > obj->maxEventSizeUArg) {
+            dataSizeUArg = obj->maxEventSizeUArg - headerSizeUArg;
+            lenAdjustedUArg -= dataSizeUArg;
         }
         else {
-            dataSizeBits32 = lenAdjustedBits32;
+            dataSizeUArg = lenAdjustedUArg;
         }
-        eventSizeBits32 = dataSizeBits32 + headerSizeBits32;
+        eventSizeUArg = dataSizeUArg + headerSizeUArg;
 
         key = ti_sysbios_hal_Hwi_disable();
-        if ((writePtr + eventSizeBits32) >= obj->end) {
+        if ((writePtr + eventSizeUArg) >= obj->end) {
             ti_uia_sysbios_LoggerStreamer2_flush(obj);
             writePtr = obj->write;
         }
-        if ((writePtr == NULL ) || ((writePtr + eventSizeBits32) >= obj->end)) {
+        if ((writePtr == NULL ) || ((writePtr + eventSizeUArg) >= obj->end)) {
 
             obj->droppedEvents++;
             ti_sysbios_hal_Hwi_restore(key);
         }
         else {
-            writePtr = ti_uia_sysbios_LoggerStreamer2_fillInEventHdrSnapshot((Bits32 *)obj->write,
-                    `bits32ToBits8("eventSizeBits32")`, obj->seqNumber);
-            *(writePtr++) = ((evt) & 0xffff0000) | mid;
+            writePtr = (UArg *)ti_uia_sysbios_LoggerStreamer2_fillInEventHdrSnapshot(
+                    (UInt32 *)obj->write, eventSizeUArg * `bytesInPtr`,
+                    obj->seqNumber, evt, mid);
             *(writePtr++) = fileName;
             *(writePtr++) = lineNum;
             *(writePtr++) = snapshotId;
-            *(writePtr++) = (Bits32)pAdrs;
-            *(writePtr++) = (((`bits32ToMau("dataSizeBits32")` & 0x0FFFF)<<16) | (lengthInMAUs & 0x0FFFF));
+            *(writePtr++) = (UArg)pAdrs;
+            *(writePtr++) = ((((dataSizeUArg * sizeof(UArg))& 0x0FFFF)<<16) | (lengthInMAUs & 0x0FFFF));
             *(writePtr++) = fmt;
 
-            memcpy(writePtr, (Bits32 *)pAdrs, `bits32ToMau("dataSizeBits32")`);
-            writePtr = (Ptr)((Bits32)writePtr + `bits32ToMau("dataSizeBits32")`);
+            memcpy(writePtr, pAdrs, dataSizeUArg * sizeof(UArg));
+            writePtr = writePtr + dataSizeUArg;
             obj->write = writePtr;
-            pAdrs = (Ptr)((Bits32)pAdrs + `bits32ToMau("dataSizeBits32")`);  // TODO: Check this.
+            pAdrs = (Ptr)((Char *)pAdrs + dataSizeUArg * sizeof(UArg));
             ti_sysbios_hal_Hwi_restore(key);
         }
     }
@@ -782,10 +749,10 @@ Char* ti_uia_sysbios_LoggerStreamer2_validatePacket(
                     eventWord1 = *pEvent;
                     if (ti_uia_runtime_EventHdr_getHdrType(eventWord1) == ti_uia_runtime_EventHdr_HdrType_EventWithTimestamp) {
                         eventLength = ti_uia_runtime_EventHdr_getLength(eventWord1);
-                        if (eventLength > (`write8EventSize` * `bytesInWord`)) {
+                        if (eventLength > (`write8EventSize` * `bytesInPtr`)) {
                             result = FALSE;
                             sprintf(ti_uia_sysbios_LoggerStreamer2_badPacketReason, "eventLength(%d) > WRITE8_SIZE_IN_BYTES(%d)", eventLength,
-                                    `write8EventSize` * `bytesInWord`);
+                                    `write8EventSize` * `bytesInPtr`);
                         } else {
                             packetLength -= eventLength;
                         }

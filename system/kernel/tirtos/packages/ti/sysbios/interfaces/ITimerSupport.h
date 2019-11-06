@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -32,10 +32,12 @@
 #define ti_sysbios_interfaces_ITimerSupport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_ITimerSupport___VERS 200
@@ -92,10 +94,10 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_ITimerSupport_Mod
 }
 
 /* enable */
-static inline xdc_Void ti_sysbios_interfaces_ITimerSupport_enable(ti_sysbios_interfaces_ITimerSupport_Module __mod, xdc_UInt timerId, xdc_runtime_Error_Block *eb);
-static inline xdc_Void ti_sysbios_interfaces_ITimerSupport_enable( ti_sysbios_interfaces_ITimerSupport_Module __mod, xdc_UInt timerId, xdc_runtime_Error_Block *eb )
+static inline xdc_Void ti_sysbios_interfaces_ITimerSupport_enable(ti_sysbios_interfaces_ITimerSupport_Module mod, xdc_UInt timerId, xdc_runtime_Error_Block *eb);
+static inline xdc_Void ti_sysbios_interfaces_ITimerSupport_enable( ti_sysbios_interfaces_ITimerSupport_Module mod, xdc_UInt timerId, xdc_runtime_Error_Block *eb )
 {
-    __mod->enable(timerId, eb);
+    mod->enable(timerId, eb);
 }
 
 
@@ -112,10 +114,10 @@ static inline xdc_Void ti_sysbios_interfaces_ITimerSupport_enable( ti_sysbios_in
 
 /* enable_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_ITimerSupport_enable_FxnT)(xdc_UInt timerId, xdc_runtime_Error_Block* eb);
-static inline ti_sysbios_interfaces_ITimerSupport_enable_FxnT ti_sysbios_interfaces_ITimerSupport_enable_fxnP(ti_sysbios_interfaces_ITimerSupport_Module __mod);
-static inline ti_sysbios_interfaces_ITimerSupport_enable_FxnT ti_sysbios_interfaces_ITimerSupport_enable_fxnP(ti_sysbios_interfaces_ITimerSupport_Module __mod)
+static inline ti_sysbios_interfaces_ITimerSupport_enable_FxnT ti_sysbios_interfaces_ITimerSupport_enable_fxnP(ti_sysbios_interfaces_ITimerSupport_Module mod);
+static inline ti_sysbios_interfaces_ITimerSupport_enable_FxnT ti_sysbios_interfaces_ITimerSupport_enable_fxnP(ti_sysbios_interfaces_ITimerSupport_Module mod)
 {
-    return (ti_sysbios_interfaces_ITimerSupport_enable_FxnT)__mod->enable;
+    return (ti_sysbios_interfaces_ITimerSupport_enable_FxnT)mod->enable;
 }
 
 

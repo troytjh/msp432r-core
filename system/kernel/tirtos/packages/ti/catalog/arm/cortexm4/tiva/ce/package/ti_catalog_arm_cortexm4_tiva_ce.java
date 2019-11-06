@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_catalog_arm_cortexm4_tiva_ce
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -325,7 +325,6 @@ public class ti_catalog_arm_cortexm4_tiva_ce
             po.addFld("oscSrc", (Proto)om.findStrict("ti.catalog.arm.cortexm4.tiva.ce.Boot.OscSrc", "ti.catalog.arm.cortexm4.tiva.ce"), om.find("ti.catalog.arm.cortexm4.tiva.ce.Boot.OSCSRC_MAIN"), "wh");
             po.addFld("vcoFreq", (Proto)om.findStrict("ti.catalog.arm.cortexm4.tiva.ce.Boot.VcoFreq", "ti.catalog.arm.cortexm4.tiva.ce"), om.find("ti.catalog.arm.cortexm4.tiva.ce.Boot.VCO_320"), "wh");
             po.addFld("pllBypass", $$T_Bool, false, "wh");
-            po.addFld("pllOutEnable", $$T_Bool, false, "wh");
             po.addFld("ioscDisable", $$T_Bool, false, "wh");
             po.addFld("moscDisable", $$T_Bool, false, "wh");
             po.addFld("configureLdo", $$T_Bool, false, "wh");
@@ -360,7 +359,6 @@ public class ti_catalog_arm_cortexm4_tiva_ce
                 po.addFld("xtal", $$T_Str, $$UNDEF, "w");
                 po.addFld("oscSrc", $$T_Str, $$UNDEF, "w");
                 po.addFld("pllBypass", $$T_Bool, $$UNDEF, "w");
-                po.addFld("pllOutEnable", $$T_Bool, $$UNDEF, "w");
                 po.addFld("ioscDisable", $$T_Bool, $$UNDEF, "w");
                 po.addFld("moscDisable", $$T_Bool, $$UNDEF, "w");
     }

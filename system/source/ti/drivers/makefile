@@ -36,12 +36,13 @@ XDCPATH=$(CORESDK_INSTALL_DIR)/source;$(CORESDK_INSTALL_DIR)/kernel/tirtos/packa
 XDCOPTIONS=
 export XDCOPTIONS
 
+j = 1
 #
 # Set XDC executable command
 # Note that XDCBUILDCFG points to the coresdk.bld file which uses
 # the arguments specified by XDCARGS
 #
-XDC = $(XDC_INSTALL_DIR)/xdc XDCBUILDCFG=$(CORESDK_INSTALL_DIR)/kernel/tirtos/packages/coresdk.bld
+XDC = $(XDC_INSTALL_DIR)/xdc -j $(j) XDCBUILDCFG=$(CORESDK_INSTALL_DIR)/kernel/tirtos/packages/coresdk.bld
 
 all:
 	@ echo building packages ...

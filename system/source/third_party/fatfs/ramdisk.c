@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,20 +35,23 @@
  *
  */
 
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <ffconf.h>
-#include <diskio.h>
 
+#include "ffconf.h"
 #include "ff.h"
+#include "diskio.h"
 
 #define SECTORSIZE 512
 
-static FATFS ramdisk_filesystems[_VOLUMES];
+static FATFS ramdisk_filesystems[FF_VOLUMES];
 
-static unsigned char *diskMem[_VOLUMES] = { NULL, NULL, NULL, NULL };
+static unsigned char *diskMem[FF_VOLUMES] = { NULL, NULL, NULL, NULL };
 
-static unsigned    numSectors[_VOLUMES] = { 0, 0, 0, 0 };
+static unsigned    numSectors[FF_VOLUMES] = { 0, 0, 0, 0 };
+
+static BYTE mkfsWorkBuffer[FF_MAX_SS];
 
 /*
  * ======== ramdisk_init ========
@@ -135,7 +138,7 @@ DRESULT ramdisk_start(BYTE drive, unsigned char *data, int numBytes, int mkfs)
     TCHAR path[3];
 
     /* ensure 'drive' is a valid index */
-    if (drive >= _VOLUMES) {
+    if (drive >= FF_VOLUMES) {
         return RES_PARERR;
     }
 
@@ -171,7 +174,8 @@ DRESULT ramdisk_start(BYTE drive, unsigned char *data, int numBytes, int mkfs)
     }
 
     if (mkfs) {
-        if (f_mkfs(path, 0, 512) != FR_OK) {
+        if (f_mkfs(path, FM_ANY, 0, mkfsWorkBuffer, sizeof(mkfsWorkBuffer)) !=
+            FR_OK) {
             return RES_ERROR;
         }
     }
@@ -189,7 +193,7 @@ DRESULT ramdisk_stop(BYTE drive)
     TCHAR path[3];
 
     /* ensure 'drive' is a valid index */
-    if (drive >= _VOLUMES) {
+    if (drive >= FF_VOLUMES) {
         return RES_PARERR;
     }
 

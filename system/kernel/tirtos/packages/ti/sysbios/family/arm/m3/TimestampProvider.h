@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_family_arm_m3_TimestampProvider__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_m3_TimestampProvider___VERS 200
@@ -275,32 +277,32 @@ __extern xdc_Int ti_sysbios_family_arm_m3_TimestampProvider_Module_startup__F( x
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_TimestampProvider_Module__startupDone__S, "ti_sysbios_family_arm_m3_TimestampProvider_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_m3_TimestampProvider_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_m3_TimestampProvider_Module__startupDone__S( void);
 
 /* get32__E */
 #define ti_sysbios_family_arm_m3_TimestampProvider_get32 ti_sysbios_family_arm_m3_TimestampProvider_get32__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TimestampProvider_get32__E, "ti_sysbios_family_arm_m3_TimestampProvider_get32")
-__extern xdc_Bits32 ti_sysbios_family_arm_m3_TimestampProvider_get32__E( void );
+__extern xdc_Bits32 ti_sysbios_family_arm_m3_TimestampProvider_get32__E( void);
 
 /* get64__E */
 #define ti_sysbios_family_arm_m3_TimestampProvider_get64 ti_sysbios_family_arm_m3_TimestampProvider_get64__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TimestampProvider_get64__E, "ti_sysbios_family_arm_m3_TimestampProvider_get64")
-__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_get64__E( xdc_runtime_Types_Timestamp64 *result );
+__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_get64__E( xdc_runtime_Types_Timestamp64 *result);
 
 /* getFreq__E */
 #define ti_sysbios_family_arm_m3_TimestampProvider_getFreq ti_sysbios_family_arm_m3_TimestampProvider_getFreq__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TimestampProvider_getFreq__E, "ti_sysbios_family_arm_m3_TimestampProvider_getFreq")
-__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_getFreq__E( xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_getFreq__E( xdc_runtime_Types_FreqHz *freq);
 
 /* startTimer__E */
 #define ti_sysbios_family_arm_m3_TimestampProvider_startTimer ti_sysbios_family_arm_m3_TimestampProvider_startTimer__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TimestampProvider_startTimer__E, "ti_sysbios_family_arm_m3_TimestampProvider_startTimer")
-__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_startTimer__E( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_startTimer__E( void);
 
 /* rolloverFunc__E */
 #define ti_sysbios_family_arm_m3_TimestampProvider_rolloverFunc ti_sysbios_family_arm_m3_TimestampProvider_rolloverFunc__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_TimestampProvider_rolloverFunc__E, "ti_sysbios_family_arm_m3_TimestampProvider_rolloverFunc")
-__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_rolloverFunc__E( xdc_UArg unused );
+__extern xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_rolloverFunc__E( xdc_UArg unused);
 
 
 /*
@@ -360,23 +362,23 @@ static inline CT__ti_sysbios_family_arm_m3_TimestampProvider_Module__id ti_sysbi
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_family_arm_m3_TimestampProvider_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_family_arm_m3_TimestampProvider_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_family_arm_m3_TimestampProvider_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C != (CT__ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_family_arm_m3_TimestampProvider_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_family_arm_m3_TimestampProvider_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_family_arm_m3_TimestampProvider_Module_getMask(void)
 {
-    return ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C != NULL ? *ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C != (CT__ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask)NULL) ? *ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_family_arm_m3_TimestampProvider_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C != (CT__ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask)NULL) {
         *ti_sysbios_family_arm_m3_TimestampProvider_Module__diagsMask__C = mask;
     }
 }

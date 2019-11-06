@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,20 +91,13 @@ static const uint8_t portInterruptIds[NUM_INTERRUPT_PORTS] = {
     INT_PORT4, INT_PORT5, INT_PORT6
 };
 
-/*
- * Extracts the GPIO interrupt type from the pinConfig.  Value to index into the
- * interruptType table.
- */
-#define getIntTypeNumber(pinConfig) \
-    ((pinConfig & GPIO_CFG_INT_MASK) >> GPIO_CFG_INT_LSB)
-
 /* uninitialized callbackInfo pinIndex */
 #define CALLBACK_INDEX_NOT_CONFIGURED 0xFF
 
 /*
  * Device specific interpretation of the GPIO_PinConfig content
  */
-typedef struct PinConfig {
+typedef struct {
     uint8_t pin;
     uint8_t port;
     uint16_t config;
@@ -115,7 +108,7 @@ typedef struct PinConfig {
  * Used by port interrupt function to located callback assigned
  * to a pin.
  */
-typedef struct PortCallbackInfo {
+typedef struct {
     /*
      * the port's 8 corresponding
      * user defined pinId indices
@@ -141,7 +134,27 @@ static uint8_t portHwiCreatedBitMask = 0;
  */
 static bool initCalled = false; /* Also used to check status for initialization */
 
-extern const GPIOMSP432_Config GPIOMSP432_config;
+__attribute__((weak))extern const GPIOMSP432_Config GPIOMSP432_config;
+
+/*
+ *  ======== getInterruptTypeIndex ========
+ */
+static inline uint32_t getInterruptTypeIndex(uint32_t pinConfig)
+{
+    uint32_t index;
+
+    index = (pinConfig & GPIO_CFG_INT_MASK) >> GPIO_CFG_INT_LSB;
+
+    /*
+     * If index is out-of-range, default to 0. This should never
+     * happen, but it's needed to keep Klocwork checker happy.
+     */
+    if (index >= sizeof(interruptType) / sizeof(interruptType[0])) {
+        index = 0;
+    }
+
+    return (index);
+};
 
 /*
  *  ======== getPinNumber ========
@@ -154,12 +167,10 @@ static inline uint32_t getPinNumber(uint32_t x)
 
 #if defined(__TI_COMPILER_VERSION__)
     tmp = __clz(__rbit(x));
-#elif defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
+#elif defined(__GNUC__)
     tmp = __builtin_ctz(x);
 #elif defined(__IAR_SYSTEMS_ICC__)
     tmp = __CLZ(__RBIT(x));
-#elif defined(rvmdk) || defined(__ARMCC_VERSION)
-    tmp = __clz(__rbit(x));
 #else
     #error "Unsupported compiler used"
 #endif
@@ -397,6 +408,15 @@ void GPIO_setCallback(uint_least8_t index, GPIO_CallbackFxn callback)
     DebugP_assert(initCalled && index < GPIOMSP432_config.numberOfCallbacks);
 
     /*
+     * Ignore bogus callback indexes.
+     * Required to prevent out-of-range callback accesses if
+     * there are configured pins without callbacks
+     */
+    if (index >= GPIOMSP432_config.numberOfCallbacks) {
+        return;
+    }
+
+    /*
      * Only ports 1-6 are interrupt capable;
      * return if (port > NUM_INTERRUPT_PORTS)
      */
@@ -475,21 +495,11 @@ int_fast16_t GPIO_setConfig(uint_least8_t index, GPIO_PinConfig pinConfig)
             }
         }
         else {
-            /* configure output */
-            MAP_GPIO_setAsOutputPin(port, pin);
-
             /*
-             * Drive strength is only available on pins 2.0 - 2.3;
-             * return error if trying to configure high drive strength on
-             * other pins.
+             * High output drive strength is only available on pins 2.0 - 2.3;
+             * Ignore this setting on anything but those pins.
              */
-            if (((port != 2) || (pin > 0x04)) &&
-                (pinConfig & GPIO_CFG_OUT_STRENGTH_MASK)) {
-                HwiP_restore(key);
-
-                return (GPIO_STATUS_ERROR);
-            }
-            else if ((port == 2) && (pin <= 0x04) &&
+            if ((port == 2) && (pin <= 0x04) &&
                 (pinConfig & GPIO_CFG_OUT_STRENGTH_MASK)) {
                 /* Map MED and HIGH to high */
                 MAP_GPIO_setDriveStrengthHigh(port, pin);
@@ -504,6 +514,9 @@ int_fast16_t GPIO_setConfig(uint_least8_t index, GPIO_PinConfig pinConfig)
             else {
                 MAP_GPIO_setOutputLowOnPin(port, pin);
             }
+
+            /* configure output */
+            MAP_GPIO_setAsOutputPin(port, pin);
         }
 
         /* Update the table entry with the latest values */
@@ -528,8 +541,14 @@ int_fast16_t GPIO_setConfig(uint_least8_t index, GPIO_PinConfig pinConfig)
             return (GPIO_STATUS_ERROR);
         }
 
+        key = HwiP_disable();
+
         /* if Hwi has not already been created, do so */
         if ((portHwiCreatedBitMask & portBitMask) == 0) {
+            /* Mark the Hwi as created */
+            portHwiCreatedBitMask |= portBitMask;
+            HwiP_restore(key);
+
             HwiP_Params_init(&hwiParams);
             hwiParams.arg = (uintptr_t)portIndex;
             hwiParams.priority = GPIOMSP432_config.intPriority;
@@ -542,15 +561,11 @@ int_fast16_t GPIO_setConfig(uint_least8_t index, GPIO_PinConfig pinConfig)
                 return (GPIO_STATUS_ERROR);
             }
 
+            key = HwiP_disable();
         }
 
-        key = HwiP_disable();
-
-        /* Mark the Hwi as created */
-        portHwiCreatedBitMask |= portBitMask;
-
         MAP_GPIO_interruptEdgeSelect(port, pin,
-            interruptType[getIntTypeNumber(pinConfig)]);
+            interruptType[getInterruptTypeIndex(pinConfig)]);
         MAP_GPIO_clearInterruptFlag(port, pin);
 
         /* Update the table entry */

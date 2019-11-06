@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -32,10 +32,12 @@
 #define ti_sysbios_interfaces_IIntrinsicsSupport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_IIntrinsicsSupport___VERS 200
@@ -91,10 +93,10 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_IIntrinsicsSuppor
 }
 
 /* maxbit */
-static inline xdc_UInt ti_sysbios_interfaces_IIntrinsicsSupport_maxbit(ti_sysbios_interfaces_IIntrinsicsSupport_Module __mod, xdc_UInt bits);
-static inline xdc_UInt ti_sysbios_interfaces_IIntrinsicsSupport_maxbit( ti_sysbios_interfaces_IIntrinsicsSupport_Module __mod, xdc_UInt bits )
+static inline xdc_UInt ti_sysbios_interfaces_IIntrinsicsSupport_maxbit(ti_sysbios_interfaces_IIntrinsicsSupport_Module mod, xdc_UInt bits);
+static inline xdc_UInt ti_sysbios_interfaces_IIntrinsicsSupport_maxbit( ti_sysbios_interfaces_IIntrinsicsSupport_Module mod, xdc_UInt bits )
 {
-    return __mod->maxbit(bits);
+    return mod->maxbit(bits);
 }
 
 
@@ -111,10 +113,10 @@ static inline xdc_UInt ti_sysbios_interfaces_IIntrinsicsSupport_maxbit( ti_sysbi
 
 /* maxbit_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_FxnT)(xdc_UInt bits);
-static inline ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_FxnT ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_fxnP(ti_sysbios_interfaces_IIntrinsicsSupport_Module __mod);
-static inline ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_FxnT ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_fxnP(ti_sysbios_interfaces_IIntrinsicsSupport_Module __mod)
+static inline ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_FxnT ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_fxnP(ti_sysbios_interfaces_IIntrinsicsSupport_Module mod);
+static inline ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_FxnT ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_fxnP(ti_sysbios_interfaces_IIntrinsicsSupport_Module mod)
 {
-    return (ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_FxnT)__mod->maxbit;
+    return (ti_sysbios_interfaces_IIntrinsicsSupport_maxbit_FxnT)mod->maxbit;
 }
 
 

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_family_arm_m3_Hwi__INTERNAL__
@@ -183,6 +183,15 @@
 /* pendSV */
 #define Hwi_pendSV ti_sysbios_family_arm_m3_Hwi_pendSV__I
 
+/* setStackLimit */
+#define Hwi_setStackLimit ti_sysbios_family_arm_m3_Hwi_setStackLimit__I
+
+/* swiDisableNull */
+#define Hwi_swiDisableNull ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I
+
+/* swiRestoreNull */
+#define Hwi_swiRestoreNull ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I
+
 /* dispatch */
 #define Hwi_dispatch ti_sysbios_family_arm_m3_Hwi_dispatch__I
 
@@ -327,7 +336,7 @@
 
 /* Object__sizingError */
 #line 1 "Error_inconsistent_object_size_in_ti.sysbios.family.arm.m3.Hwi"
-typedef char ti_sysbios_family_arm_m3_Hwi_Object__sizingError[sizeof(ti_sysbios_family_arm_m3_Hwi_Object) > sizeof(ti_sysbios_family_arm_m3_Hwi_Struct) ? -1 : 1];
+typedef char ti_sysbios_family_arm_m3_Hwi_Object__sizingError[(sizeof(ti_sysbios_family_arm_m3_Hwi_Object) > sizeof(ti_sysbios_family_arm_m3_Hwi_Struct)) ? -1 : 1];
 
 
 #endif /* ti_sysbios_family_arm_m3_Hwi__INTERNAL____ */

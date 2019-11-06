@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ volatile UInt32 ti_uia_runtime_LogSnapshot_gLastUsedSnapshotId = 0;
  * and, if injectIntoTraceFxn is not null, injects it into the trace stream
  * in order to support trace correlation with the snapshot data.
  */
-UInt32 LogSnapshot_getSnapshotId() {
+UArg LogSnapshot_getSnapshotId() {
     IArg key;
     UInt16 newSnapshotId;
 
@@ -66,7 +66,7 @@ UInt32 LogSnapshot_getSnapshotId() {
                 IUIATraceSyncProvider_ContextType_Snapshot);
     }
     Gate_leaveSystem(key);
-    return((UInt32)newSnapshotId);
+    return((UArg)newSnapshotId);
 }
 
 /*

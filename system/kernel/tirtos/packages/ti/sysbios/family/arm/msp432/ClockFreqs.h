@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_family_arm_msp432_ClockFreqs__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_msp432_ClockFreqs___VERS 200
@@ -280,17 +282,17 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_msp432_ClockFreqs_HSMCLK ti_sys
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_msp432_ClockFreqs_Module__startupDone__S, "ti_sysbios_family_arm_msp432_ClockFreqs_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_msp432_ClockFreqs_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_msp432_ClockFreqs_Module__startupDone__S( void);
 
 /* getFrequency__E */
 #define ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency__E
 xdc__CODESECT(ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency__E, "ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency")
-__extern xdc_UInt32 ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency__E( ti_sysbios_family_arm_msp432_ClockFreqs_Clock clock );
+__extern xdc_UInt32 ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency__E( ti_sysbios_family_arm_msp432_ClockFreqs_Clock clock);
 
 /* setFrequency__E */
 #define ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E
 xdc__CODESECT(ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E, "ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency")
-__extern xdc_Void ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E( ti_sysbios_family_arm_msp432_ClockFreqs_Clock clock, xdc_UInt32 frequency );
+__extern xdc_Void ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E( ti_sysbios_family_arm_msp432_ClockFreqs_Clock clock, xdc_UInt32 frequency);
 
 
 /*
@@ -315,23 +317,23 @@ static inline CT__ti_sysbios_family_arm_msp432_ClockFreqs_Module__id ti_sysbios_
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_family_arm_msp432_ClockFreqs_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_family_arm_msp432_ClockFreqs_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_family_arm_msp432_ClockFreqs_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C != (CT__ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_family_arm_msp432_ClockFreqs_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_family_arm_msp432_ClockFreqs_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_family_arm_msp432_ClockFreqs_Module_getMask(void)
 {
-    return ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C != NULL ? *ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C != (CT__ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask)NULL) ? *ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_family_arm_msp432_ClockFreqs_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_family_arm_msp432_ClockFreqs_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C != (CT__ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask)NULL) {
         *ti_sysbios_family_arm_msp432_ClockFreqs_Module__diagsMask__C = mask;
     }
 }

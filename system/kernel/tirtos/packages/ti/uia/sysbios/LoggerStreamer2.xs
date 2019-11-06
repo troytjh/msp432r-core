@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -123,7 +123,7 @@ function module$static$init(mod, params)
  */
 function instance$static$init(obj, params)
 {
-    var sizeOfInt32 = Program.build.target.stdTypes.t_Int32.size;
+    var sizeOfPtr = Program.build.target.stdTypes.t_Ptr.size;
 
     /*
      *  Validate that the buffer size (in MAU) is valid. 16 words is the
@@ -137,9 +137,9 @@ function instance$static$init(obj, params)
      */
     if (params.maxEventSize != 0) {
         if (params.bufSize < (params.maxEventSize +
-                    (16 * Program.build.target.stdTypes.t_Int32.size))) {
-            this.$logError("The bufSize parameter must be maxEventSize + " +
-                    "16 words or larger", this);
+                    (16 * Program.build.target.stdTypes.t_Ptr.size))) {
+            LoggerStreamer2.$logError("The bufSize parameter must be " +
+                    "maxEventSize + " + "16 words or larger", this);
         }
     }
 
@@ -164,7 +164,7 @@ function instance$static$init(obj, params)
     obj.primeStatus = false;
     obj.bufSize = params.bufSize;
     obj.enabled = true;
-    obj.maxEventSizeInBits32 = params.maxEventSize / sizeOfInt32;
+    obj.maxEventSizeUArg = params.maxEventSize / sizeOfPtr;
     obj.maxEventSize = params.maxEventSize;
 
     /*

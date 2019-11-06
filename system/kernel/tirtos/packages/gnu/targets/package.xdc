@@ -27,7 +27,7 @@ package gnu.targets [1, 0, 1] {
     interface ITarget;
 }
 /*
- *  @(#) gnu.targets; 1, 0, 1,1; 7-27-2017 11:46:51; /db/ztree/library/trees/xdctargets/xdctargets-o04/src/ xlibrary
+ *  @(#) gnu.targets; 1, 0, 1,0; 8-9-2019 17:14:49; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

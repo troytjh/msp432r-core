@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_hal_SecondsCallback__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_hal_SecondsCallback___VERS 200
@@ -69,7 +71,7 @@ typedef ti_sysbios_interfaces_ISeconds_Time ti_sysbios_hal_SecondsCallback_Time;
 typedef xdc_UInt32 (*ti_sysbios_hal_SecondsCallback_GetFxn)(void);
 
 /* SetFxn */
-typedef xdc_Void (*ti_sysbios_hal_SecondsCallback_SetFxn)(xdc_UInt32 __arg1);
+typedef xdc_Void (*ti_sysbios_hal_SecondsCallback_SetFxn)(xdc_UInt32 arg1);
 
 
 /*
@@ -264,6 +266,7 @@ struct ti_sysbios_hal_SecondsCallback_Fxns__ {
     xdc_UInt32 (*get)(void);
     xdc_UInt32 (*getTime)(ti_sysbios_interfaces_ISeconds_Time* ts);
     xdc_Void (*set)(xdc_UInt32 seconds);
+    xdc_UInt32 (*setTime)(ti_sysbios_interfaces_ISeconds_Time* ts);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_sysbios_hal_SecondsCallback_Module__FXNS__CR
@@ -284,22 +287,27 @@ __extern const ti_sysbios_hal_SecondsCallback_Fxns__ ti_sysbios_hal_SecondsCallb
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_Module__startupDone__S, "ti_sysbios_hal_SecondsCallback_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_hal_SecondsCallback_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_hal_SecondsCallback_Module__startupDone__S( void);
 
 /* get__E */
 #define ti_sysbios_hal_SecondsCallback_get ti_sysbios_hal_SecondsCallback_get__E
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_get__E, "ti_sysbios_hal_SecondsCallback_get")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_get__E( void );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_get__E( void);
 
 /* getTime__E */
 #define ti_sysbios_hal_SecondsCallback_getTime ti_sysbios_hal_SecondsCallback_getTime__E
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_getTime__E, "ti_sysbios_hal_SecondsCallback_getTime")
-__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_getTime__E( ti_sysbios_interfaces_ISeconds_Time *ts );
+__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_getTime__E( ti_sysbios_interfaces_ISeconds_Time *ts);
 
 /* set__E */
 #define ti_sysbios_hal_SecondsCallback_set ti_sysbios_hal_SecondsCallback_set__E
 xdc__CODESECT(ti_sysbios_hal_SecondsCallback_set__E, "ti_sysbios_hal_SecondsCallback_set")
-__extern xdc_Void ti_sysbios_hal_SecondsCallback_set__E( xdc_UInt32 seconds );
+__extern xdc_Void ti_sysbios_hal_SecondsCallback_set__E( xdc_UInt32 seconds);
+
+/* setTime__E */
+#define ti_sysbios_hal_SecondsCallback_setTime ti_sysbios_hal_SecondsCallback_setTime__E
+xdc__CODESECT(ti_sysbios_hal_SecondsCallback_setTime__E, "ti_sysbios_hal_SecondsCallback_setTime")
+__extern xdc_UInt32 ti_sysbios_hal_SecondsCallback_setTime__E( ti_sysbios_interfaces_ISeconds_Time *ts);
 
 
 /*
@@ -339,23 +347,23 @@ static inline CT__ti_sysbios_hal_SecondsCallback_Module__id ti_sysbios_hal_Secon
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_hal_SecondsCallback_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_hal_SecondsCallback_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_hal_SecondsCallback_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_hal_SecondsCallback_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_hal_SecondsCallback_Module__diagsMask__C != (CT__ti_sysbios_hal_SecondsCallback_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_hal_SecondsCallback_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_hal_SecondsCallback_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_hal_SecondsCallback_Module_getMask(void)
 {
-    return ti_sysbios_hal_SecondsCallback_Module__diagsMask__C != NULL ? *ti_sysbios_hal_SecondsCallback_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_hal_SecondsCallback_Module__diagsMask__C != (CT__ti_sysbios_hal_SecondsCallback_Module__diagsMask)NULL) ? *ti_sysbios_hal_SecondsCallback_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_hal_SecondsCallback_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_hal_SecondsCallback_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_hal_SecondsCallback_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_hal_SecondsCallback_Module__diagsMask__C != (CT__ti_sysbios_hal_SecondsCallback_Module__diagsMask)NULL) {
         *ti_sysbios_hal_SecondsCallback_Module__diagsMask__C = mask;
     }
 }
@@ -404,6 +412,7 @@ static inline xdc_Void ti_sysbios_hal_SecondsCallback_Module_setMask(xdc_Bits16 
 #define SecondsCallback_get ti_sysbios_hal_SecondsCallback_get
 #define SecondsCallback_getTime ti_sysbios_hal_SecondsCallback_getTime
 #define SecondsCallback_set ti_sysbios_hal_SecondsCallback_set
+#define SecondsCallback_setTime ti_sysbios_hal_SecondsCallback_setTime
 #define SecondsCallback_Module_name ti_sysbios_hal_SecondsCallback_Module_name
 #define SecondsCallback_Module_id ti_sysbios_hal_SecondsCallback_Module_id
 #define SecondsCallback_Module_startup ti_sysbios_hal_SecondsCallback_Module_startup

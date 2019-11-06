@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_sysbios_xdcruntime_CacheSupport__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_xdcruntime_CacheSupport___VERS 200
@@ -258,27 +260,27 @@ __extern const ti_sysbios_xdcruntime_CacheSupport_Fxns__ ti_sysbios_xdcruntime_C
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_xdcruntime_CacheSupport_Module__startupDone__S, "ti_sysbios_xdcruntime_CacheSupport_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_Module__startupDone__S( void);
 
 /* inv__E */
 #define ti_sysbios_xdcruntime_CacheSupport_inv ti_sysbios_xdcruntime_CacheSupport_inv__E
 xdc__CODESECT(ti_sysbios_xdcruntime_CacheSupport_inv__E, "ti_sysbios_xdcruntime_CacheSupport_inv")
-__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_inv__E( xdc_Ptr blockPtr, xdc_SizeT byteCnt, xdc_Bool wait, xdc_runtime_Error_Block *eb );
+__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_inv__E( xdc_Ptr blockPtr, xdc_SizeT byteCnt, xdc_Bool wait, xdc_runtime_Error_Block *eb);
 
 /* wb__E */
 #define ti_sysbios_xdcruntime_CacheSupport_wb ti_sysbios_xdcruntime_CacheSupport_wb__E
 xdc__CODESECT(ti_sysbios_xdcruntime_CacheSupport_wb__E, "ti_sysbios_xdcruntime_CacheSupport_wb")
-__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_wb__E( xdc_Ptr blockPtr, xdc_SizeT byteCnt, xdc_Bool wait, xdc_runtime_Error_Block *eb );
+__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_wb__E( xdc_Ptr blockPtr, xdc_SizeT byteCnt, xdc_Bool wait, xdc_runtime_Error_Block *eb);
 
 /* wbInv__E */
 #define ti_sysbios_xdcruntime_CacheSupport_wbInv ti_sysbios_xdcruntime_CacheSupport_wbInv__E
 xdc__CODESECT(ti_sysbios_xdcruntime_CacheSupport_wbInv__E, "ti_sysbios_xdcruntime_CacheSupport_wbInv")
-__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_wbInv__E( xdc_Ptr blockPtr, xdc_SizeT byteCnt, xdc_Bool wait, xdc_runtime_Error_Block *eb );
+__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_wbInv__E( xdc_Ptr blockPtr, xdc_SizeT byteCnt, xdc_Bool wait, xdc_runtime_Error_Block *eb);
 
 /* wait__E */
 #define ti_sysbios_xdcruntime_CacheSupport_wait ti_sysbios_xdcruntime_CacheSupport_wait__E
 xdc__CODESECT(ti_sysbios_xdcruntime_CacheSupport_wait__E, "ti_sysbios_xdcruntime_CacheSupport_wait")
-__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_wait__E( xdc_runtime_Error_Block *eb );
+__extern xdc_Bool ti_sysbios_xdcruntime_CacheSupport_wait__E( xdc_runtime_Error_Block *eb);
 
 
 /*
@@ -318,23 +320,23 @@ static inline CT__ti_sysbios_xdcruntime_CacheSupport_Module__id ti_sysbios_xdcru
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_xdcruntime_CacheSupport_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_xdcruntime_CacheSupport_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_xdcruntime_CacheSupport_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C != (CT__ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_xdcruntime_CacheSupport_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_xdcruntime_CacheSupport_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_xdcruntime_CacheSupport_Module_getMask(void)
 {
-    return ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C != NULL ? *ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C != (CT__ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask)NULL) ? *ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_xdcruntime_CacheSupport_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_xdcruntime_CacheSupport_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C != (CT__ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask)NULL) {
         *ti_sysbios_xdcruntime_CacheSupport_Module__diagsMask__C = mask;
     }
 }

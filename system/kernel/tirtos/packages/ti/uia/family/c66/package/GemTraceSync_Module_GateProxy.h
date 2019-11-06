@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -35,10 +35,12 @@
 #define ti_uia_family_c66_GemTraceSync_Module_GateProxy__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_family_c66_GemTraceSync_Module_GateProxy___VERS 200
@@ -256,8 +258,8 @@ struct ti_uia_family_c66_GemTraceSync_Module_GateProxy_Fxns__ {
     const xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2* __sysp;
     xdc_Bool (*query)(xdc_Int qual);
-    xdc_IArg (*enter)(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle __inst);
-    xdc_Void (*leave)(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle __inst, xdc_IArg key);
+    xdc_IArg (*enter)(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle inst);
+    xdc_Void (*leave)(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle inst, xdc_IArg key);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_uia_family_c66_GemTraceSync_Module_GateProxy_Module__FXNS__CR
@@ -278,7 +280,7 @@ __extern const ti_uia_family_c66_GemTraceSync_Module_GateProxy_Fxns__ ti_uia_fam
 
 /* create */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_create, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_create")
-__extern ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle ti_uia_family_c66_GemTraceSync_Module_GateProxy_create( const ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle ti_uia_family_c66_GemTraceSync_Module_GateProxy_create( const ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* delete */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_delete, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_delete")
@@ -286,50 +288,50 @@ __extern void ti_uia_family_c66_GemTraceSync_Module_GateProxy_delete(ti_uia_fami
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle__label__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Module__startupDone__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Module__startupDone__S")
-__extern xdc_Bool ti_uia_family_c66_GemTraceSync_Module_GateProxy_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_family_c66_GemTraceSync_Module_GateProxy_Module__startupDone__S( void);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__get__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__get__S")
-__extern xdc_Ptr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__first__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__first__S")
-__extern xdc_Ptr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__first__S( void );
+__extern xdc_Ptr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__next__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__next__S")
-__extern xdc_Ptr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params__init__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params__init__S")
-__extern xdc_Void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* Proxy__abstract__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__abstract__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__abstract__S")
-__extern xdc_Bool ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__abstract__S( void );
+__extern xdc_Bool ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__abstract__S( void);
 
 /* Proxy__delegate__S */
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__delegate__S, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__delegate__S")
-__extern xdc_CPtr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__delegate__S( void );
+__extern xdc_CPtr ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__delegate__S( void);
 
 /* query__E */
 #define ti_uia_family_c66_GemTraceSync_Module_GateProxy_query ti_uia_family_c66_GemTraceSync_Module_GateProxy_query__E
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_query__E, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_query")
-__extern xdc_Bool ti_uia_family_c66_GemTraceSync_Module_GateProxy_query__E( xdc_Int qual );
+__extern xdc_Bool ti_uia_family_c66_GemTraceSync_Module_GateProxy_query__E( xdc_Int qual);
 
 /* enter__E */
 #define ti_uia_family_c66_GemTraceSync_Module_GateProxy_enter ti_uia_family_c66_GemTraceSync_Module_GateProxy_enter__E
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_enter__E, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_enter")
-__extern xdc_IArg ti_uia_family_c66_GemTraceSync_Module_GateProxy_enter__E( ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle __inst );
+__extern xdc_IArg ti_uia_family_c66_GemTraceSync_Module_GateProxy_enter__E( ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle instp);
 
 /* leave__E */
 #define ti_uia_family_c66_GemTraceSync_Module_GateProxy_leave ti_uia_family_c66_GemTraceSync_Module_GateProxy_leave__E
 xdc__CODESECT(ti_uia_family_c66_GemTraceSync_Module_GateProxy_leave__E, "ti_uia_family_c66_GemTraceSync_Module_GateProxy_leave")
-__extern xdc_Void ti_uia_family_c66_GemTraceSync_Module_GateProxy_leave__E( ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle __inst, xdc_IArg key );
+__extern xdc_Void ti_uia_family_c66_GemTraceSync_Module_GateProxy_leave__E( ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle instp, xdc_IArg key);
 
 
 /*
@@ -361,10 +363,10 @@ static inline ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle ti_uia_fami
 static inline ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle_downCast(xdc_runtime_IGateProvider_Handle i)
 {
     xdc_runtime_IGateProvider_Handle i2 = (xdc_runtime_IGateProvider_Handle)i;
-    if (ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__abstract__S()) {
+    if (ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__abstract__S() != 0U) {
         return (ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle)i;
     }
-    return (const void*)i2->__fxns == (const void*)ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__delegate__S() ? (ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle)i : (ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy__delegate__S()) ? (ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle)i : (ti_uia_family_c66_GemTraceSync_Module_GateProxy_Handle)NULL;
 }
 
 /* Handle_from_xdc_runtime_IGateProvider */
@@ -401,8 +403,8 @@ static inline CT__ti_uia_family_c66_GemTraceSync_Module_GateProxy_Module__id ti_
 static inline void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_init(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *prms);
 static inline void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_init( ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *prms ) 
 {
-    if (prms) {
-        ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params__init__S(prms, 0, sizeof(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params), sizeof(xdc_runtime_IInstance_Params));
+    if (prms != NULL) {
+        ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params__init__S(prms, NULL, sizeof(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
 
@@ -410,7 +412,7 @@ static inline void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_init( 
 static inline void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_copy(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *dst, const ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *src);
 static inline void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_copy(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *dst, const ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params *src) 
 {
-    if (dst) {
+    if (dst != NULL) {
         ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params__init__S(dst, (const void *)src, sizeof(ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
@@ -471,7 +473,6 @@ static inline void ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_copy(t
 #define GemTraceSync_Module_GateProxy_Object_sizeof ti_uia_family_c66_GemTraceSync_Module_GateProxy_Object_sizeof
 #define GemTraceSync_Module_GateProxy_Params_copy ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_copy
 #define GemTraceSync_Module_GateProxy_Params_init ti_uia_family_c66_GemTraceSync_Module_GateProxy_Params_init
-#define GemTraceSync_Module_GateProxy_Instance_State ti_uia_family_c66_GemTraceSync_Module_GateProxy_Instance_State
 #define GemTraceSync_Module_GateProxy_Proxy_abstract ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy_abstract
 #define GemTraceSync_Module_GateProxy_Proxy_delegate ti_uia_family_c66_GemTraceSync_Module_GateProxy_Proxy_delegate
 #define GemTraceSync_Module_GateProxy_delete ti_uia_family_c66_GemTraceSync_Module_GateProxy_delete

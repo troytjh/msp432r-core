@@ -10,12 +10,6 @@ LogSnapshot.xdc
 LogSnapshot.xs
 LogSync.xdc
 LogSync.xs
-LoggerCircBuf.xdc
-LoggerCircBuf.xs
-LoggerProbePoint.xdc
-LoggerProbePoint.xs
-LoggerStopMode.xdc
-LoggerStopMode.xs
 LoggerSM.xdc
 LoggerSM.xs
 LoggerTypes.xdc
@@ -56,7 +50,7 @@ package/ti.uia.runtime.sch
 package/.vers_g200
 package/.vers_r200
 package/.vers_b200
-package/.xdc-D20
+package/.xdc-H25
 package/ti_uia_runtime.java
 package/ti_uia_runtime.class
 package/package_ti.uia.runtime.c

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,13 +44,13 @@
  *
  *  ### MPS432 Timer Driver Configuration #
  *
- *  In order to use the Timer APIs, the application is required
- *  to define 4 configuration items in the application Board.c file:
+ *  In order to use the Timer APIs, the application is required to define
+ *  4 configuration items in the application ti_drivers_config.c file:
  *
  *  1.  An array of TimerMSP432_Object elements, which will be used by
  *  by the driver to maintain instance state.
  *  Below is an example TimerMSP432_Object array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *    #include <ti/drivers/Timer.h>
  *    #include <ti/drivers/timer/TimerMSP432.h>
@@ -61,7 +61,7 @@
  *  2.  An array of TimerMSP432_HWAttrs elements that defines which
  *
  *  Below is an example TimerMSP432_HWAttrs array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *  const TimerMSP432_HWAttrs timerMSP432HWAttrs[3] =
  *  {
@@ -91,7 +91,7 @@
  *  table, the device specific timer object instance, and the device specific
  *  Hardware Attributes to be used for each timer instance.
  *  Below is an example @ref Timer_Config array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *    const Timer_Config Timer_config[3] = {
  *      {
@@ -155,11 +155,6 @@
 #ifndef ti_drivers_timer_TimerMSP432__include
 #define ti_drivers_timer_TimerMSP432__include
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -167,6 +162,11 @@ extern "C"
 #include <ti/drivers/Timer.h>
 #include <ti/drivers/dpl/HwiP.h>
 #include <ti/drivers/dpl/SemaphoreP.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 extern const Timer_FxnTable TimerMSP432_Timer_A_fxnTable;
 extern const Timer_FxnTable TimerMSP432_Timer32_fxnTable;
@@ -205,17 +205,17 @@ extern const Timer_FxnTable TimerMSP432_Timer32_fxnTable;
  *  };
  *  @endcode
  */
-typedef struct TimerMSP432_HWAttr_ {
-    /*!< The base address of the timer peripheral. */
+typedef struct {
+    /*! The base address of the timer peripheral. */
     uint32_t timerBaseAddress;
 
-    /*!< Specifies the clock source for the timer peripheral. */
+    /*! Specifies the clock source for the timer peripheral. */
     uint32_t clockSource;
 
-    /*!< The hardware interrupt number for the timer peripheral. */
+    /*! The hardware interrupt number for the timer peripheral. */
     uint32_t intNum;
 
-    /*!< The interrupt priority. */
+    /*! The interrupt priority. */
     uint32_t intPriority;
 } TimerMSP432_HWAttrs;
 
@@ -224,7 +224,7 @@ typedef struct TimerMSP432_HWAttr_ {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct TimerMSP432_Object_ {
+typedef struct {
     HwiP_Handle         hwiHandle;
     SemaphoreP_Handle   timerSem;
     Power_NotifyObj     perfChangeNotify;

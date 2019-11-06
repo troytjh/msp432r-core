@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_hal
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -434,6 +434,7 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.Seconds.get", new Extern("ti_sysbios_hal_Seconds_get__E", "xdc_UInt32(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.hal.Seconds.getTime", new Extern("ti_sysbios_hal_Seconds_getTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.hal.Seconds.set", new Extern("ti_sysbios_hal_Seconds_set__E", "xdc_Void(*)(xdc_UInt32)", true, false));
+        om.bind("ti.sysbios.hal.Seconds.setTime", new Extern("ti_sysbios_hal_Seconds_setTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
     }
 
     void SecondsCallback$$CONSTS()
@@ -442,6 +443,7 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.SecondsCallback.get", new Extern("ti_sysbios_hal_SecondsCallback_get__E", "xdc_UInt32(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.hal.SecondsCallback.getTime", new Extern("ti_sysbios_hal_SecondsCallback_getTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.hal.SecondsCallback.set", new Extern("ti_sysbios_hal_SecondsCallback_set__E", "xdc_Void(*)(xdc_UInt32)", true, false));
+        om.bind("ti.sysbios.hal.SecondsCallback.setTime", new Extern("ti_sysbios_hal_SecondsCallback_setTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
     }
 
     void SecondsClock$$CONSTS()
@@ -450,6 +452,7 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.SecondsClock.get", new Extern("ti_sysbios_hal_SecondsClock_get__E", "xdc_UInt32(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.hal.SecondsClock.getTime", new Extern("ti_sysbios_hal_SecondsClock_getTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.hal.SecondsClock.set", new Extern("ti_sysbios_hal_SecondsClock_set__E", "xdc_Void(*)(xdc_UInt32)", true, false));
+        om.bind("ti.sysbios.hal.SecondsClock.setTime", new Extern("ti_sysbios_hal_SecondsClock_setTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.hal.SecondsClock.increment", new Extern("ti_sysbios_hal_SecondsClock_increment__I", "xdc_Void(*)(xdc_UArg)", true, false));
     }
 
@@ -523,6 +526,7 @@ public class ti_sysbios_hal
         om.bind("ti.sysbios.hal.Seconds_SecondsProxy.get", new Extern("ti_sysbios_hal_Seconds_SecondsProxy_get__E", "xdc_UInt32(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.hal.Seconds_SecondsProxy.getTime", new Extern("ti_sysbios_hal_Seconds_SecondsProxy_getTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.hal.Seconds_SecondsProxy.set", new Extern("ti_sysbios_hal_Seconds_SecondsProxy_set__E", "xdc_Void(*)(xdc_UInt32)", true, false));
+        om.bind("ti.sysbios.hal.Seconds_SecondsProxy.setTime", new Extern("ti_sysbios_hal_Seconds_SecondsProxy_setTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
     }
 
     void Timer_TimerProxy$$CONSTS()
@@ -2041,14 +2045,14 @@ public class ti_sysbios_hal
             sb.append("pkg.packageRepository = xdc.om['ti.sysbios.hal$$stat$root'];\n");
         sb.append("}\n");
         sb.append("pkg.build.libraries = [\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.hal.aem4f',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.hal.am4fg',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.hal.arm4f',\n");
+            sb.append("'lib/debug/ti.sysbios.hal.aem4f',\n");
+            sb.append("'lib/debug/ti.sysbios.hal.am4fg',\n");
+            sb.append("'lib/debug/ti.sysbios.hal.arm4f',\n");
         sb.append("];\n");
         sb.append("pkg.build.libDesc = [\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.hal.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.hal.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.hal.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.hal.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.hal.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
+            sb.append("['lib/debug/ti.sysbios.hal.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
         sb.append("];\n");
         Global.eval(sb.toString());
     }
@@ -2836,13 +2840,14 @@ public class ti_sysbios_hal
         vo.bind("get", om.findStrict("ti.sysbios.hal.Seconds.get", "ti.sysbios.hal"));
         vo.bind("getTime", om.findStrict("ti.sysbios.hal.Seconds.getTime", "ti.sysbios.hal"));
         vo.bind("set", om.findStrict("ti.sysbios.hal.Seconds.set", "ti.sysbios.hal"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_Seconds_Module__startupDone__E", "ti_sysbios_hal_Seconds_get__E", "ti_sysbios_hal_Seconds_getTime__E", "ti_sysbios_hal_Seconds_set__E"));
+        vo.bind("setTime", om.findStrict("ti.sysbios.hal.Seconds.setTime", "ti.sysbios.hal"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_Seconds_Module__startupDone__E", "ti_sysbios_hal_Seconds_get__E", "ti_sysbios_hal_Seconds_getTime__E", "ti_sysbios_hal_Seconds_set__E", "ti_sysbios_hal_Seconds_setTime__E"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", "./Seconds.xdt");
         atmap.setElem("", true);
+        atmap.setElem("", "./Seconds.xdt");
         atmap.seal("length");
         vo.bind("MODULE_STARTUP$", 0);
         vo.bind("PROXY$", 0);
@@ -2934,7 +2939,8 @@ public class ti_sysbios_hal
         vo.bind("get", om.findStrict("ti.sysbios.hal.SecondsCallback.get", "ti.sysbios.hal"));
         vo.bind("getTime", om.findStrict("ti.sysbios.hal.SecondsCallback.getTime", "ti.sysbios.hal"));
         vo.bind("set", om.findStrict("ti.sysbios.hal.SecondsCallback.set", "ti.sysbios.hal"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_SecondsCallback_Module__startupDone__E", "ti_sysbios_hal_SecondsCallback_get__E", "ti_sysbios_hal_SecondsCallback_getTime__E", "ti_sysbios_hal_SecondsCallback_set__E"));
+        vo.bind("setTime", om.findStrict("ti.sysbios.hal.SecondsCallback.setTime", "ti.sysbios.hal"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_SecondsCallback_Module__startupDone__E", "ti_sysbios_hal_SecondsCallback_get__E", "ti_sysbios_hal_SecondsCallback_getTime__E", "ti_sysbios_hal_SecondsCallback_set__E", "ti_sysbios_hal_SecondsCallback_setTime__E"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
@@ -3028,8 +3034,9 @@ public class ti_sysbios_hal
         vo.bind("get", om.findStrict("ti.sysbios.hal.SecondsClock.get", "ti.sysbios.hal"));
         vo.bind("getTime", om.findStrict("ti.sysbios.hal.SecondsClock.getTime", "ti.sysbios.hal"));
         vo.bind("set", om.findStrict("ti.sysbios.hal.SecondsClock.set", "ti.sysbios.hal"));
+        vo.bind("setTime", om.findStrict("ti.sysbios.hal.SecondsClock.setTime", "ti.sysbios.hal"));
         vo.bind("increment", om.findStrict("ti.sysbios.hal.SecondsClock.increment", "ti.sysbios.hal"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_SecondsClock_Module__startupDone__E", "ti_sysbios_hal_SecondsClock_get__E", "ti_sysbios_hal_SecondsClock_getTime__E", "ti_sysbios_hal_SecondsClock_set__E"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_SecondsClock_Module__startupDone__E", "ti_sysbios_hal_SecondsClock_get__E", "ti_sysbios_hal_SecondsClock_getTime__E", "ti_sysbios_hal_SecondsClock_set__E", "ti_sysbios_hal_SecondsClock_setTime__E"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
@@ -3562,7 +3569,8 @@ public class ti_sysbios_hal
         vo.bind("get", om.findStrict("ti.sysbios.hal.Seconds_SecondsProxy.get", "ti.sysbios.hal"));
         vo.bind("getTime", om.findStrict("ti.sysbios.hal.Seconds_SecondsProxy.getTime", "ti.sysbios.hal"));
         vo.bind("set", om.findStrict("ti.sysbios.hal.Seconds_SecondsProxy.set", "ti.sysbios.hal"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Handle__label", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Module__startupDone", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__create", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__delete", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__get", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__first", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__next", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Params__init", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Proxy__abstract", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Proxy__delegate", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__get", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__getTime", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__set"));
+        vo.bind("setTime", om.findStrict("ti.sysbios.hal.Seconds_SecondsProxy.setTime", "ti.sysbios.hal"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Handle__label", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Module__startupDone", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__create", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__delete", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__get", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__first", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Object__next", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Params__init", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Proxy__abstract", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__Proxy__delegate", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__get", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__getTime", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__set", "ti_sysbios_hal_Seconds_SecondsProxy_DELEGATE__setTime"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());

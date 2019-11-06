@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Texas Instruments Incorporated
+ * Copyright (c) 2016-2019 Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -124,10 +124,6 @@ void ADCMSP432_close(ADC_Handle handle)
         MAP_ADC14_disableInterrupt(ALL_INTERRUPTS);
         MAP_ADC14_disableModule();
 
-        if (globalMutex) {
-            SemaphoreP_delete(globalMutex);
-            globalMutex = NULL;
-        }
     }
     object->isOpen = false;
 
@@ -233,7 +229,7 @@ int_fast16_t ADCMSP432_convert(ADC_Handle handle, uint16_t *value)
 
     DebugP_log0("ADC: Convert completed");
 
-    /* Return the number of bytes transfered by the ADC */
+    /* Return the number of bytes transferred by the ADC */
     return (ADC_STATUS_SUCCESS);
 }
 
@@ -257,8 +253,15 @@ uint32_t ADCMSP432_convertToMicroVolts(ADC_Handle handle,
             break;
 
         case REF_A_VREF2_5V:
-        default:
             refMicroVolts = 2500000;
+            break;
+
+        case ADCMSP432_REF_VOLTAGE_EXT:
+        case ADCMSP432_REF_VOLTAGE_EXT_BUF:
+        case ADCMSP432_REF_VOLTAGE_VDD:
+        default:
+            refMicroVolts = hwAttrs->refExtValue;
+            break;
     }
 
     if (adcValue == 0x3FFF) {
@@ -298,6 +301,31 @@ uint32_t ADCMSP432_convertToMicroVolts(ADC_Handle handle,
  */
 void ADCMSP432_init(ADC_Handle handle)
 {
+    uintptr_t         key;
+    SemaphoreP_Handle sem;
+
+    /* Create a binary semaphore for thread safety */
+    sem = SemaphoreP_createBinary(1);
+    /* sem == NULL will be detected in 'open' */
+
+    key = HwiP_disable();
+
+    /* Create Semaphore for ADC0 */
+    if (globalMutex == NULL) {
+        /* use the binary sem created above */
+        globalMutex = sem;
+
+        HwiP_restore(key);
+    }
+    else {
+        /* Init already called */
+        HwiP_restore(key);
+
+        if (sem) {
+            /* Delete unused Semaphore */
+            SemaphoreP_delete(sem);
+        }
+    }
 }
 
 /*
@@ -306,9 +334,17 @@ void ADCMSP432_init(ADC_Handle handle)
 ADC_Handle ADCMSP432_open(ADC_Handle handle, ADC_Params *params)
 {
     uintptr_t                  key;
-    SemaphoreP_Params          semParams;
     ADCMSP432_Object          *object = handle->object;
     ADCMSP432_HWAttrsV1 const *hwAttrs = handle->hwAttrs;
+
+    if (globalMutex == NULL){
+        ADCMSP432_init(handle);
+        if (globalMutex == NULL) {
+            DebugP_log0("ADC: mutex Semaphore_create() failed:.");
+            ADCMSP432_close(handle);
+            return (NULL);
+        }
+    }
 
     /* Determine if the driver was already opened */
     key = HwiP_disable();
@@ -321,16 +357,6 @@ ADC_Handle ADCMSP432_open(ADC_Handle handle, ADC_Params *params)
     }
 
     if (adcInstance == 0) {
-        SemaphoreP_Params_init(&semParams);
-        semParams.mode = SemaphoreP_Mode_BINARY;
-        globalMutex = SemaphoreP_create(1, &semParams);
-        if (globalMutex == NULL) {
-            HwiP_restore(key);
-
-            DebugP_log0("ADC: SemaphoreP_create() failed.");
-            return (NULL);
-        }
-
         /* Initialize peripheral */
         initHw(object, hwAttrs);
     }

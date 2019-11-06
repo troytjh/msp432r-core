@@ -1,6 +1,6 @@
 /******************************************************************************
 *
-* Copyright (C) 2012 - 2017 Texas Instruments Incorporated - http://www.ti.com/
+* Copyright (C) 2012 - 2018 Texas Instruments Incorporated - http://www.ti.com/
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
@@ -32,7 +32,7 @@
 *
 * GCC linker script for Texas Instruments MSP432P4111
 *
-* File creation date: 08/03/17
+* File creation date: 01/26/18
 *
 ******************************************************************************/
 

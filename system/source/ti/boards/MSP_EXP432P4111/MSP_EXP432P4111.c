@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifndef DeviceFamily_MSP432P4x1xI
+#define DeviceFamily_MSP432P4x1xI
+#endif
+
+#include <ti/devices/DeviceFamily.h>
+
 #include <ti/drivers/Power.h>
 #include <ti/drivers/power/PowerMSP432.h>
 
@@ -74,13 +80,13 @@ ADCMSP432_Object adcMSP432Objects[MSP_EXP432P4111_ADCCOUNT];
 const ADCMSP432_HWAttrsV1 adcMSP432HWAttrs[MSP_EXP432P4111_ADCCOUNT] = {
     {
         .adcPin = ADCMSP432_P5_5_A0,
-        .refVoltage = ADCMSP432_REF_VOLTAGE_INT_2_5V,
+        .refVoltage = ADCMSP432_REF_VOLTAGE_VDD,
         .resolution = ADC_14BIT
     },
     {
         .adcPin = ADCMSP432_P5_4_A1,
-        .refVoltage = ADCMSP432_REF_VOLTAGE_INT_1_45V,
-        .resolution = ADC_8BIT
+        .refVoltage = ADCMSP432_REF_VOLTAGE_VDD,
+        .resolution = ADC_14BIT
     }
 };
 
@@ -111,13 +117,19 @@ ADCBufMSP432_Object adcbufMSP432Objects[MSP_EXP432P4111_ADCBUFCOUNT];
 ADCBufMSP432_Channels adcBuf0MSP432Channels[MSP_EXP432P4111_ADCBUF0CHANNELCOUNT] = {
     {
         .adcPin = ADCBufMSP432_P5_5_A0,
-        .refSource = ADCBufMSP432_VREFPOS_INTBUF_VREFNEG_VSS,
-        .refVoltage = 2500000
+        .refSource = ADCBufMSP432_VREFPOS_AVCC_VREFNEG_VSS,
+        .refVoltage = 3300000,
+        .adcInputMode = ADCBufMSP432_SINGLE_ENDED,
+        .adcDifferentialPin = ADCBufMSP432_PIN_NONE,
+        .adcInternalSource = ADCBufMSP432_INTERNAL_SOURCE_MODE_OFF
     },
     {
         .adcPin = ADCBufMSP432_P5_4_A1,
         .refSource = ADCBufMSP432_VREFPOS_INTBUF_VREFNEG_VSS,
-        .refVoltage = 2500000
+        .refVoltage = 2500000,
+        .adcInputMode = ADCBufMSP432_SINGLE_ENDED,
+        .adcDifferentialPin = ADCBufMSP432_PIN_NONE,
+        .adcInternalSource = ADCBufMSP432_INTERNAL_SOURCE_MODE_OFF
     }
 };
 
@@ -126,7 +138,12 @@ const ADCBufMSP432_HWAttrs adcbufMSP432HWAttrs[MSP_EXP432P4111_ADCBUFCOUNT] = {
     {
         .intPriority =  ~0,
         .channelSetting = adcBuf0MSP432Channels,
-        .adcTimerTriggerSource = ADCBufMSP432_TIMERA1_CAPTURECOMPARE2
+        .adcTimerTriggerSource = ADCBufMSP432_TIMERA1_CAPTURECOMPARE2,
+        .useDMA = 1,
+        .dmaIntNum = DMA_INT0,
+        .adcTriggerSource = ADCBufMSP432_TIMER_TRIGGER,
+        .timerDutyCycle = 50,
+        .clockSource = ADCBufMSP432_ADC_CLOCK,
     }
 };
 
@@ -200,14 +217,7 @@ const uint_least8_t Capture_count = MSP_EXP432P4111_CAPTURECOUNT;
  */
 #include <ti/drivers/dma/UDMAMSP432.h>
 
-#if defined(__TI_COMPILER_VERSION__)
-#pragma DATA_ALIGN(dmaControlTable, 256)
-#elif defined(__IAR_SYSTEMS_ICC__)
-#pragma data_alignment=256
-#elif defined(__GNUC__)
-__attribute__ ((aligned (256)))
-#endif
-static DMA_ControlTable dmaControlTable[8];
+static DMA_ControlTable dmaControlTable[16] __attribute__ ((aligned (256)));
 
 /*
  *  ======== dmaErrorHwi ========
@@ -243,11 +253,17 @@ const UDMAMSP432_Config UDMAMSP432_config = {
  */
 #include <ti/display/Display.h>
 #include <ti/display/DisplayUart.h>
+#include <ti/display/DisplaySharp.h>
 #define MAXPRINTLEN 1024
 
+/* This value can be changed to 96 for use with the 430BOOST-SHARP96 BoosterPack. */
+#define BOARD_DISPLAY_SHARP_SIZE    128
+
 DisplayUart_Object displayUartObject;
+DisplaySharp_Object    displaySharpObject;
 
 static char displayBuf[MAXPRINTLEN];
+static uint_least8_t sharpDisplayBuf[BOARD_DISPLAY_SHARP_SIZE * BOARD_DISPLAY_SHARP_SIZE / 8];
 
 const DisplayUart_HWAttrs displayUartHWAttrs = {
     .uartIdx = MSP_EXP432P4111_UARTA0,
@@ -257,8 +273,29 @@ const DisplayUart_HWAttrs displayUartHWAttrs = {
     .strBufLen = MAXPRINTLEN
 };
 
+const DisplaySharp_HWAttrsV1 displaySharpHWattrs = {
+    .spiIndex    = MSP_EXP432P4111_SPIB0,
+    .csPin       = MSP_EXP432P4111_LCD_CS,
+    .powerPin    = MSP_EXP432P4111_LCD_POWER,
+    .enablePin   = MSP_EXP432P4111_LCD_ENABLE,
+    .pixelWidth  = BOARD_DISPLAY_SHARP_SIZE,
+    .pixelHeight = BOARD_DISPLAY_SHARP_SIZE,
+    .displayBuf  = sharpDisplayBuf,
+};
+
+/*
+ * This #if/#else is needed to workaround a problem with the
+ * IAR compiler. The IAR compiler doesn't like the empty array
+ * initialization. (IAR Error[Pe1345])
+ */
+#ifndef BOARD_DISPLAY_USE_UART
+#define BOARD_DISPLAY_USE_UART 1
+#endif
 #ifndef BOARD_DISPLAY_USE_UART_ANSI
 #define BOARD_DISPLAY_USE_UART_ANSI 0
+#endif
+#ifndef BOARD_DISPLAY_USE_LCD
+#define BOARD_DISPLAY_USE_LCD 0
 #endif
 
 const Display_Config Display_config[] = {
@@ -270,7 +307,14 @@ const Display_Config Display_config[] = {
 #  endif
         .object = &displayUartObject,
         .hwAttrs = &displayUartHWAttrs
-    }
+    },
+#if (BOARD_DISPLAY_USE_LCD)
+    {
+        .fxnTablePtr = &DisplaySharp_fxnTable,
+        .object      = &displaySharpObject,
+        .hwAttrs     = &displaySharpHWattrs
+    },
+#endif
 };
 
 const uint_least8_t Display_count = sizeof(Display_config) / sizeof(Display_Config);
@@ -281,6 +325,14 @@ const uint_least8_t Display_count = sizeof(Display_config) / sizeof(Display_Conf
 void MSP_EXP432P4111_initGeneral(void)
 {
     Power_init();
+}
+
+/*
+ *  ======== Board_init ========
+ */
+void Board_init(void)
+{
+    MSP_EXP432P4111_initGeneral();
 }
 
 /*
@@ -309,6 +361,11 @@ GPIO_PinConfig gpioPinConfigs[] = {
     /* MSP_EXP432P4111_GPIO_S2 */
     GPIOMSP432_P1_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
 
+    /* MSP_EXP432P4111_SPI_MASTER_READY */
+    GPIOMSP432_P5_7 | GPIO_DO_NOT_CONFIG,
+    /* MSP_EXP432P4111_SPI_SLAVE_READY */
+    GPIOMSP432_P6_0 | GPIO_DO_NOT_CONFIG,
+
     /* Output pins */
     /* MSP_EXP432P4111_GPIO_LED1 */
     GPIOMSP432_P1_0 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_LOW | GPIO_CFG_OUT_LOW,
@@ -321,13 +378,25 @@ GPIO_PinConfig gpioPinConfigs[] = {
      * the LEDs with the GPIO driver.
      */
     /* MSP_EXP432P4111_GPIO_LED_GREEN */
-    //GPIOMSP432_P2_1 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
+    /* GPIOMSP432_P2_1 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW, */
     /* MSP_EXP432P4111_GPIO_LED_BLUE */
-    //GPIOMSP432_P2_2 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW
+    /* GPIOMSP432_P2_2 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW */
+
+    /* TMP116_EN */
+    GPIOMSP432_P4_7 | GPIO_DO_NOT_CONFIG,
+
     /* MSP_EXP432P4111_SPI_CS1 */
     GPIOMSP432_P5_4 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_LOW | GPIO_CFG_OUT_HIGH,
     /* MSP_EXP432P4111_SPI_CS2 */
     GPIOMSP432_P5_5 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_LOW | GPIO_CFG_OUT_HIGH,
+
+    /* MSP_EXP432P4111_SDSPI_CS */
+    GPIOMSP432_P4_6 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_LOW | GPIO_CFG_OUT_HIGH,
+
+    /* Sharp Display - GPIO configurations will be done in the Display files */
+    GPIOMSP432_P4_3 | GPIO_DO_NOT_CONFIG, /* SPI chip select */
+    GPIOMSP432_P4_1 | GPIO_DO_NOT_CONFIG, /* LCD power control */
+    GPIOMSP432_P6_0 | GPIO_DO_NOT_CONFIG, /*LCD enable */
 };
 
 /*
@@ -341,6 +410,10 @@ GPIO_CallbackFxn gpioCallbackFunctions[] = {
     /* MSP_EXP432P4111_GPIO_S1 */
     NULL,
     /* MSP_EXP432P4111_GPIO_S2 */
+    NULL,
+    /* MSP_EXP432P4111_SPI_MASTER_READY */
+    NULL,
+    /* MSP_EXP432P4111_SPI_SLAVE_READY */
     NULL
 };
 
@@ -430,8 +503,8 @@ const uint_least8_t I2CSlave_count = MSP_EXP432P4111_I2CSLAVECOUNT;
 #include <ti/drivers/nvs/NVSMSP432.h>
 
 #define SECTORSIZE       0x1000
-#define NVS_REGIONS_BASE 0x1FB000
-#define REGIONSIZE       (SECTORSIZE * 4)
+#define NVS_REGIONS_BASE 0x1F0000
+#define REGIONSIZE       (SECTORSIZE * 16)
 
 /*
  * Reserve flash sectors for NVS driver use
@@ -452,7 +525,7 @@ static char flashBuf[REGIONSIZE];
 /*
  * Place uninitialized array at NVS_REGIONS_BASE
  */
-__no_init static char flashBuf[REGIONSIZE] @ NVS_REGIONS_BASE;
+static __no_init char flashBuf[REGIONSIZE] @ NVS_REGIONS_BASE;
 
 #elif defined(__GNUC__)
 
@@ -493,13 +566,43 @@ const uint_least8_t NVS_count = MSP_EXP432P4111_NVSCOUNT;
 /*
  *  =============================== Power ===============================
  */
+#include <ti/devices/msp432p4xx/driverlib/cs.h>
+#include <ti/devices/msp432p4xx/driverlib/pcm.h>
+
+/* Custom performance level for SPI Master Example */
+PowerMSP432_PerfLevel myPerfLevels[] = {{
+      .activeState = PCM_AM_DCDC_VCORE0,
+      .VCORE = 0,
+      .clockSource = CS_DCOCLK_SELECT,
+      .DCORESEL = CS_DCO_TUNE_FREQ,
+      .tuneFreqDCO = 10000000,
+      .SELM = CS_DCOCLK_SELECT,
+      .DIVM = CS_CLOCK_DIVIDER_1,
+      .SELS = CS_DCOCLK_SELECT,
+      .DIVHS = CS_CLOCK_DIVIDER_1,
+      .DIVS = CS_CLOCK_DIVIDER_1,
+      .SELB = CS_REFOCLK_SELECT,
+      .SELA = CS_REFOCLK_SELECT,
+      .DIVA = CS_CLOCK_DIVIDER_1,
+      .flashWaitStates = 0,
+      .enableFlashBuffer = true,
+      .MCLK = 10000000,
+      .HSMCLK = 10000000,
+      .SMCLK = 10000000,
+      .BCLK = 32768,
+      .ACLK = 32768,
+
+}};
+
 const PowerMSP432_ConfigV1 PowerMSP432_config = {
     .policyInitFxn = &PowerMSP432_initPolicy,
     .policyFxn = &PowerMSP432_sleepPolicy,
     .initialPerfLevel = 2,
     .enablePolicy = true,
     .enablePerf = true,
-    .enableParking = true
+    .enableParking = true,
+    .customPerfLevels = myPerfLevels,
+    .numCustom = sizeof(myPerfLevels) / sizeof(PowerMSP432_PerfLevel)
 };
 
 /*
@@ -537,37 +640,55 @@ const PWM_Config PWM_config[MSP_EXP432P4111_PWMCOUNT] = {
 const uint_least8_t PWM_count = MSP_EXP432P4111_PWMCOUNT;
 
 /*
- *  =============================== SDSPI ===============================
+ *  =============================== SDFatFS ===============================
  */
-#include <ti/drivers/SDSPI.h>
-#include <ti/drivers/sdspi/SDSPIMSP432.h>
+#include <ti/drivers/SD.h>
+#include <ti/drivers/SDFatFS.h>
 
-SDSPIMSP432_Object sdspiMSP432Objects[MSP_EXP432P4111_SDSPICOUNT];
+/*
+ * Note: The SDFatFS driver provides interface functions to enable FatFs
+ * but relies on the SD driver to communicate with SD cards.  Opening a
+ * SDFatFs driver instance will internally try to open a SD driver instance
+ * reusing the same index number (opening SDFatFs driver at index 0 will try to
+ * open SD driver at index 0).  This requires that all SDFatFs driver instances
+ * have an accompanying SD driver instance defined with the same index.  It is
+ * acceptable to have more SD driver instances than SDFatFs driver instances
+ * but the opposite is not supported & the SDFatFs will fail to open.
+ */
+SDFatFS_Object sdfatfsObjects[MSP_EXP432P4111_SDFatFSCOUNT];
 
-const SDSPIMSP432_HWAttrsV1 sdspiMSP432HWAttrs[MSP_EXP432P4111_SDSPICOUNT] = {
+const SDFatFS_Config SDFatFS_config[MSP_EXP432P4111_SDFatFSCOUNT] = {
     {
-        .baseAddr = EUSCI_B0_BASE,
-        .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
-
-        /* CLK, MOSI & MISO ports & pins */
-        .sckPin = SDSPIMSP432_P1_5_UCB0CLK,
-        .somiPin = SDSPIMSP432_P1_7_UCB0SOMI,
-        .simoPin = SDSPIMSP432_P1_6_UCB0SIMO,
-
-        /* Chip select port & pin */
-        .csPin = SDSPIMSP432_P4_6_CS
+        .object = &sdfatfsObjects[MSP_EXP432P4111_SDFatFS0]
     }
 };
 
-const SDSPI_Config SDSPI_config[MSP_EXP432P4111_SDSPICOUNT] = {
+const uint_least8_t SDFatFS_count = MSP_EXP432P4111_SDFatFSCOUNT;
+
+/*
+ *  =============================== SD ===============================
+ */
+#include <ti/drivers/SD.h>
+#include <ti/drivers/sd/SDSPI.h>
+
+SDSPI_Object sdspiObjects[MSP_EXP432P4111_SDCOUNT];
+
+const SDSPI_HWAttrs sdspiHWAttrs[MSP_EXP432P4111_SDCOUNT] = {
     {
-        .fxnTablePtr = &SDSPIMSP432_fxnTable,
-        .object = &sdspiMSP432Objects[MSP_EXP432P4111_SDSPIB0],
-        .hwAttrs = &sdspiMSP432HWAttrs[MSP_EXP432P4111_SDSPIB0]
+        .spiIndex = MSP_EXP432P4111_SPIB0,
+        .spiCsGpioIndex = MSP_EXP432P4111_SDSPI_CS
     }
 };
 
-const uint_least8_t SDSPI_count = MSP_EXP432P4111_SDSPICOUNT;
+const SD_Config SD_config[MSP_EXP432P4111_SDCOUNT] = {
+    {
+        .fxnTablePtr = &SDSPI_fxnTable,
+        .object = &sdspiObjects[MSP_EXP432P4111_SDSPI0],
+        .hwAttrs = &sdspiHWAttrs[MSP_EXP432P4111_SDSPI0]
+    },
+};
+
+const uint_least8_t SD_count = MSP_EXP432P4111_SDCOUNT;
 
 /*
  *  =============================== SPI ===============================
@@ -577,12 +698,17 @@ const uint_least8_t SDSPI_count = MSP_EXP432P4111_SDSPICOUNT;
 
 SPIMSP432DMA_Object spiMSP432DMAObjects[MSP_EXP432P4111_SPICOUNT];
 
+/*
+ * NOTE: The SPI instances below can be used by the SD driver to communicate
+ * with a SD card via SPI.  The 'defaultTxBufValue' fields below are set to 0xFF
+ * to satisfy the SDSPI driver requirement.
+ */
 const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
     {
         .baseAddr = EUSCI_B0_BASE,
         .bitOrder = EUSCI_B_SPI_MSB_FIRST,
         .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
-        .defaultTxBufValue = 0,
+        .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT1,
         .intPriority = (~0),
         .rxDMAChannelIndex = DMA_CH1_EUSCIB0RX0,
@@ -598,7 +724,7 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .baseAddr = EUSCI_B2_BASE,
         .bitOrder = EUSCI_B_SPI_MSB_FIRST,
         .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
-        .defaultTxBufValue = 0,
+        .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT2,
         .intPriority = (~0),
         .rxDMAChannelIndex = DMA_CH5_EUSCIB2RX0,
@@ -614,7 +740,7 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .baseAddr = EUSCI_A1_BASE,
         .bitOrder = EUSCI_A_SPI_MSB_FIRST,
         .clockSource = EUSCI_A_SPI_CLOCKSOURCE_SMCLK,
-        .defaultTxBufValue = 0,
+        .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT2,
         .intPriority = (~0),
         .rxDMAChannelIndex = DMA_CH3_EUSCIA1RX,
@@ -630,7 +756,7 @@ const SPIMSP432DMA_HWAttrsV1 spiMSP432DMAHWAttrs[MSP_EXP432P4111_SPICOUNT] = {
         .baseAddr = EUSCI_B2_BASE,
         .bitOrder = EUSCI_B_SPI_MSB_FIRST,
         .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
-        .defaultTxBufValue = 0,
+        .defaultTxBufValue = 0xFF,
         .dmaIntNum = INT_DMA_INT3,
         .intPriority = (~0),
         .rxDMAChannelIndex = DMA_CH5_EUSCIB2RX0,
@@ -681,13 +807,11 @@ const TimerMSP432_HWAttrs timerMSP432HWAttrs[MSP_EXP432P4111_TIMERCOUNT] = {
     /* Timer32_0 */
     {
         .timerBaseAddress = TIMER32_0_BASE,
-        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,
         .intNum = INT_T32_INT1,
         .intPriority = ~0
     },
     {
         .timerBaseAddress = TIMER32_1_BASE,
-        .clockSource = TIMER_A_CLOCKSOURCE_SMCLK,
         .intNum = INT_T32_INT2,
         .intPriority = ~0
     },
@@ -769,10 +893,12 @@ const UARTMSP432_BaudrateConfig uartMSP432Baudrates[] = {
         .oversampling = 1
     },
     {115200, 12000000,  6,  8,  32, 1},
+    {115200, 10000000,  5,  7,   0, 1},
     {115200, 6000000,   3,  4,   2, 1},
     {115200, 3000000,   1, 10,   0, 1},
     {9600,   24000000, 156,  4,   0, 1},
     {9600,   12000000, 78,  2,   0, 1},
+    {9600,   10000000, 65,  2,   0, 1},
     {9600,   6000000,  39,  1,   0, 1},
     {9600,   3000000,  19,  8,  85, 1},
     {9600,   32768,     3,  0, 146, 0}
@@ -791,7 +917,8 @@ const UARTMSP432_HWAttrsV1 uartMSP432HWAttrs[MSP_EXP432P4111_UARTCOUNT] = {
         .ringBufPtr  = uartMSP432RingBuffer[MSP_EXP432P4111_UARTA0],
         .ringBufSize = sizeof(uartMSP432RingBuffer[MSP_EXP432P4111_UARTA0]),
         .rxPin = UARTMSP432_P1_2_UCA0RXD,
-        .txPin = UARTMSP432_P1_3_UCA0TXD
+        .txPin = UARTMSP432_P1_3_UCA0TXD,
+        .errorFxn = NULL
     },
     {
         .baseAddr = EUSCI_A2_BASE,
@@ -805,7 +932,8 @@ const UARTMSP432_HWAttrsV1 uartMSP432HWAttrs[MSP_EXP432P4111_UARTCOUNT] = {
         .ringBufPtr  = uartMSP432RingBuffer[MSP_EXP432P4111_UARTA2],
         .ringBufSize = sizeof(uartMSP432RingBuffer[MSP_EXP432P4111_UARTA2]),
         .rxPin = UARTMSP432_P3_2_UCA2RXD,
-        .txPin = UARTMSP432_P3_3_UCA2TXD
+        .txPin = UARTMSP432_P3_3_UCA2TXD,
+        .errorFxn = NULL
     }
 };
 

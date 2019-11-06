@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_interfaces_ITimer__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_ITimer___VERS 200
@@ -63,7 +65,7 @@
  */
 
 /* FuncPtr */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_FuncPtr)(xdc_UArg __arg1);
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_FuncPtr)(xdc_UArg arg1);
 
 /* ANY */
 #define ti_sysbios_interfaces_ITimer_ANY (~0)
@@ -139,21 +141,21 @@ struct ti_sysbios_interfaces_ITimer_Fxns__ {
     xdc_UInt (*getNumTimers)(void);
     ti_sysbios_interfaces_ITimer_Status (*getStatus)(xdc_UInt id);
     xdc_Void (*startup)(void);
-    xdc_UInt32 (*getMaxTicks)(void* __inst);
-    xdc_Void (*setNextTick)(void* __inst, xdc_UInt32 ticks);
-    xdc_Void (*start)(void* __inst);
-    xdc_Void (*stop)(void* __inst);
-    xdc_Void (*setPeriod)(void* __inst, xdc_UInt32 period);
-    xdc_Bool (*setPeriodMicroSecs)(void* __inst, xdc_UInt32 microsecs);
-    xdc_UInt32 (*getPeriod)(void* __inst);
-    xdc_UInt32 (*getCount)(void* __inst);
-    xdc_Void (*getFreq)(void* __inst, xdc_runtime_Types_FreqHz* freq);
-    ti_sysbios_interfaces_ITimer_FuncPtr (*getFunc)(void* __inst, xdc_UArg* arg);
-    xdc_Void (*setFunc)(void* __inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
-    xdc_Void (*trigger)(void* __inst, xdc_UInt32 cycles);
-    xdc_UInt32 (*getExpiredCounts)(void* __inst);
-    xdc_UInt32 (*getExpiredTicks)(void* __inst, xdc_UInt32 tickPeriod);
-    xdc_UInt32 (*getCurrentTick)(void* __inst, xdc_Bool save);
+    xdc_UInt32 (*getMaxTicks)(void* inst);
+    xdc_Void (*setNextTick)(void* inst, xdc_UInt32 ticks);
+    xdc_Void (*start)(void* inst);
+    xdc_Void (*stop)(void* inst);
+    xdc_Void (*setPeriod)(void* inst, xdc_UInt32 period);
+    xdc_Bool (*setPeriodMicroSecs)(void* inst, xdc_UInt32 microsecs);
+    xdc_UInt32 (*getPeriod)(void* inst);
+    xdc_UInt32 (*getCount)(void* inst);
+    xdc_Void (*getFreq)(void* inst, xdc_runtime_Types_FreqHz* freq);
+    ti_sysbios_interfaces_ITimer_FuncPtr (*getFunc)(void* inst, xdc_UArg* arg);
+    xdc_Void (*setFunc)(void* inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
+    xdc_Void (*trigger)(void* inst, xdc_UInt32 cycles);
+    xdc_UInt32 (*getExpiredCounts)(void* inst);
+    xdc_UInt32 (*getExpiredTicks)(void* inst, xdc_UInt32 tickPeriod);
+    xdc_UInt32 (*getCurrentTick)(void* inst, xdc_Bool save);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_sysbios_interfaces_ITimer_Module__BASE__CR
@@ -171,11 +173,11 @@ __extern const xdc_runtime_Types_Base ti_sysbios_interfaces_ITimer_Interface__BA
 
 /* create */
 xdc__CODESECT(ti_sysbios_interfaces_ITimer_create, "ti_sysbios_interfaces_ITimer_create")
-__extern ti_sysbios_interfaces_ITimer_Handle ti_sysbios_interfaces_ITimer_create(ti_sysbios_interfaces_ITimer_Module __mod, xdc_Int id, ti_sysbios_interfaces_ITimer_FuncPtr tickFxn, const ti_sysbios_interfaces_ITimer_Params *__prms, xdc_runtime_Error_Block *__eb);
+__extern ti_sysbios_interfaces_ITimer_Handle ti_sysbios_interfaces_ITimer_create(ti_sysbios_interfaces_ITimer_Module mod, xdc_Int id, ti_sysbios_interfaces_ITimer_FuncPtr tickFxn, const ti_sysbios_interfaces_ITimer_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* delete */
 xdc__CODESECT(ti_sysbios_interfaces_ITimer_delete, "ti_sysbios_interfaces_ITimer_delete")
-__extern xdc_Void ti_sysbios_interfaces_ITimer_delete(ti_sysbios_interfaces_ITimer_Handle *__inst);
+__extern xdc_Void ti_sysbios_interfaces_ITimer_delete(ti_sysbios_interfaces_ITimer_Handle *inst);
 
 /* Handle_to_Module */
 static inline ti_sysbios_interfaces_ITimer_Module ti_sysbios_interfaces_ITimer_Handle_to_Module(ti_sysbios_interfaces_ITimer_Handle inst);
@@ -199,129 +201,129 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_ITimer_Module_id(
 }
 
 /* getNumTimers */
-static inline xdc_UInt ti_sysbios_interfaces_ITimer_getNumTimers(ti_sysbios_interfaces_ITimer_Module __mod);
-static inline xdc_UInt ti_sysbios_interfaces_ITimer_getNumTimers( ti_sysbios_interfaces_ITimer_Module __mod )
+static inline xdc_UInt ti_sysbios_interfaces_ITimer_getNumTimers(ti_sysbios_interfaces_ITimer_Module mod);
+static inline xdc_UInt ti_sysbios_interfaces_ITimer_getNumTimers( ti_sysbios_interfaces_ITimer_Module mod )
 {
-    return __mod->getNumTimers();
+    return mod->getNumTimers();
 }
 
 /* getStatus */
-static inline ti_sysbios_interfaces_ITimer_Status ti_sysbios_interfaces_ITimer_getStatus(ti_sysbios_interfaces_ITimer_Module __mod, xdc_UInt id);
-static inline ti_sysbios_interfaces_ITimer_Status ti_sysbios_interfaces_ITimer_getStatus( ti_sysbios_interfaces_ITimer_Module __mod, xdc_UInt id )
+static inline ti_sysbios_interfaces_ITimer_Status ti_sysbios_interfaces_ITimer_getStatus(ti_sysbios_interfaces_ITimer_Module mod, xdc_UInt id);
+static inline ti_sysbios_interfaces_ITimer_Status ti_sysbios_interfaces_ITimer_getStatus( ti_sysbios_interfaces_ITimer_Module mod, xdc_UInt id )
 {
-    return __mod->getStatus(id);
+    return mod->getStatus(id);
 }
 
 /* startup */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_startup(ti_sysbios_interfaces_ITimer_Module __mod);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_startup( ti_sysbios_interfaces_ITimer_Module __mod )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_startup(ti_sysbios_interfaces_ITimer_Module mod);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_startup( ti_sysbios_interfaces_ITimer_Module mod )
 {
-    __mod->startup();
+    mod->startup();
 }
 
 /* getMaxTicks */
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getMaxTicks(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getMaxTicks( ti_sysbios_interfaces_ITimer_Handle __inst )
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getMaxTicks(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getMaxTicks( ti_sysbios_interfaces_ITimer_Handle inst )
 {
-    return __inst->__fxns->getMaxTicks((void*)__inst);
+    return inst->__fxns->getMaxTicks((void*)inst);
 }
 
 /* setNextTick */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_setNextTick(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 ticks);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_setNextTick( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 ticks )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_setNextTick(ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 ticks);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_setNextTick( ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 ticks )
 {
-    __inst->__fxns->setNextTick((void*)__inst, ticks);
+    inst->__fxns->setNextTick((void*)inst, ticks);
 }
 
 /* start */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_start(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_start( ti_sysbios_interfaces_ITimer_Handle __inst )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_start(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_start( ti_sysbios_interfaces_ITimer_Handle inst )
 {
-    __inst->__fxns->start((void*)__inst);
+    inst->__fxns->start((void*)inst);
 }
 
 /* stop */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_stop(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_stop( ti_sysbios_interfaces_ITimer_Handle __inst )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_stop(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_stop( ti_sysbios_interfaces_ITimer_Handle inst )
 {
-    __inst->__fxns->stop((void*)__inst);
+    inst->__fxns->stop((void*)inst);
 }
 
 /* setPeriod */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_setPeriod(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 period);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_setPeriod( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 period )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_setPeriod(ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 period);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_setPeriod( ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 period )
 {
-    __inst->__fxns->setPeriod((void*)__inst, period);
+    inst->__fxns->setPeriod((void*)inst, period);
 }
 
 /* setPeriodMicroSecs */
-static inline xdc_Bool ti_sysbios_interfaces_ITimer_setPeriodMicroSecs(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 microsecs);
-static inline xdc_Bool ti_sysbios_interfaces_ITimer_setPeriodMicroSecs( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 microsecs )
+static inline xdc_Bool ti_sysbios_interfaces_ITimer_setPeriodMicroSecs(ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 microsecs);
+static inline xdc_Bool ti_sysbios_interfaces_ITimer_setPeriodMicroSecs( ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 microsecs )
 {
-    return __inst->__fxns->setPeriodMicroSecs((void*)__inst, microsecs);
+    return inst->__fxns->setPeriodMicroSecs((void*)inst, microsecs);
 }
 
 /* getPeriod */
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getPeriod(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getPeriod( ti_sysbios_interfaces_ITimer_Handle __inst )
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getPeriod(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getPeriod( ti_sysbios_interfaces_ITimer_Handle inst )
 {
-    return __inst->__fxns->getPeriod((void*)__inst);
+    return inst->__fxns->getPeriod((void*)inst);
 }
 
 /* getCount */
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCount(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCount( ti_sysbios_interfaces_ITimer_Handle __inst )
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCount(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCount( ti_sysbios_interfaces_ITimer_Handle inst )
 {
-    return __inst->__fxns->getCount((void*)__inst);
+    return inst->__fxns->getCount((void*)inst);
 }
 
 /* getFreq */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_getFreq(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_runtime_Types_FreqHz *freq);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_getFreq( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_runtime_Types_FreqHz *freq )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_getFreq(ti_sysbios_interfaces_ITimer_Handle inst, xdc_runtime_Types_FreqHz *freq);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_getFreq( ti_sysbios_interfaces_ITimer_Handle inst, xdc_runtime_Types_FreqHz *freq )
 {
-    __inst->__fxns->getFreq((void*)__inst, freq);
+    inst->__fxns->getFreq((void*)inst, freq);
 }
 
 /* getFunc */
-static inline ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_interfaces_ITimer_getFunc(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UArg *arg);
-static inline ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_interfaces_ITimer_getFunc( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UArg *arg )
+static inline ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_interfaces_ITimer_getFunc(ti_sysbios_interfaces_ITimer_Handle inst, xdc_UArg *arg);
+static inline ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_interfaces_ITimer_getFunc( ti_sysbios_interfaces_ITimer_Handle inst, xdc_UArg *arg )
 {
-    return __inst->__fxns->getFunc((void*)__inst, arg);
+    return inst->__fxns->getFunc((void*)inst, arg);
 }
 
 /* setFunc */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_setFunc(ti_sysbios_interfaces_ITimer_Handle __inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_setFunc( ti_sysbios_interfaces_ITimer_Handle __inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_setFunc(ti_sysbios_interfaces_ITimer_Handle inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_setFunc( ti_sysbios_interfaces_ITimer_Handle inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg )
 {
-    __inst->__fxns->setFunc((void*)__inst, fxn, arg);
+    inst->__fxns->setFunc((void*)inst, fxn, arg);
 }
 
 /* trigger */
-static inline xdc_Void ti_sysbios_interfaces_ITimer_trigger(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 cycles);
-static inline xdc_Void ti_sysbios_interfaces_ITimer_trigger( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 cycles )
+static inline xdc_Void ti_sysbios_interfaces_ITimer_trigger(ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 cycles);
+static inline xdc_Void ti_sysbios_interfaces_ITimer_trigger( ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 cycles )
 {
-    __inst->__fxns->trigger((void*)__inst, cycles);
+    inst->__fxns->trigger((void*)inst, cycles);
 }
 
 /* getExpiredCounts */
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredCounts(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredCounts( ti_sysbios_interfaces_ITimer_Handle __inst )
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredCounts(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredCounts( ti_sysbios_interfaces_ITimer_Handle inst )
 {
-    return __inst->__fxns->getExpiredCounts((void*)__inst);
+    return inst->__fxns->getExpiredCounts((void*)inst);
 }
 
 /* getExpiredTicks */
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredTicks(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 tickPeriod);
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredTicks( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_UInt32 tickPeriod )
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredTicks(ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 tickPeriod);
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getExpiredTicks( ti_sysbios_interfaces_ITimer_Handle inst, xdc_UInt32 tickPeriod )
 {
-    return __inst->__fxns->getExpiredTicks((void*)__inst, tickPeriod);
+    return inst->__fxns->getExpiredTicks((void*)inst, tickPeriod);
 }
 
 /* getCurrentTick */
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCurrentTick(ti_sysbios_interfaces_ITimer_Handle __inst, xdc_Bool save);
-static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCurrentTick( ti_sysbios_interfaces_ITimer_Handle __inst, xdc_Bool save )
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCurrentTick(ti_sysbios_interfaces_ITimer_Handle inst, xdc_Bool save);
+static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCurrentTick( ti_sysbios_interfaces_ITimer_Handle inst, xdc_Bool save )
 {
-    return __inst->__fxns->getCurrentTick((void*)__inst, save);
+    return inst->__fxns->getCurrentTick((void*)inst, save);
 }
 
 
@@ -338,146 +340,146 @@ static inline xdc_UInt32 ti_sysbios_interfaces_ITimer_getCurrentTick( ti_sysbios
 
 /* getNumTimers_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_ITimer_getNumTimers_FxnT)(void);
-static inline ti_sysbios_interfaces_ITimer_getNumTimers_FxnT ti_sysbios_interfaces_ITimer_getNumTimers_fxnP(ti_sysbios_interfaces_ITimer_Module __mod);
-static inline ti_sysbios_interfaces_ITimer_getNumTimers_FxnT ti_sysbios_interfaces_ITimer_getNumTimers_fxnP(ti_sysbios_interfaces_ITimer_Module __mod)
+static inline ti_sysbios_interfaces_ITimer_getNumTimers_FxnT ti_sysbios_interfaces_ITimer_getNumTimers_fxnP(ti_sysbios_interfaces_ITimer_Module mod);
+static inline ti_sysbios_interfaces_ITimer_getNumTimers_FxnT ti_sysbios_interfaces_ITimer_getNumTimers_fxnP(ti_sysbios_interfaces_ITimer_Module mod)
 {
-    return (ti_sysbios_interfaces_ITimer_getNumTimers_FxnT)__mod->getNumTimers;
+    return (ti_sysbios_interfaces_ITimer_getNumTimers_FxnT)mod->getNumTimers;
 }
 
 /* getStatus_{FxnT,fxnP} */
 typedef ti_sysbios_interfaces_ITimer_Status (*ti_sysbios_interfaces_ITimer_getStatus_FxnT)(xdc_UInt id);
-static inline ti_sysbios_interfaces_ITimer_getStatus_FxnT ti_sysbios_interfaces_ITimer_getStatus_fxnP(ti_sysbios_interfaces_ITimer_Module __mod);
-static inline ti_sysbios_interfaces_ITimer_getStatus_FxnT ti_sysbios_interfaces_ITimer_getStatus_fxnP(ti_sysbios_interfaces_ITimer_Module __mod)
+static inline ti_sysbios_interfaces_ITimer_getStatus_FxnT ti_sysbios_interfaces_ITimer_getStatus_fxnP(ti_sysbios_interfaces_ITimer_Module mod);
+static inline ti_sysbios_interfaces_ITimer_getStatus_FxnT ti_sysbios_interfaces_ITimer_getStatus_fxnP(ti_sysbios_interfaces_ITimer_Module mod)
 {
-    return (ti_sysbios_interfaces_ITimer_getStatus_FxnT)__mod->getStatus;
+    return (ti_sysbios_interfaces_ITimer_getStatus_FxnT)mod->getStatus;
 }
 
 /* startup_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_ITimer_startup_FxnT)(void);
-static inline ti_sysbios_interfaces_ITimer_startup_FxnT ti_sysbios_interfaces_ITimer_startup_fxnP(ti_sysbios_interfaces_ITimer_Module __mod);
-static inline ti_sysbios_interfaces_ITimer_startup_FxnT ti_sysbios_interfaces_ITimer_startup_fxnP(ti_sysbios_interfaces_ITimer_Module __mod)
+static inline ti_sysbios_interfaces_ITimer_startup_FxnT ti_sysbios_interfaces_ITimer_startup_fxnP(ti_sysbios_interfaces_ITimer_Module mod);
+static inline ti_sysbios_interfaces_ITimer_startup_FxnT ti_sysbios_interfaces_ITimer_startup_fxnP(ti_sysbios_interfaces_ITimer_Module mod)
 {
-    return (ti_sysbios_interfaces_ITimer_startup_FxnT)__mod->startup;
+    return (ti_sysbios_interfaces_ITimer_startup_FxnT)mod->startup;
 }
 
 /* getMaxTicks_{FxnT,fxnP} */
-typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT)(xdc_Void *__inst);
-static inline ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT ti_sysbios_interfaces_ITimer_getMaxTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT ti_sysbios_interfaces_ITimer_getMaxTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT)(xdc_Void *inst);
+static inline ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT ti_sysbios_interfaces_ITimer_getMaxTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT ti_sysbios_interfaces_ITimer_getMaxTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT)__inst->__fxns->getMaxTicks;
+    return (ti_sysbios_interfaces_ITimer_getMaxTicks_FxnT)inst->__fxns->getMaxTicks;
 }
 
 /* setNextTick_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_setNextTick_FxnT)(xdc_Void *__inst, xdc_UInt32 ticks);
-static inline ti_sysbios_interfaces_ITimer_setNextTick_FxnT ti_sysbios_interfaces_ITimer_setNextTick_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_setNextTick_FxnT ti_sysbios_interfaces_ITimer_setNextTick_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_setNextTick_FxnT)(xdc_Void *inst, xdc_UInt32 ticks);
+static inline ti_sysbios_interfaces_ITimer_setNextTick_FxnT ti_sysbios_interfaces_ITimer_setNextTick_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_setNextTick_FxnT ti_sysbios_interfaces_ITimer_setNextTick_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_setNextTick_FxnT)__inst->__fxns->setNextTick;
+    return (ti_sysbios_interfaces_ITimer_setNextTick_FxnT)inst->__fxns->setNextTick;
 }
 
 /* start_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_start_FxnT)(xdc_Void *__inst);
-static inline ti_sysbios_interfaces_ITimer_start_FxnT ti_sysbios_interfaces_ITimer_start_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_start_FxnT ti_sysbios_interfaces_ITimer_start_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_start_FxnT)(xdc_Void *inst);
+static inline ti_sysbios_interfaces_ITimer_start_FxnT ti_sysbios_interfaces_ITimer_start_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_start_FxnT ti_sysbios_interfaces_ITimer_start_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_start_FxnT)__inst->__fxns->start;
+    return (ti_sysbios_interfaces_ITimer_start_FxnT)inst->__fxns->start;
 }
 
 /* stop_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_stop_FxnT)(xdc_Void *__inst);
-static inline ti_sysbios_interfaces_ITimer_stop_FxnT ti_sysbios_interfaces_ITimer_stop_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_stop_FxnT ti_sysbios_interfaces_ITimer_stop_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_stop_FxnT)(xdc_Void *inst);
+static inline ti_sysbios_interfaces_ITimer_stop_FxnT ti_sysbios_interfaces_ITimer_stop_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_stop_FxnT ti_sysbios_interfaces_ITimer_stop_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_stop_FxnT)__inst->__fxns->stop;
+    return (ti_sysbios_interfaces_ITimer_stop_FxnT)inst->__fxns->stop;
 }
 
 /* setPeriod_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_setPeriod_FxnT)(xdc_Void *__inst, xdc_UInt32 period);
-static inline ti_sysbios_interfaces_ITimer_setPeriod_FxnT ti_sysbios_interfaces_ITimer_setPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_setPeriod_FxnT ti_sysbios_interfaces_ITimer_setPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_setPeriod_FxnT)(xdc_Void *inst, xdc_UInt32 period);
+static inline ti_sysbios_interfaces_ITimer_setPeriod_FxnT ti_sysbios_interfaces_ITimer_setPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_setPeriod_FxnT ti_sysbios_interfaces_ITimer_setPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_setPeriod_FxnT)__inst->__fxns->setPeriod;
+    return (ti_sysbios_interfaces_ITimer_setPeriod_FxnT)inst->__fxns->setPeriod;
 }
 
 /* setPeriodMicroSecs_{FxnT,fxnP} */
-typedef xdc_Bool (*ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT)(xdc_Void *__inst, xdc_UInt32 microsecs);
-static inline ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Bool (*ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT)(xdc_Void *inst, xdc_UInt32 microsecs);
+static inline ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT)__inst->__fxns->setPeriodMicroSecs;
+    return (ti_sysbios_interfaces_ITimer_setPeriodMicroSecs_FxnT)inst->__fxns->setPeriodMicroSecs;
 }
 
 /* getPeriod_{FxnT,fxnP} */
-typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getPeriod_FxnT)(xdc_Void *__inst);
-static inline ti_sysbios_interfaces_ITimer_getPeriod_FxnT ti_sysbios_interfaces_ITimer_getPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getPeriod_FxnT ti_sysbios_interfaces_ITimer_getPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getPeriod_FxnT)(xdc_Void *inst);
+static inline ti_sysbios_interfaces_ITimer_getPeriod_FxnT ti_sysbios_interfaces_ITimer_getPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getPeriod_FxnT ti_sysbios_interfaces_ITimer_getPeriod_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getPeriod_FxnT)__inst->__fxns->getPeriod;
+    return (ti_sysbios_interfaces_ITimer_getPeriod_FxnT)inst->__fxns->getPeriod;
 }
 
 /* getCount_{FxnT,fxnP} */
-typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getCount_FxnT)(xdc_Void *__inst);
-static inline ti_sysbios_interfaces_ITimer_getCount_FxnT ti_sysbios_interfaces_ITimer_getCount_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getCount_FxnT ti_sysbios_interfaces_ITimer_getCount_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getCount_FxnT)(xdc_Void *inst);
+static inline ti_sysbios_interfaces_ITimer_getCount_FxnT ti_sysbios_interfaces_ITimer_getCount_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getCount_FxnT ti_sysbios_interfaces_ITimer_getCount_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getCount_FxnT)__inst->__fxns->getCount;
+    return (ti_sysbios_interfaces_ITimer_getCount_FxnT)inst->__fxns->getCount;
 }
 
 /* getFreq_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_getFreq_FxnT)(xdc_Void *__inst, xdc_runtime_Types_FreqHz* freq);
-static inline ti_sysbios_interfaces_ITimer_getFreq_FxnT ti_sysbios_interfaces_ITimer_getFreq_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getFreq_FxnT ti_sysbios_interfaces_ITimer_getFreq_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_getFreq_FxnT)(xdc_Void *inst, xdc_runtime_Types_FreqHz* freq);
+static inline ti_sysbios_interfaces_ITimer_getFreq_FxnT ti_sysbios_interfaces_ITimer_getFreq_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getFreq_FxnT ti_sysbios_interfaces_ITimer_getFreq_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getFreq_FxnT)__inst->__fxns->getFreq;
+    return (ti_sysbios_interfaces_ITimer_getFreq_FxnT)inst->__fxns->getFreq;
 }
 
 /* getFunc_{FxnT,fxnP} */
-typedef ti_sysbios_interfaces_ITimer_FuncPtr (*ti_sysbios_interfaces_ITimer_getFunc_FxnT)(xdc_Void *__inst, xdc_UArg* arg);
-static inline ti_sysbios_interfaces_ITimer_getFunc_FxnT ti_sysbios_interfaces_ITimer_getFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getFunc_FxnT ti_sysbios_interfaces_ITimer_getFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef ti_sysbios_interfaces_ITimer_FuncPtr (*ti_sysbios_interfaces_ITimer_getFunc_FxnT)(xdc_Void *inst, xdc_UArg* arg);
+static inline ti_sysbios_interfaces_ITimer_getFunc_FxnT ti_sysbios_interfaces_ITimer_getFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getFunc_FxnT ti_sysbios_interfaces_ITimer_getFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getFunc_FxnT)__inst->__fxns->getFunc;
+    return (ti_sysbios_interfaces_ITimer_getFunc_FxnT)inst->__fxns->getFunc;
 }
 
 /* setFunc_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_setFunc_FxnT)(xdc_Void *__inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
-static inline ti_sysbios_interfaces_ITimer_setFunc_FxnT ti_sysbios_interfaces_ITimer_setFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_setFunc_FxnT ti_sysbios_interfaces_ITimer_setFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_setFunc_FxnT)(xdc_Void *inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
+static inline ti_sysbios_interfaces_ITimer_setFunc_FxnT ti_sysbios_interfaces_ITimer_setFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_setFunc_FxnT ti_sysbios_interfaces_ITimer_setFunc_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_setFunc_FxnT)__inst->__fxns->setFunc;
+    return (ti_sysbios_interfaces_ITimer_setFunc_FxnT)inst->__fxns->setFunc;
 }
 
 /* trigger_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ITimer_trigger_FxnT)(xdc_Void *__inst, xdc_UInt32 cycles);
-static inline ti_sysbios_interfaces_ITimer_trigger_FxnT ti_sysbios_interfaces_ITimer_trigger_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_trigger_FxnT ti_sysbios_interfaces_ITimer_trigger_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_ITimer_trigger_FxnT)(xdc_Void *inst, xdc_UInt32 cycles);
+static inline ti_sysbios_interfaces_ITimer_trigger_FxnT ti_sysbios_interfaces_ITimer_trigger_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_trigger_FxnT ti_sysbios_interfaces_ITimer_trigger_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_trigger_FxnT)__inst->__fxns->trigger;
+    return (ti_sysbios_interfaces_ITimer_trigger_FxnT)inst->__fxns->trigger;
 }
 
 /* getExpiredCounts_{FxnT,fxnP} */
-typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT)(xdc_Void *__inst);
-static inline ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT ti_sysbios_interfaces_ITimer_getExpiredCounts_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT ti_sysbios_interfaces_ITimer_getExpiredCounts_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT)(xdc_Void *inst);
+static inline ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT ti_sysbios_interfaces_ITimer_getExpiredCounts_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT ti_sysbios_interfaces_ITimer_getExpiredCounts_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT)__inst->__fxns->getExpiredCounts;
+    return (ti_sysbios_interfaces_ITimer_getExpiredCounts_FxnT)inst->__fxns->getExpiredCounts;
 }
 
 /* getExpiredTicks_{FxnT,fxnP} */
-typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT)(xdc_Void *__inst, xdc_UInt32 tickPeriod);
-static inline ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT ti_sysbios_interfaces_ITimer_getExpiredTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT ti_sysbios_interfaces_ITimer_getExpiredTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT)(xdc_Void *inst, xdc_UInt32 tickPeriod);
+static inline ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT ti_sysbios_interfaces_ITimer_getExpiredTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT ti_sysbios_interfaces_ITimer_getExpiredTicks_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT)__inst->__fxns->getExpiredTicks;
+    return (ti_sysbios_interfaces_ITimer_getExpiredTicks_FxnT)inst->__fxns->getExpiredTicks;
 }
 
 /* getCurrentTick_{FxnT,fxnP} */
-typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT)(xdc_Void *__inst, xdc_Bool save);
-static inline ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT ti_sysbios_interfaces_ITimer_getCurrentTick_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst);
-static inline ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT ti_sysbios_interfaces_ITimer_getCurrentTick_fxnP(ti_sysbios_interfaces_ITimer_Handle __inst)
+typedef xdc_UInt32 (*ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT)(xdc_Void *inst, xdc_Bool save);
+static inline ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT ti_sysbios_interfaces_ITimer_getCurrentTick_fxnP(ti_sysbios_interfaces_ITimer_Handle inst);
+static inline ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT ti_sysbios_interfaces_ITimer_getCurrentTick_fxnP(ti_sysbios_interfaces_ITimer_Handle inst)
 {
-    return (ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT)__inst->__fxns->getCurrentTick;
+    return (ti_sysbios_interfaces_ITimer_getCurrentTick_FxnT)inst->__fxns->getCurrentTick;
 }
 
 

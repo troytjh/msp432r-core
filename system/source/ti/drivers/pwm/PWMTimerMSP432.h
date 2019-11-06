@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,13 +82,13 @@
  *
  *  ### MPS432 PWM Driver Configuration #
  *
- *  In order to use the PWM APIs, the application is required
- *  to define 4 configuration items in the application Board.c file:
+ *  In order to use the PWM APIs, the application is required to define
+ *  4 configuration items in the application ti_drivers_config.c file:
  *
  *  1.  An array of PWMTimerMSP432_Object elements, which will be used by
  *  by the driver to maintain instance state.
  *  Below is an example PWMTimerMSP432_Object array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *    #include <ti/drivers/PWM.h>
  *    #include <ti/drivers/pwm/PWMTimerMSP432.h>
@@ -100,7 +100,7 @@
  *  pin will be used by the corresponding PWM instance
  *  (see @ref pwmPinIdentifiersMSP432).
  *  Below is an example PWMTimerMSP432_HWAttrsV2 array appropriate for the
- *  MSP432 Launchpad board:
+ *  MSP432 LaunchPad board:
  *  @code
  *  const PWMTimerMSP432_HWAttrsV2 pwmTimerMSP432HWAttrs[2] = {
  *      {
@@ -119,7 +119,7 @@
  *  the device specific PWM object instance, and the device specific Hardware
  *  Attributes to be used for each PWM channel.
  *  Below is an example @ref PWM_Config array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *    const PWM_Config PWM_config[2] = {
  *      {
@@ -190,18 +190,19 @@
 #ifndef ti_driver_pwm_PWMTimerMSP432__include
 #define ti_driver_pwm_PWMTimerMSP432__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdbool.h>
 
 #include <ti/devices/DeviceFamily.h>
 
+#include <ti/drivers/Power.h>
 #include <ti/drivers/PWM.h>
 
 #include <ti/devices/msp432p4xx/driverlib/pmap.h>
 #include <ti/devices/msp432p4xx/driverlib/timer_a.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*! \cond */
 /*
@@ -644,7 +645,7 @@ extern "C" {
  *  @name Port 8, 'pwmPin' setting variations
  *  @{
  */
-#define PWMTimerMSP432_P8_2_TA3CCR2A   (PWMTimerMSP342_TA3CCR2 | 0x182) /*!< @hideinitializer */
+#define PWMTimerMSP432_P8_2_TA3CCR2A   (PWMTimerMSP432_TA3CCR2 | 0x182) /*!< @hideinitializer */
 /*! @} */
 
 /*!
@@ -653,6 +654,12 @@ extern "C" {
  */
 #define PWMTimerMSP432_P9_2_TA3CCR3A   (PWMTimerMSP432_TA3CCR3 | 0x192) /*!< @hideinitializer */
 #define PWMTimerMSP432_P9_3_TA3CCR4A   (PWMTimerMSP432_TA3CCR4 | 0x193) /*!< @hideinitializer */
+
+/*!
+ *  @name Port 10 'pwmPin' setting variations
+ *  @{
+ */
+#define PWMTimerMSP432_P10_5_TA3CCR1A   (PWMTimerMSP432_TA3CCR1 | 0x1A5) /*!< @hideinitializer */
 /*! @} */
 /*! @} End of pwmPin group */
 
@@ -718,7 +725,7 @@ extern const PWM_FxnTable PWMTimerMSP432_fxnTable;
  *  };
  *  @endcode
  */
-typedef struct PWMTimerMSP432_HWAttrsV2 {
+typedef struct {
     uint16_t clockSource;          /*!< TIMER A Clock Source
                                         (see timer_a.h for options) */
     uint32_t pwmPin;               /*!< Pin to output PWM signal on
@@ -730,7 +737,7 @@ typedef struct PWMTimerMSP432_HWAttrsV2 {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct PWMTimerMSP432_Status {
+typedef struct {
     Power_NotifyObj perfChangeNotify;
     PWM_Period_Units periodUnits;
     uint32_t perfConstraintMask;
@@ -748,7 +755,7 @@ typedef struct PWMTimerMSP432_Status {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct PWMTimerMSP432_Object {
+typedef struct {
     PWMTimerMSP432_Status *timerStatus;
     uint32_t               baseAddress;     /* PWMTimer base address */
     PWM_Duty_Units         dutyUnits;       /* Current duty cycle unit */

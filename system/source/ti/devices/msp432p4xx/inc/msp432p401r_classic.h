@@ -1,6 +1,6 @@
 /******************************************************************************
 *
-* Copyright (C) 2012 - 2017 Texas Instruments Incorporated - http://www.ti.com/
+* Copyright (C) 2012 - 2018 Texas Instruments Incorporated - http://www.ti.com/
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
@@ -35,7 +35,7 @@
 * This file includes MSP430 style component and register definitions
 * for legacy components re-used in MSP432
 *
-* File creation date: 2017-08-03
+* File creation date: 2018-01-26
 *
 ******************************************************************************/
 

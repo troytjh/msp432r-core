@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -36,10 +36,12 @@
 #define ti_uia_events_UIAFrameCtx__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_events_UIAFrameCtx___VERS 200
@@ -306,32 +308,32 @@ __extern const ti_uia_events_UIAFrameCtx_Fxns__ ti_uia_events_UIAFrameCtx_Module
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_events_UIAFrameCtx_Module__startupDone__S, "ti_uia_events_UIAFrameCtx_Module__startupDone__S")
-__extern xdc_Bool ti_uia_events_UIAFrameCtx_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_events_UIAFrameCtx_Module__startupDone__S( void);
 
 /* getCtxId__E */
 #define ti_uia_events_UIAFrameCtx_getCtxId ti_uia_events_UIAFrameCtx_getCtxId__E
 xdc__CODESECT(ti_uia_events_UIAFrameCtx_getCtxId__E, "ti_uia_events_UIAFrameCtx_getCtxId")
-__extern xdc_UInt ti_uia_events_UIAFrameCtx_getCtxId__E( void );
+__extern xdc_UInt ti_uia_events_UIAFrameCtx_getCtxId__E( void);
 
 /* getEnableOnValue__E */
 #define ti_uia_events_UIAFrameCtx_getEnableOnValue ti_uia_events_UIAFrameCtx_getEnableOnValue__E
 xdc__CODESECT(ti_uia_events_UIAFrameCtx_getEnableOnValue__E, "ti_uia_events_UIAFrameCtx_getEnableOnValue")
-__extern xdc_UInt ti_uia_events_UIAFrameCtx_getEnableOnValue__E( void );
+__extern xdc_UInt ti_uia_events_UIAFrameCtx_getEnableOnValue__E( void);
 
 /* setEnableOnValue__E */
 #define ti_uia_events_UIAFrameCtx_setEnableOnValue ti_uia_events_UIAFrameCtx_setEnableOnValue__E
 xdc__CODESECT(ti_uia_events_UIAFrameCtx_setEnableOnValue__E, "ti_uia_events_UIAFrameCtx_setEnableOnValue")
-__extern xdc_Void ti_uia_events_UIAFrameCtx_setEnableOnValue__E( xdc_UInt value );
+__extern xdc_Void ti_uia_events_UIAFrameCtx_setEnableOnValue__E( xdc_UInt value);
 
 /* isLoggingEnabled__E */
 #define ti_uia_events_UIAFrameCtx_isLoggingEnabled ti_uia_events_UIAFrameCtx_isLoggingEnabled__E
 xdc__CODESECT(ti_uia_events_UIAFrameCtx_isLoggingEnabled__E, "ti_uia_events_UIAFrameCtx_isLoggingEnabled")
-__extern xdc_Bool ti_uia_events_UIAFrameCtx_isLoggingEnabled__E( xdc_UInt newFrameId );
+__extern xdc_Bool ti_uia_events_UIAFrameCtx_isLoggingEnabled__E( xdc_UInt newFrameId);
 
 /* setOldValue__E */
 #define ti_uia_events_UIAFrameCtx_setOldValue ti_uia_events_UIAFrameCtx_setOldValue__E
 xdc__CODESECT(ti_uia_events_UIAFrameCtx_setOldValue__E, "ti_uia_events_UIAFrameCtx_setOldValue")
-__extern xdc_UInt ti_uia_events_UIAFrameCtx_setOldValue__E( xdc_UInt newValue );
+__extern xdc_UInt ti_uia_events_UIAFrameCtx_setOldValue__E( xdc_UInt newValue);
 
 
 /*
@@ -381,23 +383,23 @@ static inline CT__ti_uia_events_UIAFrameCtx_Module__id ti_uia_events_UIAFrameCtx
 
 /* Module_hasMask */
 static inline xdc_Bool ti_uia_events_UIAFrameCtx_Module_hasMask(void);
-static inline xdc_Bool ti_uia_events_UIAFrameCtx_Module_hasMask(void) 
+static inline xdc_Bool ti_uia_events_UIAFrameCtx_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_uia_events_UIAFrameCtx_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_uia_events_UIAFrameCtx_Module__diagsMask__C != (CT__ti_uia_events_UIAFrameCtx_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_uia_events_UIAFrameCtx_Module_getMask(void);
-static inline xdc_Bits16 ti_uia_events_UIAFrameCtx_Module_getMask( void ) 
+static inline xdc_Bits16 ti_uia_events_UIAFrameCtx_Module_getMask(void)
 {
-    return ti_uia_events_UIAFrameCtx_Module__diagsMask__C != NULL ? *ti_uia_events_UIAFrameCtx_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_uia_events_UIAFrameCtx_Module__diagsMask__C != (CT__ti_uia_events_UIAFrameCtx_Module__diagsMask)NULL) ? *ti_uia_events_UIAFrameCtx_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_uia_events_UIAFrameCtx_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_uia_events_UIAFrameCtx_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_uia_events_UIAFrameCtx_Module__diagsMask__C != NULL) {
+    if (ti_uia_events_UIAFrameCtx_Module__diagsMask__C != (CT__ti_uia_events_UIAFrameCtx_Module__diagsMask)NULL) {
         *ti_uia_events_UIAFrameCtx_Module__diagsMask__C = mask;
     }
 }

@@ -163,11 +163,11 @@ typedef struct _DMA_ControlTable
                             mode)                                              \
     {                                                                          \
         (((srcIncrement) == UDMA_SRC_INC_NONE) ? (void *)(srcAddr) :           \
-            ((void *)(&((uint8_t *)(srcAddr))[((transferCount) <<              \
-                                         ((srcIncrement) >> 26)) - 1]))),      \
+            ((void *)(&((uint8_t *)(srcAddr))[((transferCount - 1) <<          \
+                                         ((srcIncrement) >> 26))]))),          \
             (((dstIncrement) == UDMA_DST_INC_NONE) ? (void *)(dstAddr) :       \
-            ((void *)(&((uint8_t *)(dstAddr))[((transferCount) <<              \
-                                         ((dstIncrement) >> 30)) - 1]))),      \
+            ((void *)(&((uint8_t *)(dstAddr))[((transferCount - 1) <<          \
+                                         ((dstIncrement) >> 30))]))),          \
         (srcIncrement) | (dstIncrement) | (itemSize) | (arbSize) |             \
         (((transferCount) - 1) << 4) |                                         \
         ((((mode) == UDMA_MODE_MEM_SCATTER_GATHER) ||                          \
@@ -860,11 +860,9 @@ extern void DMA_assignInterrupt(uint32_t interruptNumber, uint32_t channel);
 //! \param interruptNumber identifies which DMA interrupt is to be enabled.
 //! This interrupt should be one of the following:
 //!
-//! - \b DMA_INT0 the master DMA interrupt handler
 //! - \b DMA_INT1 the first configurable DMA interrupt handler
 //! - \b DMA_INT2 the second configurable DMA interrupt handler
 //! - \b DMA_INT3 the third configurable DMA interrupt handler
-//! - \b DMA_INTERR the third configurable DMA interrupt handler
 //!
 //!
 //! \return None.
@@ -879,11 +877,9 @@ extern void DMA_enableInterrupt(uint32_t interruptNumber);
 //! \param interruptNumber identifies which DMA interrupt is to be disabled.
 //! This interrupt should be one of the following:
 //!
-//! - \b DMA_INT0 the master DMA interrupt handler
 //! - \b DMA_INT1 the first configurable DMA interrupt handler
 //! - \b DMA_INT2 the second configurable DMA interrupt handler
 //! - \b DMA_INT3 the third configurable DMA interrupt handler
-//! - \b DMA_INTERR the third configurable DMA interrupt handler
 //!
 //!  Note for interrupts that are associated with a specific DMA channel
 //! (DMA_INT1 - DMA_INT3), this function will also enable that specific
@@ -925,13 +921,13 @@ extern uint32_t DMA_getInterruptStatus(void);
 //! This function is used to clear  the interrupt status of the DMA controller.
 //! Note that only interrupts that weren't assigned to DMA interrupts one
 //! through three using the DMA_assignInterrupt function will be affected by
-//! thisfunctions. For other DMA interrupts, only one channel can be associated
-//! and therefore clearing in unnecessary.
+//! this function. For other DMA interrupts, only one channel can be associated
+//! and therefore clearing is unnecessary.
 //!
 //! \return None
 //
 //*****************************************************************************
-extern void DMA_clearInterruptFlag(uint32_t intChannel);
+extern void DMA_clearInterruptFlag(uint32_t channel);
 
 //*****************************************************************************
 //
@@ -949,7 +945,7 @@ extern void DMA_clearInterruptFlag(uint32_t intChannel);
 //! - \b DMA_INT1 the first configurable DMA interrupt handler
 //! - \b DMA_INT2 the second configurable DMA interrupt handler
 //! - \b DMA_INT3 the third configurable DMA interrupt handler
-//! - \b DMA_INTERR the third configurable DMA interrupt handler
+//! - \b DMA_INTERR the DMA error interrupt handler
 //!
 //! \sa Interrupt_registerInterrupt() for important information about
 //! registering interrupt handlers.
@@ -957,7 +953,7 @@ extern void DMA_clearInterruptFlag(uint32_t intChannel);
 //! \return None.
 //
 //*****************************************************************************
-extern void DMA_registerInterrupt(uint32_t intChannel,
+extern void DMA_registerInterrupt(uint32_t interruptNumber,
                                     void (*intHandler)(void));
 
 //*****************************************************************************
@@ -971,7 +967,7 @@ extern void DMA_registerInterrupt(uint32_t intChannel,
 //! \b the parameters as documented for the function
 //! DMA_registerInterrupt().
 //!
-//! Note fore interrupts that are associated with a specific DMA channel
+//! Note for interrupts that are associated with a specific DMA channel
 //! (DMA_INT1 - DMA_INT3), this function will also disable that specific
 //! channel for interrupts.
 //!
@@ -981,7 +977,7 @@ extern void DMA_registerInterrupt(uint32_t intChannel,
 //! \return None.
 //
 //*****************************************************************************
-extern void DMA_unregisterInterrupt(uint32_t intChannel);
+extern void DMA_unregisterInterrupt(uint32_t interruptNumber);
 
 //*****************************************************************************
 //

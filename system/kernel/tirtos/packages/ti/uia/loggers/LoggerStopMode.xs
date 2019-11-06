@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2017, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -131,7 +131,7 @@ function module$static$init(mod, params)
 function instance$static$init(obj, params)
 {
     var bufSize;
-    var sizeOfInt32 = Program.build.target.stdTypes.t_Int32.size;
+    var sizeOfUArg = Program.build.target.stdTypes.t_Ptr.size;
 
     numInstances += 1;
 
@@ -164,14 +164,14 @@ function instance$static$init(obj, params)
         }
     }
 
-    if (bufSize % Program.build.target.stdTypes.t_Int32.size != 0) {
+    if (bufSize % sizeOfUArg != 0) {
         LoggerStopMode.$logError("The bufSize parameter must be a multiple " +
-                "of a word", LoggerStopMode, "bufSize");
+                "of the size of a pointer", LoggerStopMode, "bufSize");
     }
 
     obj.bufSize = bufSize;
     obj.enabled = true;
-    obj.maxEventSizeInBits32 = params.maxEventSize / sizeOfInt32;
+    obj.maxEventSizeUArgs = params.maxEventSize / sizeOfUArg;
     obj.maxEventSize = params.maxEventSize;
 
     /*

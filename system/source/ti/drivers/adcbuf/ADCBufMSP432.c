@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,6 +44,8 @@
 #define DebugP_LOG_ENABLED 0
 #endif
 
+#define MAX_ADC_FREQ 25000000
+
 #include <ti/devices/DeviceFamily.h>
 
 #include <ti/drivers/ADCBuf.h>
@@ -58,14 +60,19 @@
 /* driverlib header files */
 #include <ti/devices/msp432p4xx/driverlib/adc14.h>
 #include <ti/devices/msp432p4xx/driverlib/cs.h>
+#include <ti/devices/msp432p4xx/driverlib/dma.h>
 #include <ti/devices/msp432p4xx/driverlib/gpio.h>
 #include <ti/devices/msp432p4xx/driverlib/interrupt.h>
 #include <ti/devices/msp432p4xx/driverlib/ref_a.h>
 #include <ti/devices/msp432p4xx/driverlib/rom.h>
 #include <ti/devices/msp432p4xx/driverlib/rom_map.h>
-#include <ti/devices/msp432p4xx/driverlib/sysctl.h>
 #include <ti/devices/msp432p4xx/driverlib/timer_a.h>
-
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+/* MSP432P401xx devices */
+#include <ti/devices/msp432p4xx/driverlib/sysctl.h>
+#else
+#include <ti/devices/msp432p4xx/driverlib/sysctl_a.h>
+#endif
 #define ALL_INTERRUPTS  (0xFFFFFFFFFFFFFFFF)
 #define MAX_ADC_TRIGGER_SOURCE (7)
 
@@ -75,24 +82,38 @@
 #define PinConfigPin(config) (1 << ((config) & 0x7))
 
 void ADCBufMSP432_close(ADCBuf_Handle handle);
-int_fast16_t ADCBufMSP432_control(ADCBuf_Handle handle, uint_fast16_t cmd, void * arg);
+int_fast16_t ADCBufMSP432_control(ADCBuf_Handle handle, uint_fast16_t cmd,
+                                  void * arg);
 void ADCBufMSP432_init(ADCBuf_Handle handle);
-ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle, const ADCBuf_Params *params);
-int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle, ADCBuf_Conversion *conversions, uint_fast8_t channelCount);
+ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
+                                const ADCBuf_Params *params);
+int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle,
+                                  ADCBuf_Conversion *conversions,
+                                  uint_fast8_t channelCount);
 int_fast16_t ADCBufMSP432_convertCancel(ADCBuf_Handle handle);
 uint_fast8_t ADCBufMSP432_getResolution(ADCBuf_Handle handle);
-int_fast16_t ADCBufMSP432_adjustRawValues(ADCBuf_Handle handle, void *sampleBuffer,
+int_fast16_t ADCBufMSP432_adjustRawValues(ADCBuf_Handle handle,
+                                          void *sampleBuffer,
         uint_fast16_t sampleCount, uint32_t adcChannel);
-int_fast16_t ADCBufMSP432_convertAdjustedToMicroVolts(ADCBuf_Handle handle, uint32_t adcChannel,
-        void *adjustedSampleBuffer, uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount);
-
-static void blockingConvertCallback(ADCBuf_Handle handle, ADCBuf_Conversion *conversion,
-   void *activeADCBuffer, uint32_t completedChannel);
-static bool initHw(ADCBufMSP432_Object *object, ADCBufMSP432_HWAttrs const *hwAttrs);
+int_fast16_t ADCBufMSP432_convertAdjustedToMicroVolts(
+        ADCBuf_Handle handle, uint32_t adcChannel, void *adjustedSampleBuffer,
+        uint32_t outputMicroVoltBuffer[], uint_fast16_t sampleCount);
+static void blockingConvertCallback(ADCBuf_Handle handle,
+                                    ADCBuf_Conversion *conversion,
+        void *activeADCBuffer, uint32_t completedChannel);
+static bool initHw(ADCBufMSP432_Object *object,
+                   ADCBufMSP432_HWAttrs const *hwAttrs);
+static int_fast16_t configDMA(ADCBuf_Handle handle,
+        ADCBufMSP432_HWAttrs const *hwAttrs, ADCBuf_Conversion *conversions);
 static void completeConversion(ADCBuf_Handle handle);
-static void primeConvert(ADCBufMSP432_Object *object,
+static int_fast16_t primeConvert(ADCBuf_Handle handle,
         ADCBufMSP432_HWAttrs const *hwAttrs, ADCBuf_Conversion *conversions,
         uint_fast8_t channelCount);
+void ADCBufMSP432DMA_hwiIntFxn(uintptr_t arg);
+void ADCBufMSP432_hwiIntFxn(uintptr_t arg);
+
+/* Semaphore to synchronize ADC access */
+static SemaphoreP_Handle globalMutex;
 
 /* ADC trigger source table */
 static uint32_t adcTriggerTable[MAX_ADC_TRIGGER_SOURCE] = {
@@ -133,7 +154,7 @@ extern const ADCBuf_Params ADCBuf_defaultParams;
 
 
 /*
- *  ======== blockingTransferCallback ========
+ *  ======== blockingConvertCallback ========
  */
 static void blockingConvertCallback(ADCBuf_Handle handle,
         ADCBuf_Conversion *conversion, void *activeADCBuffer,
@@ -161,34 +182,147 @@ static void completeConversion(ADCBuf_Handle handle)
      */
     /* Perform callback in a HWI context. The callback ideally is invoked in
      * SWI instead of HWI */
-    for (i=0; i<object->channelCount; i++) {
+    for (i = 0; i < object->channelCount; i++) {
         object->callBackFxn(handle, &object->conversions[i],
-                (!object->pingpongFlag) ? object->conversions[i].sampleBuffer : object->conversions[i].sampleBufferTwo,
-                object->conversions[i].adcChannel);
+            (!object->pingpongFlag) ? object->conversions[i].sampleBuffer :
+                object->conversions[i].sampleBufferTwo,
+            object->conversions[i].adcChannel);
     }
 
     /* Reset sample index */
     object->conversionSampleIdx = object->conversionSampleCount;
 
-    /* Toggle the pingpong flag */
-    object->pingpongFlag ^= 1;
-
-    if (!object->pingpongFlag) {
-        object->conversionSampleBuf = object->conversions->sampleBuffer;
-    }
-    else {
-        object->conversionSampleBuf = object->conversions->sampleBufferTwo;
-    }
-
     if (object->recurrenceMode == ADCBuf_RECURRENCE_MODE_ONE_SHOT) {
         /* Clear the object conversions if in the one shot mode */
-        object->conversions = NULL;
-
-        /* Remove constraints set after ADC conversion complete only for one-shot mode */
         Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
-        Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
+        object->conversions = NULL;
+    }
+    else {
+        /* Toggle the pingpong flag */
+        object->pingpongFlag ^= 1;
+
+        if (!object->pingpongFlag) {
+            object->conversionSampleBuf = object->conversions->sampleBuffer;
+        }
+        else {
+            object->conversionSampleBuf = object->conversions->sampleBufferTwo;
+        }
+    }
+}
+
+/*
+ *  ======== completeDMAConversion ========
+ */
+static void completeDMAConversion(ADCBuf_Handle handle)
+{
+    ADCBufMSP432_Object        *object = handle->object;
+    uint_fast8_t               i;
+
+    /* If it is multiple channels sampling, the callback function is invoked
+     * until all the channels sampling is finished and callback is called for
+     * each channel.
+     */
+    /* Perform callback in a HWI context. The callback ideally is invoked in
+     * SWI instead of HWI */
+    for (i = 0; i < object->channelCount; i++) {
+        object->callBackFxn(handle, &object->conversions[i],
+            (!object->pingpongFlag) ? object->conversions[i].sampleBuffer :
+                object->conversions[i].sampleBufferTwo,
+            object->conversions[i].adcChannel);
     }
 
+    if (object->recurrenceMode == ADCBuf_RECURRENCE_MODE_CONTINUOUS) {
+        /* Toggle the pingpong flag */
+        object->pingpongFlag ^= 1;
+
+        /* Reset sample index */
+        object->conversionSampleIdx = object->conversionSampleCount;
+
+        /* Toggle the pingpong flag */
+        if (!object->pingpongFlag) {
+            object->conversionSampleBuf = object->conversions->sampleBuffer;
+        }
+        else {
+            object->conversionSampleBuf = object->conversions->sampleBufferTwo;
+        }
+    }
+    else {
+        /* Clear the object conversions if in the one shot mode */
+        object->conversions = NULL;
+        Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+    }
+}
+
+/*
+ *  ======== configDMA ========
+ *  This functions configures the DMA to automatically transfer ADC
+ *  output data into a provided array
+ *
+ *  @pre    ADCBufMSP432_open() has to be called first.
+ *
+ *  @pre    There must not currently be a conversion in progress
+ *
+ *  @pre    Function assumes that the handle and transaction is not NULL
+ *
+ *  @param  object An ADCBufMSP432 handle->object returned from
+ *                 ADCBufMSP432_open()
+ *
+ *  @param  hwAttrs An ADCBufMSP432 handle->hwAttrs from board file
+ *
+ *  @param  conversion A pointer to an ADCBuf_Conversion
+ *
+ */
+static int_fast16_t configDMA(ADCBuf_Handle handle,
+    ADCBufMSP432_HWAttrs const *hwAttrs, ADCBuf_Conversion *conversion)
+{
+    ADCBufMSP432_Object         *object = handle->object;
+    UDMAMSP432_PingPongTransfer *pingpongTransfer =
+                                            &object->pingpongDMATransfer;
+    UDMAMSP432_Transfer *transfer = &object->dmaTransfer;
+
+    /*
+     *  If using one-shot mode, set the transfer mode to basic.
+     *  Otherwise, continue using ping-pong mode for continuous transfer.
+     */
+    if (object->recurrenceMode == ADCBuf_RECURRENCE_MODE_CONTINUOUS) {
+
+        /*
+         *  Setting Control Indexes for DMA transfer object. In this case
+         *  we will set the source of the DMA transfer to ADC14 Memory 0
+         *  and the destination to the destination data array.
+         */
+        pingpongTransfer->dmaChannel = DMA_CH7_ADC14;
+        pingpongTransfer->ctlOptions = UDMA_SIZE_16 | UDMA_SRC_INC_NONE |
+            UDMA_DST_INC_16 | UDMA_ARB_1;
+        pingpongTransfer->dmaTransferSource = (void *) &ADC14->MEM[0];
+        pingpongTransfer->dmaPrimaryDestination = conversion->sampleBuffer;
+        pingpongTransfer->dmaAlternateDestination =
+            conversion->sampleBufferTwo;
+        pingpongTransfer->transferSize = conversion->samplesRequestedCount;
+        pingpongTransfer->transferMode = UDMA_MODE_PINGPONG;
+        /* Initialize PingPong Transfer and return error if unsuccessful */
+        if (!UDMAMSP432_setupPingPongTransfer(pingpongTransfer)) {
+            return (ADCBuf_STATUS_ERROR);
+        }
+    }
+    else {
+        /*
+         * Set control indexes for basic DMA transfer object
+         */
+        transfer->dmaChannel = DMA_CH7_ADC14;
+        transfer->ctlOptions = UDMA_SIZE_16 | UDMA_SRC_INC_NONE |
+            UDMA_DST_INC_16 | UDMA_ARB_1;
+        transfer->dmaTransferSource = (void *) &ADC14->MEM[0];
+        transfer->dmaTransferDestination = conversion->sampleBuffer;
+        transfer->transferSize = conversion->samplesRequestedCount;
+        transfer->structSelect = UDMA_PRI_SELECT;
+        transfer->transferMode = UDMA_MODE_BASIC;
+        if (!UDMAMSP432_setupTransfer((UDMAMSP432_Transfer *) transfer)) {
+            return (ADCBuf_STATUS_ERROR);
+        }
+    }
+
+    return (ADCBuf_STATUS_SUCCESS);
 }
 
 /*
@@ -203,59 +337,95 @@ static bool initHw(ADCBufMSP432_Object *object,
     uint32_t timerCCRAddr;
     PowerMSP432_Freqs         powerFreqs;
 
-    /* Initializing ADC (MODCLK/1/1) */
-    MAP_ADC14_enableModule();
-    MAP_ADC14_initModule(ADC_CLOCKSOURCE_ADCOSC, ADC_PREDIVIDER_1, ADC_DIVIDER_1,
-            0);
-
-    timerAddr = (adcTriggerTable[hwAttrs->adcTimerTriggerSource] & 0xFFFFFF00);
-    timerCCRAddr = (adcTriggerTable[hwAttrs->adcTimerTriggerSource] & 0xFF);
-
-    /* Set trigger source */
-    MAP_ADC14_setSampleHoldTrigger(adcSampleHoldTrigger[hwAttrs->adcTimerTriggerSource], false);
-
     PowerMSP432_getFreqs(Power_getPerformanceLevel(), &powerFreqs);
 
-    if (!TimerMSP432_allocateTimerResource(timerAddr)) {
-        return ADCBuf_STATUS_ERROR;
+    /* Fail if clock frequency is greater than 25MHz */
+    if (((hwAttrs->clockSource == ADCBufMSP432_HSMCLK_CLOCK)
+            && (powerFreqs.HSMCLK > MAX_ADC_FREQ))
+        || ((hwAttrs->clockSource == ADCBufMSP432_SMCLK_CLOCK)
+            && (powerFreqs.SMCLK > MAX_ADC_FREQ))
+        || ((hwAttrs->clockSource == ADCBufMSP432_MCLK_CLOCK)
+            && (powerFreqs.MCLK > MAX_ADC_FREQ))
+        || ((hwAttrs->clockSource == ADCBufMSP432_ACLK_CLOCK)
+            && (powerFreqs.ACLK > MAX_ADC_FREQ))) {
+        return (ADCBuf_STATUS_ERROR);
     }
 
-    /* Init the timer CCR0 for up mode*/
-    Timer_A_UpModeConfig upConfig = {0};
-    upConfig.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
-    upConfig.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
-    upConfig.timerPeriod = powerFreqs.SMCLK/object->samplingFrequency;
-    upConfig.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE;
-    upConfig.captureCompareInterruptEnable_CCR0_CCIE =
-        TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE;
-    upConfig.timerClear = TIMER_A_DO_CLEAR;
+    object->internalSourceMask = 0;
+    /* Initializing ADC */
+    MAP_ADC14_enableModule();
+    MAP_ADC14_initModule(hwAttrs->clockSource, ADC_PREDIVIDER_1, ADC_DIVIDER_1,
+        object->internalSourceMask);
+    if (hwAttrs->adcTriggerSource == ADCBufMSP432_TIMER_TRIGGER) {
+        timerAddr = (adcTriggerTable[hwAttrs->adcTimerTriggerSource]
+            & 0xFFFFFF00);
+        timerCCRAddr = (adcTriggerTable[hwAttrs->adcTimerTriggerSource]
+            & 0xFF);
 
-    MAP_Timer_A_configureUpMode(timerAddr, &upConfig);
+        /* Set trigger source */
+        MAP_ADC14_setSampleHoldTrigger(
+            adcSampleHoldTrigger[hwAttrs->adcTimerTriggerSource],
+            false);
 
-    /* Init compare mode to generate PWM1 */
-    Timer_A_CompareModeConfig compConfig = {0};
-    compConfig.compareRegister = timerCCRAddr;
-    compConfig.compareInterruptEnable = TIMER_A_CAPTURECOMPARE_INTERRUPT_DISABLE;
-    compConfig.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;
-    compConfig.compareValue = upConfig.timerPeriod/2; /* 50% duty cycle*/
-    MAP_Timer_A_initCompare(timerAddr, &compConfig);
+        if (!TimerMSP432_allocateTimerResource(timerAddr)) {
+            return (ADCBuf_STATUS_ERROR);
+        }
 
-    object->timerAddr = timerAddr;
+        /* Init the timer CCR0 for up mode*/
+        Timer_A_UpModeConfig upConfig = {0};
+        upConfig.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
+        upConfig.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
+        upConfig.timerPeriod = powerFreqs.SMCLK / object->samplingFrequency;
+        upConfig.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE;
+        upConfig.captureCompareInterruptEnable_CCR0_CCIE =
+            TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE;
+        upConfig.timerClear = TIMER_A_DO_CLEAR;
 
-    /* Set sample/hold time */
-    MAP_ADC14_setSampleHoldTime(object->samplingDuration, object->samplingDuration);
+        /* Init compare mode to generate PWM1 */
+        Timer_A_CompareModeConfig compConfig = {0};
+        compConfig.compareRegister = timerCCRAddr;
+        compConfig.compareInterruptEnable =
+            TIMER_A_CAPTURECOMPARE_INTERRUPT_DISABLE;
+        compConfig.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;
+        if ((hwAttrs->timerDutyCycle != 0) &&
+            (hwAttrs->timerDutyCycle) < 100) {
+            /* duty cycle */
+            compConfig.compareValue = upConfig.timerPeriod *
+                (hwAttrs->timerDutyCycle) / 100;
+        }
+        else {
+            /* default duty cycle 50% */
+            compConfig.compareValue = upConfig.timerPeriod / 2;
+        }
 
-    return ADCBuf_STATUS_SUCCESS;
+        /* timer has additional clock for transition from N to 0. */
+        upConfig.timerPeriod--;
+        MAP_Timer_A_configureUpMode(timerAddr, &upConfig);
+        MAP_Timer_A_initCompare(timerAddr, &compConfig);
 
+        object->timerAddr = timerAddr;
+    }
+    else {
+        /* Set trigger source */
+        MAP_ADC14_setSampleHoldTrigger(ADC_TRIGGER_ADCSC, false);
+    }
+    if (hwAttrs->adcTriggerSource == ADCBufMSP432_SOFTWARE_AUTOMATIC_TRIGGER) {
+        /* Set sample/hold time */
+        MAP_ADC14_setSampleHoldTime(object->samplingDuration,
+                                    object->samplingDuration);
+    }
+
+    return (ADCBuf_STATUS_SUCCESS);
 }
 
 /*
  *  ======== primeConvert ========
  */
-static void primeConvert(ADCBufMSP432_Object *object,
+static int_fast16_t primeConvert(ADCBuf_Handle handle,
         ADCBufMSP432_HWAttrs const *hwAttrs, ADCBuf_Conversion *conversions,
         uint_fast8_t channelCount)
 {
+    ADCBufMSP432_Object  *object = handle->object;
     uint32_t channelInt;
     uint32_t memory = ADC_MEM0;
     uint_fast8_t i = 0;
@@ -265,31 +435,58 @@ static void primeConvert(ADCBufMSP432_Object *object,
     /* Store the channel count into object */
     object->channelCount = channelCount;
 
-    /* Config GPIOs for ADC channel analog in*/
+    /* For multiple channels sampling, ref source and sampling duration should
+     * be same */
+    uint32_t refSource =
+        hwAttrs->channelSetting[conversions[0].adcChannel].refSource;
+
     for (i = 0; i < channelCount; i++){
-        /* Config GPIO for ADC channel analog input */
-        MAP_GPIO_setAsPeripheralModuleFunctionInputPin(
-         PinConfigPort(hwAttrs->channelSetting[i].adcPin),
-         PinConfigPin(hwAttrs->channelSetting[i].adcPin),
-         PinConfigModuleFunction(hwAttrs->channelSetting[i].adcPin));
+        if (refSource !=
+            hwAttrs->channelSetting[conversions[i].adcChannel].refSource) {
+            return (ADCBuf_STATUS_ERROR);
+        }
     }
 
-    //TODO: For multiple channels sampling, ref source and sampling duration should be same
     /* Set reference voltage for current conversion */
-    uint32_t refSource = hwAttrs->channelSetting[conversions[0].adcChannel].refSource;
-    uint32_t refVolts = hwAttrs->channelSetting[conversions[0].adcChannel].refVoltage;
-    uint16_t refVoltsDef = 0;
+    uint32_t refVolts =
+        hwAttrs->channelSetting[conversions[0].adcChannel].refVoltage;
+    uint16_t refVoltsDef;
+    uint32_t sysRef;
+    int_fast16_t ret = ADCBuf_STATUS_SUCCESS;
+
+    refVoltsDef = REF_A_VREF2_5V;
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+    sysRef = SYSCTL_2_5V_REF;
+#else
+    sysRef = SYSCTL_A_2_5V_REF;
+#endif
+
     if (refSource == ADCBufMSP432_VREFPOS_INTBUF_VREFNEG_VSS) {
 
         switch(refVolts) {
         case 1200000:
             refVoltsDef = REF_A_VREF1_2V;
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+            sysRef = SYSCTL_1_2V_REF;
+#else
+            sysRef = SYSCTL_A_1_2V_REF;
+#endif
             break;
         case 1450000:
             refVoltsDef = REF_A_VREF1_45V;
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+            sysRef = SYSCTL_1_45V_REF;
+#else
+            sysRef = SYSCTL_A_1_45V_REF;
+#endif
             break;
         case 2500000:
             refVoltsDef = REF_A_VREF2_5V;
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+            sysRef = SYSCTL_2_5V_REF;
+#else
+            sysRef = SYSCTL_A_2_5V_REF;
+#endif
             break;
         default:
             break;
@@ -298,6 +495,64 @@ static void primeConvert(ADCBufMSP432_Object *object,
         MAP_REF_A_setReferenceVoltage(refVoltsDef);
         MAP_REF_A_enableReferenceVoltage();
     }
+
+    object->internalSourceMask = 0;
+
+    /* Config GPIOs and special modes for ADC channel analog in */
+    for (i = 0; i < channelCount; i++) {
+        /* Check if in temperature mode and initialize accordingly */
+        if (hwAttrs->channelSetting[conversions[i].adcChannel].adcInternalSource
+                == ADCBufMSP432_TEMPERATURE_MODE) {
+            object->internalSourceMask |= ADCBufMSP432_TEMPERATURE_MODE;
+            MAP_REF_A_enableTempSensor();
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+            object->tempCal30 = MAP_SysCtl_getTempCalibrationConstant(sysRef,
+                SYSCTL_30_DEGREES_C);
+            object->tempCal85 = MAP_SysCtl_getTempCalibrationConstant(sysRef,
+                SYSCTL_85_DEGREES_C);
+#else
+            object->tempCal30 = MAP_SysCtl_A_getTempCalibrationConstant(sysRef,
+                SYSCTL_A_30_DEGREES_C);
+            object->tempCal85 = MAP_SysCtl_A_getTempCalibrationConstant(sysRef,
+                SYSCTL_A_85_DEGREES_C);
+#endif
+            object->tempCalDifference = object->tempCal85 - object->tempCal30;
+        }
+        /* Check if in battery monitor mode and set channel mask
+           for initialization */
+        else if (hwAttrs->
+                channelSetting[conversions[i].adcChannel].adcInternalSource ==
+                ADCBufMSP432_BATTERY_MONITOR_MODE) {
+            object->internalSourceMask |= ADCBufMSP432_BATTERY_MONITOR_MODE;
+        }
+        /* Initialize differential pin if in differential mode */
+        else if (hwAttrs->
+                channelSetting[conversions[i].adcChannel].adcDifferentialPin !=
+                ADCBufMSP432_PIN_NONE) {
+            MAP_GPIO_setAsPeripheralModuleFunctionInputPin(
+                PinConfigPort(hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcPin),
+                PinConfigPin(hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcPin)
+                    | PinConfigPin(hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcDifferentialPin
+                ),
+                GPIO_TERTIARY_MODULE_FUNCTION);
+        }
+        else {
+            /* Config GPIO for ADC channel analog input */
+            MAP_GPIO_setAsPeripheralModuleFunctionInputPin(
+                PinConfigPort(hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcPin),
+                PinConfigPin(hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcPin),
+                PinConfigModuleFunction(hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcPin));
+        }
+   }
+    /* Update CTL registers for temperature and/or battery monitor modes */
+    MAP_ADC14_initModule(hwAttrs->clockSource, ADC_PREDIVIDER_1, ADC_DIVIDER_1,
+        object->internalSourceMask);
 
     /* ADC single channel sampling */
     if (channelCount == 1) {
@@ -310,39 +565,101 @@ static void primeConvert(ADCBufMSP432_Object *object,
 
         refSource = hwAttrs->channelSetting[conversions->adcChannel].refSource;
 
-        MAP_ADC14_configureConversionMemory(ADC_MEM0,
+        /* Configure channels for temperature mode */
+        if (hwAttrs->channelSetting[conversions->adcChannel].adcInternalSource
+                == ADCBufMSP432_TEMPERATURE_MODE) {
+            MAP_ADC14_configureConversionMemory(ADC_MEM0,
                 refSource,
-                conversions->adcChannel, false);
+                ADC_INPUT_A22,
+                hwAttrs->channelSetting[conversions[0].adcChannel].adcInputMode
+            );
+        }
+        /* Configure channels for battery monitor mode */
+        else if (hwAttrs->
+                channelSetting[conversions->adcChannel].adcInternalSource ==
+                ADCBufMSP432_BATTERY_MONITOR_MODE) {
+            MAP_ADC14_configureConversionMemory(ADC_MEM0,
+                refSource,
+                ADC_INPUT_A23,
+                hwAttrs->channelSetting[conversions[0].adcChannel].adcInputMode
+            );
+        }
+        /* Configure channels for regular ADC operation */
+        else {
+            MAP_ADC14_configureConversionMemory(ADC_MEM0,
+                refSource,
+                PinConfigChannel(hwAttrs->
+                    channelSetting[conversions[0].adcChannel].adcPin),
+                hwAttrs->channelSetting[conversions[0].adcChannel].adcInputMode
+            );
+        }
 
         channelInt = ADC_INT0;
+        if (hwAttrs->channelSetting[conversions[0].adcChannel].adcInputMode ==
+                ADCBufMSP432_DIFFERENTIAL) {
+            MAP_ADC14_setResultFormat(ADC_SIGNED_BINARY);
+        }
 
         /* Store the samples count into object */
         object->conversionSampleBuf = conversions->sampleBuffer;
         object->conversionSampleCount = conversions->samplesRequestedCount;
         object->conversionSampleIdx = conversions->samplesRequestedCount;
     }
-    else { /* ADC multiple channel sampling */
+    else {
+        /* ADC multiple channel sampling */
         if (conversions->samplesRequestedCount > 1) {
             MAP_ADC14_configureMultiSequenceMode(memory,
-                                                 memory<<(channelCount-1),
-                                                 true);
+                memory << (channelCount - 1), true);
         }
         else {
             MAP_ADC14_configureMultiSequenceMode(memory,
-                                                 memory<<(channelCount-1),
-                                                 false);
+                memory << (channelCount - 1), false);
         }
 
-        for(i = 0; i < channelCount; i++, memory=memory<<1) {
+        for (i = 0; i < channelCount; i++, memory = memory << 1) {
 
-            refSource = hwAttrs->channelSetting[conversions[i].adcChannel].refSource;
+            refSource =
+                hwAttrs->channelSetting[conversions[i].adcChannel].refSource;
 
-            MAP_ADC14_configureConversionMemory(memory,
+            /* If channel in temperature mode, set input channel to A22 */
+            if (hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcInternalSource
+                    == ADCBufMSP432_TEMPERATURE_MODE) {
+                MAP_ADC14_configureConversionMemory(memory, refSource,
+                    ADC_INPUT_A22,
+                    hwAttrs->
+                        channelSetting[conversions[i].adcChannel].adcInputMode
+                );
+            }
+            /* If channel in battery monitor mode, set input channel to A23 */
+            else if (hwAttrs->
+                    channelSetting[conversions[i].adcChannel].adcInternalSource
+                    == ADCBufMSP432_BATTERY_MONITOR_MODE) {
+                MAP_ADC14_configureConversionMemory(memory,
                     refSource,
-                    conversions[i].adcChannel, false);
+                    ADC_INPUT_A23,
+                    hwAttrs->
+                        channelSetting[conversions[i].adcChannel].adcInputMode
+                );
+            }
+            /* Otherwise use user specified ADC channel */
+            else {
+                MAP_ADC14_configureConversionMemory(memory, refSource,
+                    PinConfigChannel(
+                    hwAttrs->channelSetting[conversions[i].adcChannel].adcPin),
+                    hwAttrs->
+                        channelSetting[conversions[i].adcChannel].adcInputMode
+                );
+            }
+
+            /* If using differential mode, set the results to signed format */
+            if (hwAttrs->channelSetting[conversions[i].adcChannel].adcInputMode
+                    == ADCBufMSP432_DIFFERENTIAL) {
+                MAP_ADC14_setResultFormat(ADC_SIGNED_BINARY);
+            }
         }
 
-        channelInt = 1<<(channelCount-1);
+        channelInt = 1 << (channelCount - 1);
 
         /* Store the samples count into object */
         object->conversionSampleCount = conversions[0].samplesRequestedCount;
@@ -350,30 +667,49 @@ static void primeConvert(ADCBufMSP432_Object *object,
     }
 
     /* Configuring Sample Timer */
-    MAP_ADC14_enableSampleTimer(ADC_AUTOMATIC_ITERATION);
-    //MAP_ADC14_enableSampleTimer(ADC_MANUAL_ITERATION);
+    if (ADCBufMSP432_SOFTWARE_AUTOMATIC_TRIGGER == hwAttrs->adcTriggerSource) {
+        MAP_ADC14_enableSampleTimer(ADC_AUTOMATIC_ITERATION);
+    }
+    else {
+        MAP_ADC14_disableSampleTimer();
+    }
 
     /* Enabling interrupts */
-    MAP_ADC14_clearInterruptFlag(channelInt);
-    MAP_ADC14_enableInterrupt(channelInt);
-
+    if (!hwAttrs->useDMA) {
+        MAP_ADC14_clearInterruptFlag(channelInt);
+        MAP_ADC14_enableInterrupt(channelInt);
+    }
+    else {
+        ret = configDMA(handle, hwAttrs, conversions);
+    }
     /* Enabling Conversion */
     MAP_ADC14_enableConversion();
+    if (ADCBufMSP432_SOFTWARE_AUTOMATIC_TRIGGER ==
+            hwAttrs->adcTriggerSource) {
+        MAP_ADC14_toggleConversionTrigger();
+    }
 
     /* Enabling Interrupts */
-    MAP_Interrupt_enableInterrupt(INT_ADC14);
+    if (!hwAttrs->useDMA) {
+        MAP_Interrupt_enableInterrupt(INT_ADC14);
+    }
     MAP_Interrupt_enableMaster();
 
+    if (hwAttrs->adcTriggerSource == ADCBufMSP432_TIMER_TRIGGER) {
     /* Trigger conversion either from Timer PWM */
     MAP_Timer_A_startCounter(object->timerAddr,
             TIMER_A_UP_MODE);
+    }
+
+    return (ret);
 }
 
 /*
  *  ======== ADCBufCCMSP432_adjustRawValues ========
  */
 int_fast16_t ADCBufMSP432_adjustRawValues(ADCBuf_Handle handle,
-    void *sampleBuffer, uint_fast16_t sampleCount, uint32_t adcChannel)
+    void *sampleBuffer, uint_fast16_t sampleCount,
+    uint32_t adcChannel)
 {
     /* This hardware peripheral does not support Calibration */
     return (ADCBuf_STATUS_UNSUPPORTED);
@@ -384,27 +720,38 @@ int_fast16_t ADCBufMSP432_adjustRawValues(ADCBuf_Handle handle,
  */
 void ADCBufMSP432_close(ADCBuf_Handle handle)
 {
+    uintptr_t         key;
     ADCBufMSP432_Object        *object = handle->object;
     ADCBufMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
-    uint32_t timerAddr = (adcTriggerTable[hwAttrs->adcTimerTriggerSource] & 0xFFFFFF00);
+    uint32_t timerAddr = (adcTriggerTable[hwAttrs->adcTimerTriggerSource]
+        & 0xFFFFFF00);
 
+    key = HwiP_disable();
     /* Disable interrupts & the ADC */
     MAP_ADC14_disableInterrupt(ALL_INTERRUPTS);
     MAP_ADC14_disableModule();
+
+    HwiP_restore(key);
 
     /* Destruct driver resources */
     if (object->hwiHandle) {
         HwiP_delete(object->hwiHandle);
     }
-    if (object->mutex) {
-        SemaphoreP_delete(object->mutex);
-    }
+
     if (object->convertComplete) {
         SemaphoreP_delete(object->convertComplete);
     }
 
+    if (hwAttrs->useDMA) {
+        if (object->dmaHandle) {
+            UDMAMSP432_close(object->dmaHandle,
+                DMA_CH7_ADC14, hwAttrs->dmaIntNum);
+        }
+    }
     /* Freeing up the resource with the Timer driver */
-    TimerMSP432_freeTimerResource(timerAddr);
+    if (hwAttrs->adcTriggerSource == ADCBufMSP432_TIMER_TRIGGER) {
+        TimerMSP432_freeTimerResource(timerAddr);
+    }
 
     object->isOpen = false;
 
@@ -414,10 +761,54 @@ void ADCBufMSP432_close(ADCBuf_Handle handle)
 /*
  *  ======== ADCBufMSP432_control ========
  */
-int_fast16_t ADCBufMSP432_control(ADCBuf_Handle handle, uint_fast16_t cmd, void * arg)
+int_fast16_t ADCBufMSP432_control(ADCBuf_Handle handle,
+    uint_fast16_t cmd, void * arg)
 {
-    /* No implementation yet */
-    return (ADCBuf_STATUS_UNDEFINEDCMD);
+    ADCBufMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
+    int_fast16_t status = ADCBuf_STATUS_ERROR;
+    ADCBufMSP432_Object *object = handle->object;
+
+    DebugP_assert(handle);
+
+    switch (cmd) {
+        case ADCBufMSP432_CMD_ENTER_ADC_ULTRA_LOW_POWER_MODE:
+            if (MAP_ADC14_initModule(ADC_CLOCKSOURCE_ADCOSC,
+                    ADC_PREDIVIDER_1, ADC_DIVIDER_1,
+                    object->internalSourceMask)) {
+                if (MAP_ADC14_enableReferenceBurst()) {
+                    if (MAP_ADC14_setPowerMode(ADC_ULTRA_LOW_POWER_MODE)) {
+                        MAP_ADC14_setResolution(ADC_8BIT);
+                        status = ADCBuf_STATUS_SUCCESS;
+                    }
+                }
+            }
+            if(ADCBuf_STATUS_SUCCESS != status) {
+                MAP_ADC14_initModule(hwAttrs->clockSource, ADC_PREDIVIDER_1,
+                    ADC_DIVIDER_1, object->internalSourceMask);
+                MAP_ADC14_disableReferenceBurst();
+            }
+            break;
+        case ADCBufMSP432_CMD_EXIT_ADC_ULTRA_LOW_POWER_MODE:
+            if (MAP_ADC14_initModule(hwAttrs->clockSource, ADC_PREDIVIDER_1,
+                    ADC_DIVIDER_1, object->internalSourceMask)) {
+                if (MAP_ADC14_disableReferenceBurst()) {
+                    if (MAP_ADC14_setPowerMode(ADC_UNRESTRICTED_POWER_MODE)) {
+                        MAP_ADC14_setResolution(ADC_14BIT);
+                        status = ADCBuf_STATUS_SUCCESS;
+                    }
+                }
+            }
+            if(ADCBuf_STATUS_SUCCESS != status) {
+                MAP_ADC14_initModule(ADC_CLOCKSOURCE_ADCOSC, ADC_PREDIVIDER_1,
+                    ADC_DIVIDER_1, object->internalSourceMask);
+                MAP_ADC14_enableReferenceBurst();
+            }
+            break;
+        default:
+            status = ADCBuf_STATUS_UNDEFINEDCMD;
+            break;
+    }
+    return (status);
 }
 
 /*
@@ -432,7 +823,7 @@ int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle,
     int_fast16_t ret;
 
     /* Acquire the lock for this particular ADC handle */
-    SemaphoreP_pend(object->mutex, SemaphoreP_WAIT_FOREVER);
+    SemaphoreP_pend(globalMutex, SemaphoreP_WAIT_FOREVER);
 
     /*
      * Set power constraints to keep peripheral active during transfer
@@ -442,7 +833,10 @@ int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle,
     Power_setConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
     /* Execute core conversion */
-    primeConvert(object, hwAttrs, conversions, channelCount);
+    ret = primeConvert(handle, hwAttrs, conversions, channelCount);
+    if (ret == ADCBuf_STATUS_ERROR) {
+        return (ret);
+    }
 
     if (object->returnMode == ADCBuf_RETURN_MODE_BLOCKING) {
         DebugP_log0("ADCBuf: Pending on transferComplete semaphore");
@@ -454,12 +848,10 @@ int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle,
         if (SemaphoreP_OK != SemaphoreP_pend(object->convertComplete,
                     object->semaphoreTimeout)) {
             DebugP_log0("ADCBuf: Convert timeout");
-
             ret = ADCBuf_STATUS_ERROR;
         }
         else {
             DebugP_log0("ADCBuf: Convert completed");
-
             ret = ADCBuf_STATUS_SUCCESS;
         }
     }
@@ -469,9 +861,9 @@ int_fast16_t ADCBufMSP432_convert(ADCBuf_Handle handle,
     }
 
     /* Release the lock for this particular ADC handle */
-    SemaphoreP_post(object->mutex);
+    SemaphoreP_post(globalMutex);
 
-    /* Return the number of bytes transfered by the ADC */
+    /* Return the number of bytes transferred by the ADC */
     return (ret);
 }
 
@@ -489,22 +881,19 @@ int_fast16_t ADCBufMSP432_convertAdjustedToMicroVolts(ADCBuf_Handle handle,
     uint16_t *adjustedRawSampleBuf = (uint16_t *) adjustedSampleBuffer;
 
     for (i = 0; i < sampleCount; i++) {
-
         if (adjustedRawSampleBuf[i] == 0x3FFF) {
-
             outputMicroVoltBuffer[i] = refVoltage;
         }
         else if (adjustedRawSampleBuf[i] == 0) {
-
             outputMicroVoltBuffer[i] = adjustedRawSampleBuf[i];
         }
         else {
-
-            outputMicroVoltBuffer[i] = ((uint32_t)adjustedRawSampleBuf[i] * (refVoltage / 0x4000));
+            outputMicroVoltBuffer[i] = ((uint32_t)adjustedRawSampleBuf[i] *
+                (refVoltage * 10 / 0x4000)) / 10;
         }
     }
 
-    return ADCBuf_STATUS_SUCCESS;
+    return (ADCBuf_STATUS_SUCCESS);
 }
 
 /*
@@ -517,8 +906,9 @@ int_fast16_t ADCBufMSP432_convertCancel(ADCBuf_Handle handle)
     MAP_ADC14_clearInterruptFlag(ALL_INTERRUPTS);
 
     completeConversion(handle);
+    Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
 
-    return ADCBuf_STATUS_SUCCESS;
+    return (ADCBuf_STATUS_SUCCESS);
 }
 
 /*
@@ -526,7 +916,7 @@ int_fast16_t ADCBufMSP432_convertCancel(ADCBuf_Handle handle)
  */
 uint_fast8_t ADCBufMSP432_getResolution(ADCBuf_Handle handle)
 {
-    return 14;
+    return (14);
 }
 
 /*
@@ -538,58 +928,83 @@ void ADCBufMSP432_hwiIntFxn(uintptr_t arg)
     uint_fast8_t              i;
     ADCBufMSP432_Object       *object = ((ADCBuf_Handle) arg)->object;
     uint16_t                  *sampleBuffer;
+    ADCBufMSP432_HWAttrs const *hwAttrs = ((ADCBuf_Handle) arg)->hwAttrs;
 
     /* Get the interrupt status of the ADC controller */
     intStatus = MAP_ADC14_getEnabledInterruptStatus();
     MAP_ADC14_clearInterruptFlag(intStatus);
 
     if (object->channelCount == 1) {
-
         if (ADC_INT0 & intStatus) {
             *(object->conversionSampleBuf) = MAP_ADC14_getResult(ADC_MEM0);
             object->conversionSampleBuf++;
             object->conversionSampleIdx--;
         }
     }
-    else { /* Multiple channels sampling */
+    else {
+        /* Multiple channels sampling */
+        if ((1 << (object->channelCount - 1)) & intStatus) {
+            /* Current round of sequential sampling */
+            uint_fast16_t sampleIdx = object->conversionSampleCount -
+                object->conversionSampleIdx;
 
-         if ((1<<(object->channelCount - 1)) & intStatus) {
-             /* Current round of sequential sampling */
-             uint_fast16_t sampleIdx = object->conversionSampleCount - object->conversionSampleIdx;
-
-             for (i=0; i<object->channelCount; i++) {
-                 sampleBuffer = (!object->pingpongFlag) ?
-                         (uint16_t*)(object->conversions[i].sampleBuffer) : (uint16_t*)(object->conversions[i].sampleBufferTwo);
-
-                 sampleBuffer[sampleIdx] = MAP_ADC14_getResult(ADC_MEM0<<i);
-             }
-
+            for (i = 0; i < object->channelCount; i++) {
+                sampleBuffer = (!object->pingpongFlag) ?
+                    (uint16_t *)(object->conversions[i].sampleBuffer) :
+                    (uint16_t *)(object->conversions[i].sampleBufferTwo);
+                sampleBuffer[sampleIdx] = MAP_ADC14_getResult(ADC_MEM0 << i);
+            }
             object->conversionSampleIdx--;
         }
     }
 
     /* ADC conversion complete */
     if (object->conversionSampleIdx == 0) {
-
         if (object->recurrenceMode == ADCBuf_RECURRENCE_MODE_ONE_SHOT) {
             /* Stop sampling */
             MAP_ADC14_disableConversion();
 
-            /* Remedy race condition causing potential unintended re-entry into the hwiIntFxn */
+            /* Remedy race condition causing potential unintended re-entry
+                into the hwiIntFxn */
             HwiP_clearInterrupt(INT_ADC14);
 
             intStatus = MAP_ADC14_getEnabledInterruptStatus();
             MAP_ADC14_clearInterruptFlag(intStatus);
 
-            /* Get last result after sampling is disabled */
-            if (object->channelCount == 1) {
-                MAP_ADC14_getResult(ADC_MEM0);
-            }
-            else {
-                MAP_ADC14_getResult(ADC_MEM0<<(object->channelCount-1));
+            if (hwAttrs->adcTriggerSource == ADCBufMSP432_TIMER_TRIGGER) {
+                /* Trigger conversion either from Timer PWM */
+                MAP_Timer_A_stopTimer(object->timerAddr);
             }
         }
         completeConversion((ADCBuf_Handle) arg);
+    }
+}
+/*
+ *  ======== ADCBufMSP432DMA_hwiIntFxn ========
+ */
+void ADCBufMSP432DMA_hwiIntFxn(uintptr_t arg)
+{
+    ADCBufMSP432_Object       *object = ((ADCBuf_Handle) arg)->object;
+    ADCBufMSP432_HWAttrs const *hwAttrs = ((ADCBuf_Handle) arg)->hwAttrs;
+
+    completeDMAConversion((ADCBuf_Handle) arg);
+    if (object->recurrenceMode == ADCBuf_RECURRENCE_MODE_CONTINUOUS) {
+
+        /* Switch between primary and alternate buffers with DMA's PingPong
+            mode */
+        UDMAMSP432_PingPongToggleBuffer(&object->pingpongDMATransfer);
+
+        MAP_DMA_enableChannel(DMA_CH7_ADC14 & 0x3f);
+    }
+    else {
+        /* Stop sampling if in One-Shot Mode */
+        MAP_DMA_disableChannel(DMA_CH7_ADC14 & 0x3f);
+        MAP_ADC14_disableModule();
+        MAP_ADC14_disableConversion();
+        if (hwAttrs->adcTriggerSource == ADCBufMSP432_TIMER_TRIGGER) {
+            /* Trigger conversion either from Timer PWM */
+            MAP_Timer_A_stopTimer(object->timerAddr);
+        }
     }
 }
 
@@ -598,6 +1013,42 @@ void ADCBufMSP432_hwiIntFxn(uintptr_t arg)
  */
 void ADCBufMSP432_init(ADCBuf_Handle handle)
 {
+    ADCBufMSP432_Object        *object;
+
+    ADCBufMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
+    uintptr_t                   key;
+    SemaphoreP_Handle           sem;
+
+    /* Speculatively create a binary semaphore for thread safety */
+    sem = SemaphoreP_createBinary(1);
+    /* sem == NULL will be detected in 'open' */
+
+    key = HwiP_disable();
+
+    /* Create Semaphore for ADC0 */
+    if (globalMutex == NULL) {
+        /* Use the binary sem created above */
+        globalMutex = sem;
+
+        HwiP_restore(key);
+    }
+    else {
+        /* Init already called */
+        HwiP_restore(key);
+
+        if (sem) {
+            /* Delete unused Semaphore */
+            SemaphoreP_delete(sem);
+        }
+    }
+
+    /* Get the pointer to the object */
+    object = handle->object;
+    /* Mark the object as available */
+    object->isOpen = false;
+    if (hwAttrs->useDMA) {
+        UDMAMSP432_init();
+    }
 }
 
 /*
@@ -607,13 +1058,19 @@ ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
                                 const ADCBuf_Params *params)
 {
     uintptr_t                key;
-    union {
-        SemaphoreP_Params    semParams;
-        HwiP_Params          hwiParams;
-    } portsParams;
+    HwiP_Params          hwiParams;
 
     ADCBufMSP432_Object        *object = handle->object;
     ADCBufMSP432_HWAttrs const *hwAttrs = handle->hwAttrs;
+
+    if (globalMutex == NULL){
+        ADCBufMSP432_init(handle);
+        if (globalMutex == NULL) {
+            DebugP_log0("ADCBuf: mutex Semaphore_create() failed:.");
+            ADCBufMSP432_close(handle);
+            return (NULL);
+        }
+    }
 
     /* Use defaults if params are NULL. */
     if (params == NULL) {
@@ -630,8 +1087,8 @@ ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
         }
     }
     /* Check that if it is the callback mode when using continuous mode */
-    DebugP_assert((ADCBuf_RECURRENCE_MODE_CONTINUOUS == params->recurrenceMode) &&
-            (ADCBuf_RETURN_MODE_CALLBACK == params->returnMode));
+    DebugP_assert((ADCBuf_RECURRENCE_MODE_CONTINUOUS == params->recurrenceMode)
+        && (ADCBuf_RETURN_MODE_CALLBACK == params->returnMode));
 
     if (params->recurrenceMode == ADCBuf_RECURRENCE_MODE_CONTINUOUS) {
         if (params->returnMode != ADCBuf_RETURN_MODE_CALLBACK) {
@@ -658,30 +1115,35 @@ ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
     Power_setConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
     /* Create Hwi object for ADC */
-    HwiP_Params_init(&(portsParams.hwiParams));
-    portsParams.hwiParams.arg = (uintptr_t) handle;
-    portsParams.hwiParams.priority = hwAttrs->intPriority;
-    object->hwiHandle = HwiP_create(INT_ADC14, ADCBufMSP432_hwiIntFxn,
-        &(portsParams.hwiParams));
-    if (!object->hwiHandle) {
-        DebugP_log0("ADCBuf: HwiP_create() failed.");
-        Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
-        ADCBufMSP432_close(handle);
-        return (NULL);
+    if (!hwAttrs->useDMA) {
+        HwiP_Params_init(&hwiParams);
+        hwiParams.arg = (uintptr_t) handle;
+        hwiParams.priority = hwAttrs->intPriority;
+        object->hwiHandle = HwiP_create(INT_ADC14, ADCBufMSP432_hwiIntFxn,
+            &hwiParams);
+        if (!object->hwiHandle) {
+            DebugP_log0("ADCBuf: HwiP_create() failed.");
+            Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
+            ADCBufMSP432_close(handle);
+            return (NULL);
+        }
     }
 
-    /*
-     * Create threadsafe handles for this ADC peripheral. Semaphore ensures
-     * exclusive access to the ADC peripheral.
-     */
-    SemaphoreP_Params_init(&(portsParams.semParams));
-    (portsParams.semParams).mode = SemaphoreP_Mode_BINARY;
-    object->mutex = SemaphoreP_create(1, &(portsParams.semParams));
-    if (!object->mutex) {
-        DebugP_log0("ADCBuf: mutex Semaphore_create() failed:.");
-        Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
-        ADCBufMSP432_close(handle);
-        return (NULL);
+    if (hwAttrs->useDMA) {
+        object->dmaHandle = UDMAMSP432_open(
+            DMA_CH7_ADC14,
+            hwAttrs->dmaIntNum,
+            hwAttrs->intPriority,
+            ADCBufMSP432DMA_hwiIntFxn,
+            (uintptr_t) handle
+        );
+        if (object->dmaHandle == NULL) {
+            DebugP_log1("ADCBuf:(%p) UDMAMSP432_open() failed.",
+                hwAttrs->baseAddr);
+            Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
+            ADCBufMSP432_close(handle);
+            return (NULL);
+        }
     }
 
     /* Configure driver to Callback or Blocking operating mode */
@@ -691,7 +1153,7 @@ ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
     }
     else {
         /* Semaphore to block task for the duration of the ADC convert */
-        object->convertComplete = SemaphoreP_create(0, &(portsParams.semParams));
+        object->convertComplete = SemaphoreP_createBinary(0);
         if (!object->convertComplete) {
             DebugP_log0("ADCBuf: convert SemaphoreP_create() failed.");
             Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
@@ -703,7 +1165,7 @@ ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
     }
 
     /*
-     * Store ADC parameters & initialize peripheral.  These are used to
+     * Store ADC parameters & initialize peripheral. These are used to
      * re/initialize the peripheral when opened or changing performance level.
      */
     object->pingpongFlag = 0;
@@ -715,21 +1177,34 @@ ADCBuf_Handle ADCBufMSP432_open(ADCBuf_Handle handle,
     /* Check the ExtensionParam is set */
     if (params->custom) {
         /* If MSP432 specific params were specified, use them */
-        object->samplingDuration = ((ADCBufMSP432_ParamsExtension *)(params->custom))->samplingDuration;
+        object->samplingDuration =
+            ((ADCBufMSP432_ParamsExtension *)(params->custom))->
+            samplingDuration;
     }
     else {
         /* Initialise MSP432 specific settings to defaults */
-        object->samplingDuration = ADCBufMSP432_SAMPLING_DURATION_PULSE_WIDTH_4;
+        object->samplingDuration = ADCBufMSP432_SamplingDuration_PULSE_WIDTH_4;
     }
 
     /* Initialize ADC related hardware */
     if (ADCBuf_STATUS_SUCCESS != initHw(object, hwAttrs)) {
-        /* Allow performance level changes  */
+        if (hwAttrs->useDMA) {
+            UDMAMSP432_close(object->dmaHandle,
+                DMA_CH7_ADC14,
+                hwAttrs->dmaIntNum);
+            object->dmaHandle = NULL;
+        }
+        else {
+            HwiP_delete(object->hwiHandle);
+            object->hwiHandle = NULL;
+        }
+
+        /* Allow performance level changes */
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
         return (NULL);
     }
 
-    /* Allow performance level changes  */
+    /* Allow performance level changes */
     Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
 
     DebugP_log0("ADCBuf: Object opened.");

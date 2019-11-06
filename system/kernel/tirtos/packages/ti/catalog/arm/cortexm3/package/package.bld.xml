@@ -16,6 +16,7 @@
         <module name="CC26xx"/>
         <module name="F28M35x"/>
         <module name="Tiva"/>
+        <module name="CortexM"/>
         <module name="CortexM3"/>
         <module name="TMS320TI813X"/>
         <module name="TMS320TI811X"/>

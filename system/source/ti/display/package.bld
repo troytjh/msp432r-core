@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,43 +31,46 @@
  */
 /*
  *  ======== package.bld ========
- *
  */
 
 var objList = [
     "Display.c",
-    "DisplayHost.c",
-    "DisplayUart.c"
-]
-
-var cc26xxObjList = [
-    "DisplayDogm1286.c",
     "DisplayExt.c",
-    "DisplaySharp.c"
+    "DisplayHost.c",
+    "DisplaySharp.c",
+    "DisplayUart.c",
+    "lcd/SharpGrLib.c"
+];
+
+var cc26xxObjFiles = [
+    "DisplayDogm1286.c",
+    "lcd/LCDDogm1286.c",
+    "lcd/LCDDogm1286_util.c"
 ];
 
 var otherFiles = [
+    "AnsiColor.h",
     "Display.h",
+    "DisplayExt.h",
     "DisplayHost.h",
+    "DisplaySharp.h",
     "DisplayUart.h",
+    "lcd/SharpGrLib.h",
     "package.bld"
 ];
 
 var cc26xxOtherFiles = [
-    "AnsiColor.h",
     "DisplayDogm1286.h",
-    "DisplayExt.h",
-    "DisplaySharp.h"
-]
+    "lcd/LCDDogm1286.h",
+    "lcd/LCDDogm1286_util.h"
+];
 
-/* Get deviceWare directories from XDCARGS */
 var xdcArgs = java.lang.System.getenv("XDCARGS");
 var deviceWareOpts =
     xdc.loadCapsule("ti/drivers/xdcArgParser.xs").getDeviceWareOpts(xdcArgs);
-var libBuilder = xdc.loadCapsule("ti/drivers/libBuilder.xs");
 
 if (deviceWareOpts.cc26xxware) {
-    objList = objList.concat(cc26xxObjList);
+    objList = objList.concat(cc26xxObjFiles);
     otherFiles = otherFiles.concat(cc26xxOtherFiles);
 }
 

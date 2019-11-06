@@ -18,8 +18,8 @@
 
 /*
  *  ======== xdc_target__arraytype_VaList ========
- *  The following macro specifies whether or not a VaList is an 
- *  array type; e.g., struct __va_list_tag (*)[1] verses a simple char *.  
+ *  The following macro specifies whether or not a VaList is an
+ *  array type; e.g., struct __va_list_tag (*)[1] verses a simple char *.
  *  This affects how va_list variables are passed to functions (by value
  *  or by address).
  */
@@ -67,22 +67,22 @@
  *  stdint.h are not available to C++ clients (unless the special macro
  *  __STDC_LIMIT_MACROS is defined).
  */
-#define  xdc_target__sizeof_IArg 2
-#define  xdc_target__sizeof_Char 1
-#define  xdc_target__sizeof_Double 2
-#define  xdc_target__sizeof_Float 2
-#define  xdc_target__sizeof_Fxn 2
-#define  xdc_target__sizeof_Int 1
-#define  xdc_target__sizeof_Int8 1
-#define  xdc_target__sizeof_Int16 1
-#define  xdc_target__sizeof_Int32 2
-#define  xdc_target__sizeof_Int64 4
-#define  xdc_target__sizeof_Long 2
-#define  xdc_target__sizeof_LDouble 2
-#define  xdc_target__sizeof_LLong 4
-#define  xdc_target__sizeof_Ptr 2
-#define  xdc_target__sizeof_Short 1
-#define  xdc_target__sizeof_Size 2
+#define  xdc_target__sizeof_IArg 2U
+#define  xdc_target__sizeof_Char 1U
+#define  xdc_target__sizeof_Double 2U
+#define  xdc_target__sizeof_Float 2U
+#define  xdc_target__sizeof_Fxn 2U
+#define  xdc_target__sizeof_Int 1U
+#define  xdc_target__sizeof_Int8 1U
+#define  xdc_target__sizeof_Int16 1U
+#define  xdc_target__sizeof_Int32 2U
+#define  xdc_target__sizeof_Int64 4U
+#define  xdc_target__sizeof_Long 2U
+#define  xdc_target__sizeof_LDouble 2U
+#define  xdc_target__sizeof_LLong 4U
+#define  xdc_target__sizeof_Ptr 2U
+#define  xdc_target__sizeof_Short 1U
+#define  xdc_target__sizeof_Size 2U
 
 /*
  *  ======== xdc_target__alignof_ ========
@@ -90,22 +90,22 @@
  *  within #ifdef blocks; even if provided by the compiler, alignof() can't
  *  be used in pre-processor statements.
  */
-#define  xdc_target__alignof_IArg 2
-#define  xdc_target__alignof_Char 1
-#define  xdc_target__alignof_Double 2
-#define  xdc_target__alignof_Float 2
-#define  xdc_target__alignof_Fxn 2
-#define  xdc_target__alignof_Int 1
-#define  xdc_target__alignof_Int8 1
-#define  xdc_target__alignof_Int16 1
-#define  xdc_target__alignof_Int32 2
-#define  xdc_target__alignof_Int64 2
-#define  xdc_target__alignof_Long 2
-#define  xdc_target__alignof_LDouble 2
-#define  xdc_target__alignof_LLong 2
-#define  xdc_target__alignof_Ptr 2
-#define  xdc_target__alignof_Short 1
-#define  xdc_target__alignof_Size 2
+#define  xdc_target__alignof_IArg 2U
+#define  xdc_target__alignof_Char 1U
+#define  xdc_target__alignof_Double 2U
+#define  xdc_target__alignof_Float 2U
+#define  xdc_target__alignof_Fxn 2U
+#define  xdc_target__alignof_Int 1U
+#define  xdc_target__alignof_Int8 1U
+#define  xdc_target__alignof_Int16 1U
+#define  xdc_target__alignof_Int32 2U
+#define  xdc_target__alignof_Int64 2U
+#define  xdc_target__alignof_Long 2U
+#define  xdc_target__alignof_LDouble 2U
+#define  xdc_target__alignof_LLong 2U
+#define  xdc_target__alignof_Ptr 2U
+#define  xdc_target__alignof_Short 1U
+#define  xdc_target__alignof_Size 2U
 
 /*
  *  ======== xdc_target__bitsPerChar ========
@@ -113,6 +113,6 @@
  *  precise number of bits in any of the standard types (whose sizes are
  *  expressed as a number of chars).
  */
-#define  xdc_target__bitsPerChar 16
+#define  xdc_target__bitsPerChar 16U
 
 #endif  /* end multi-include guard */

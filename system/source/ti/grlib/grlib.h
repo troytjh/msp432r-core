@@ -1,5 +1,5 @@
-/* --COPYRIGHT--,BSD
- * Copyright (c) 2016, Texas Instruments Incorporated
+/*
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,15 +28,14 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * --/COPYRIGHT--*/
+ */
 #include <stdint.h>
 #include <stdbool.h>
 
 #ifndef __GRLIB_H__
 #define __GRLIB_H__
 
-#define NDEBUG
-#include "assert.h"
+#include <assert.h>
 
 //*****************************************************************************
 //
@@ -118,8 +117,8 @@ typedef struct Graphics_Display_Functions
     //
     //! A pointer to the function to draw multiple pixels on this display.
     //
-    void (*const pfnPixelDrawMultiple) (const Graphics_Display * pDisplay,
-                                        int16_t lX, int16_t lY,
+    void (*const pfnPixelDrawMultiple) (const Graphics_Display * pDisplay, int16_t lX,
+                                        int16_t lY,
                                         int16_t lX0, int16_t lCount,
                                         int16_t lBPP,
                                         const uint8_t * pucData,

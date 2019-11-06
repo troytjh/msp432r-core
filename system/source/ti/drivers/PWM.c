@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,8 @@
 #include <ti/drivers/dpl/HwiP.h>
 #include <ti/drivers/PWM.h>
 
-extern const PWM_Config PWM_config[];
-extern const uint_least8_t PWM_count;
+__attribute__((weak)) extern const PWM_Config PWM_config[];
+__attribute__((weak)) extern const uint_least8_t PWM_count;
 
 /* Default PWM parameters structure */
 const PWM_Params PWM_defaultParams = {
@@ -137,6 +137,13 @@ int_fast16_t PWM_setDuty(PWM_Handle handle, uint32_t duty)
 int_fast16_t PWM_setPeriod(PWM_Handle handle, uint32_t period)
 {
     return(handle->fxnTablePtr->setPeriodFxn(handle, period));
+}
+/*
+ *  ======== PWM_setDutyandPeriod ========
+ */
+int_fast16_t PWM_setDutyAndPeriod(PWM_Handle handle, uint32_t duty, uint32_t period)
+{
+    return(handle->fxnTablePtr->setDutyAndPeriodFxn(handle, duty, period));
 }
 
 /*

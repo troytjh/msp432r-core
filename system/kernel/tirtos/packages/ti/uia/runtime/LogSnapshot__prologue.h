@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@
 #include <ti/uia/events/UIASnapshot.h>
 
 #undef LogSnapshot__LOGDEF
-#define LogSnapshot__LOGDEF ti_uia_runtime_LogSnapshot_loggerDefined__C
+#define LogSnapshot__LOGDEF ti_uia_runtime_LogSnapshot_loggerDefined
 #undef LogSnapshot__LOGOBJ
 #define LogSnapshot__LOGOBJ ti_uia_runtime_LogSnapshot_loggerObj__C
 #undef LogSnapshot__LOGMEMORYFXN
@@ -59,10 +59,5 @@
 #define LOGSNAPSHOT_ISCONTEXTFILTERENABLED (LogSnapshot__LOGDEF && LogSnapshot_CTXFILTERENABLED)
 
 #undef ti_uia_runtime_LogSnapshot_isSnapshotLoggingEnabled
-#if LOGSNAPSHOT_ISCONTEXTFILTERENABLED
 #define ti_uia_runtime_LogSnapshot_isSnapshotLoggingEnabled(evt) \
     (LogSnapshot__LOGDEF && xdc_runtime_Diags_query(evt))
-#else
-#define ti_uia_runtime_LogSnapshot_isSnapshotLoggingEnabled(evt) \
-    (LogSnapshot__LOGDEF && xdc_runtime_Diags_query(evt))
-#endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -83,7 +83,6 @@ int_fast32_t UARTMSP432_write(UART_Handle handle, const void *buffer,
 void UARTMSP432_writeCancel(UART_Handle handle);
 int_fast32_t UARTMSP432_writePolling(UART_Handle handle, const void *buffer,
         size_t size);
-static void errorCallback(UART_Handle handle, uintptr_t error);
 static int32_t findBaudDividerIndex(UARTMSP432_BaudrateConfig const *table,
     uint32_t tableSize, uint32_t baudrate, uint32_t clockFreq);
 static void initHw(UARTMSP432_Object *object,
@@ -180,34 +179,6 @@ static int txcptEnabledStatus(uint32_t moduleInstance)
 }
 
 /*
- *  ======== errorCallback ========
- *  Generic log function for when unexpected events occur.
- */
-static void errorCallback(UART_Handle handle, uintptr_t error)
-{
-    if (error & EUSCI_A_UART_OVERRUN_ERROR) {
-        DebugP_log1("UART:(%p): OVERRUN ERROR",
-            ((UARTMSP432_HWAttrsV1 const *)handle->hwAttrs)->baseAddr);
-    }
-    if (error & EUSCI_A_UART_BREAK_DETECT) {
-        DebugP_log1("UART:(%p): BREAK ERROR",
-            ((UARTMSP432_HWAttrsV1 const *)handle->hwAttrs)->baseAddr);
-    }
-    if (error & EUSCI_A_UART_PARITY_ERROR) {
-        DebugP_log1("UART:(%p): PARITY ERROR",
-            ((UARTMSP432_HWAttrsV1 const *)handle->hwAttrs)->baseAddr);
-    }
-    if (error & EUSCI_A_UART_FRAMING_ERROR) {
-        DebugP_log1("UART:(%p): FRAMING ERROR",
-            ((UARTMSP432_HWAttrsV1 const *)handle->hwAttrs)->baseAddr);
-    }
-    if (error & EUSCI_A_UART_RECEIVE_ERROR) {
-        DebugP_log1("UART:(%p): RECEIVE ERROR",
-            ((UARTMSP432_HWAttrsV1 const *)handle->hwAttrs)->baseAddr);
-    }
-}
-
-/*
  *  ======== findBaudDividerIndex ========
  *  This function searchs a given array of different baudrate configurations to
  *  find the first compatible match given the desired buadrate and the currently
@@ -240,8 +211,8 @@ static int32_t findBaudDividerIndex(UARTMSP432_BaudrateConfig const *table,
 static void initHw(UARTMSP432_Object *object,
     UARTMSP432_HWAttrsV1 const *hwAttrs, uint32_t inputClkFreq)
 {
-    int32_t           baudrateIndex;
-    eUSCI_UART_Config uartConfig;
+    int32_t             baudrateIndex;
+    eUSCI_UART_ConfigV1 uartConfig;
 
     /*
      * This will never return -1, constarints prevent unsupported performance
@@ -259,6 +230,8 @@ static void initHw(UARTMSP432_Object *object,
     uartConfig.numberofStopBits = stopBits[object->stopBits];
     uartConfig.uartMode = EUSCI_A_UART_MODE;
     uartConfig.overSampling = hwAttrs->baudrateLUT[baudrateIndex].oversampling;
+    uartConfig.dataLength = (object->dataLength == UART_LEN_7) ?
+        EUSCI_A_UART_7_BIT_LEN : EUSCI_A_UART_8_BIT_LEN;
 
     MAP_UART_initModule(hwAttrs->baseAddr, &uartConfig);
 
@@ -461,7 +434,8 @@ static bool readIsrTextCallback(UART_Handle handle)
             if (object->state.readEcho) {
                 /* Wait until TX is ready */
                 while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                    EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {}
+                    EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+                }
                 MAP_UART_transmitData(hwAttrs->baseAddr, '\r');
             }
             readIn = '\n';
@@ -476,7 +450,8 @@ static bool readIsrTextCallback(UART_Handle handle)
         if (object->state.readEcho) {
             /* Wait until TX is ready */
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {}
+                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+            }
             MAP_UART_transmitData(hwAttrs->baseAddr, (unsigned char)readIn);
         }
     }
@@ -590,9 +565,14 @@ static int readTaskCallback(UART_Handle handle)
     bufferEnd = (unsigned char*) object->readBuf + object->readSize;
 
     while (object->readCount) {
+        key = HwiP_disable();
         if (RingBuf_get(&object->ringBuffer, &readIn) < 0) {
+            /* Not all data has been read */
+            object->state.drainByISR = true;
+            HwiP_restore(key);
             break;
         }
+        HwiP_restore(key);
 
         DebugP_log2("UART:(%p) read '0x%02x'",
             ((UARTMSP432_HWAttrsV1 const *)(handle->hwAttrs))->baseAddr,
@@ -601,11 +581,7 @@ static int readTaskCallback(UART_Handle handle)
         *(unsigned char *) (bufferEnd - object->readCount *
             sizeof(unsigned char)) = readIn;
 
-        key = HwiP_disable();
-
         object->readCount--;
-
-        HwiP_restore(key);
 
         if ((object->state.readDataMode == UART_DATA_TEXT) &&
             (object->state.readReturnMode == UART_RETURN_NEWLINE) &&
@@ -616,13 +592,19 @@ static int readTaskCallback(UART_Handle handle)
     }
 
     if (!object->readCount || makeCallback) {
-        tempCount = object->readSize;
-        object->readSize = 0;
-        object->readCallback(handle, object->readBuf,
-            tempCount - object->readCount);
-    }
-    else {
-        object->state.drainByISR = true;
+        object->state.readCallbackPending = true;
+        if (object->state.inReadCallback == false) {
+            while (object->state.readCallbackPending) {
+                object->state.readCallbackPending = false;
+                tempCount = object->readSize;
+                object->readSize = 0;
+
+                object->state.inReadCallback = true;
+                object->readCallback(handle, object->readBuf,
+                        tempCount - object->readCount);
+                object->state.inReadCallback = false;
+            }
+        }
     }
 
     return (0);
@@ -724,13 +706,18 @@ void UARTMSP432_close(UART_Handle handle)
         }
         object->perfConstraintMask >>= 1;
     }
-    if (object->state.rxEnabled) {
 
- #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+    if (object->state.rxEnabled) {
+#if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
         Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+        if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+            Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+        }
 #endif
         Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
     }
+
     Power_unregisterNotify(&object->perfChangeNotify);
 
     object->state.opened = false;
@@ -780,6 +767,10 @@ int_fast16_t UARTMSP432_control(UART_Handle handle, uint_fast16_t cmd,
                  */
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
                 Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+                if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+                    Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+                }
 #endif
                 Power_setConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
                 MAP_UART_enableInterrupt(hwAttrs->baseAddr,
@@ -806,6 +797,10 @@ int_fast16_t UARTMSP432_control(UART_Handle handle, uint_fast16_t cmd,
                  */
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
                 Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+                if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+                    Power_releaseConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+                }
 #endif
                 Power_releaseConstraint(PowerMSP432_DISALLOW_PERF_CHANGES);
                 object->state.rxEnabled = false;
@@ -836,7 +831,7 @@ void UARTMSP432_hwiIntFxn(uintptr_t arg)
 {
     uint8_t                     status;
     uint8_t                     txcptEnabled;
-    uintptr_t                   errorFlags;
+    uint32_t                    errorFlags;
     UARTMSP432_Object          *object = ((UART_Handle) arg)->object;
     UARTMSP432_HWAttrsV1 const *hwAttrs = ((UART_Handle) arg)->hwAttrs;
 
@@ -851,7 +846,9 @@ void UARTMSP432_hwiIntFxn(uintptr_t arg)
         EUSCI_A_UART_RECEIVE_ERROR);
 
     if (errorFlags) {
-        errorCallback((UART_Handle)arg, errorFlags);
+        if (hwAttrs->errorFxn) {
+            hwAttrs->errorFxn((UART_Handle)arg, errorFlags);
+        }
         /* Reading the rxData regs clear the error flags */
         MAP_UART_receiveData(hwAttrs->baseAddr);
         return;
@@ -969,8 +966,8 @@ UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params)
         pin, GPIO_PRIMARY_MODULE_FUNCTION);
 
     /*
-     * Add power management support - Disable performance transitions while
-     * opening the driver is open.  This constraint remains active until a
+     * Add power management support - Disable performance transitions when
+     * opening the driver.  This constraint remains active until a
      * UART_control() disables receive interrupts.  Afterwards performance
      * levels can be changed by the application.  A UART_control() call can
      * enable RX interrupts again and set the pertinent constraints.
@@ -1030,14 +1027,23 @@ UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params)
         }
     }
 
-    /*
-     * For MSP432P401x devices the DEEPSLEEP_0 constraint is set to allow the
-     * UART peripheral to continue to receive data.  This constraint is not
-     * used with later MSP432 devices, because on later devices the CPU can
-     * enter deep sleep without stopping the UART peripheral.
-     */
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
+    /*
+     * For MSP432P401x devices a transition to deepsleep will halt the UART
+     * functional clock.  Set a power constraint to prohibit deepsleep when
+     * RX is enabled.
+     */
     Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+#else
+    /*
+     * For MSP432P4x1xl devices, if the CPU enters deepsleep a UART can
+     * continue to function, but only if ACLK is used as its functional
+     * clock. If ACLK is not selected, set a power constraint to prohibit
+     * deepsleep when RX is enabled.
+     */
+    if (hwAttrs->clockSource != EUSCI_A_UART_CLOCKSOURCE_ACLK) {
+        Power_setConstraint(PowerMSP432_DISALLOW_DEEPSLEEP_0);
+    }
 #endif
 
     /* Register function to reconfigure peripheral on perf level changes */
@@ -1124,6 +1130,7 @@ UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params)
     object->baudRate             = params->baudRate;
     object->stopBits             = params->stopBits;
     object->parityType           = params->parityType;
+    object->dataLength           = params->dataLength;
     object->readFxns =
         staticFxnTable[object->state.readMode][object->state.readDataMode];
     object->writeBuf             = NULL;
@@ -1136,6 +1143,7 @@ UART_Handle UARTMSP432_open(UART_Handle handle, UART_Params *params)
     object->state.txEnabled      = false;
     object->state.rxEnabled      = true;
     object->state.callCallback   = false;
+
     initHw(object, hwAttrs, clockFreq);
 
     DebugP_log1("UART:(%p) opened", hwAttrs->baseAddr);
@@ -1243,7 +1251,8 @@ int_fast32_t UARTMSP432_readPolling(UART_Handle handle, void *buf, size_t size)
         if (object->state.readDataMode == UART_DATA_TEXT &&
                 object->state.readEcho) {
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG));
+                EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+            }
             MAP_UART_transmitData(hwAttrs->baseAddr,  *buffer);
         }
 
@@ -1279,7 +1288,8 @@ int_fast32_t UARTMSP432_write(UART_Handle handle, const void *buffer,
 
     key = HwiP_disable();
 
-    if (object->writeCount) {
+    if (object->writeCount ||
+            MAP_UART_queryStatusFlags(hwAttrs->baseAddr, EUSCI_A_UART_BUSY)) {
         HwiP_restore(key);
         DebugP_log1("UART:(%p) Could not write data, uart in use.",
             hwAttrs->baseAddr);
@@ -1392,7 +1402,8 @@ int_fast32_t UARTMSP432_writePolling(UART_Handle handle, const void *buf,
         if (object->state.writeDataMode == UART_DATA_TEXT && *buffer == '\n') {
             /* Wait until we can TX a byte */
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                           EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG));
+                           EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+            }
 
             /* Clear the transfer complete interrupt */
             MAP_UART_clearInterruptFlag(hwAttrs->baseAddr,
@@ -1402,14 +1413,16 @@ int_fast32_t UARTMSP432_writePolling(UART_Handle handle, const void *buf,
 
             /* Wait until the byte has gone out the wire. */
             while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                    EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG));
+                    EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG)) {
+            }
 
             count++;
         }
 
         /* Wait until we can TX a byte */
         while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                       EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG));
+                       EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG)) {
+        }
 
         /*
          *  Atomically clear the TX complete flag so we don't wipe
@@ -1421,7 +1434,8 @@ int_fast32_t UARTMSP432_writePolling(UART_Handle handle, const void *buf,
 
         /* Wait until the byte has gone out the wire. */
         while (!MAP_UART_getInterruptStatus(hwAttrs->baseAddr,
-                       EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG));
+                       EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG)) {
+        }
 
         DebugP_log2("UART:(%p) Wrote character 0x%x", hwAttrs->baseAddr,
             *buffer);

@@ -1,5 +1,5 @@
-/* --COPYRIGHT--,BSD
- * Copyright (c) 2016, Texas Instruments Incorporated
+/*
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * --/COPYRIGHT--*/
+ */
 #include <ti/grlib/grlib.h>
 
 //*****************************************************************************
@@ -183,6 +183,16 @@ void Graphics_drawImage(const Graphics_Context *context,
     // and stored in g_pulConvertedPalette[] buffer
     //
     palette = Graphics_convertPalette(context, bitmap);
+
+    //Check if palette is not valid
+    if(!palette)
+    {
+        return;
+    }
+
+    //
+    // Get the image pixels from the image data.
+    //
     image = bitmap->pPixel;
 
     //
@@ -253,9 +263,8 @@ void Graphics_drawImage(const Graphics_Context *context,
         uint16_t uiLineCnt = 0;
         uint16_t xS = x;
 
-        // Determine type of RLE compression;
-        rleType = ((bPP >> 4) & 0x0F);
-        // Determine number of bit per pixel
+        rleType = (bPP >> 4) & 0x0F;
+        bPP &= 0x0F;
 
         while(height--)
         {

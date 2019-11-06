@@ -8,7 +8,7 @@ HeapMultiBuf.xml
 HeapNull.xml
 HeapTrack.xml
 package/package.cfg.xdc.inc
-lib/sysbios/debug/ti.sysbios.heaps.aem4f
+lib/debug/ti.sysbios.heaps.aem4f
 package/package_ti.sysbios.heaps.c
 HeapBuf.c
 HeapMem.c
@@ -16,5 +16,5 @@ HeapMultiBuf.c
 HeapNull.c
 HeapTrack.c
 HeapCallback.c
-lib/sysbios/debug/ti.sysbios.heaps.am4fg
-lib/sysbios/debug/ti.sysbios.heaps.arm4f
+lib/debug/ti.sysbios.heaps.am4fg
+lib/debug/ti.sysbios.heaps.arm4f

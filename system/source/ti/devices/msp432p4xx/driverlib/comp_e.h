@@ -104,8 +104,8 @@ extern "C"
 #define COMP_E_INTERRUPT_FLAG_INVERTED_POLARITY                (COMP_E_INT_IIFG)
 #define COMP_E_INTERRUPT_FLAG_READY                          (COMP_E_INT_RDYIFG)
 
-#define COMP_E_FALLINGEDGE                                  (!(COMP_E_CTL1_IES))
-#define COMP_E_RISINGEDGE                                      (COMP_E_CTL1_IES)
+#define COMP_E_FALLINGEDGE                                     (COMP_E_CTL1_IES)
+#define COMP_E_RISINGEDGE                                   (!(COMP_E_CTL1_IES))
 
 #define COMP_E_LOW                                                         (0x0)
 #define COMP_E_HIGH                                            (COMP_E_CTL1_OUT)

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_uia_family_c66_TimestampC66XGlobal__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_family_c66_TimestampC66XGlobal___VERS 200
@@ -315,15 +317,15 @@ __extern xdc_Int ti_uia_family_c66_TimestampC66XGlobal_Module_startup__F( xdc_In
 
 /* Instance_init__E */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Instance_init__E, "ti_uia_family_c66_TimestampC66XGlobal_Instance_init")
-__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Instance_init__E(ti_uia_family_c66_TimestampC66XGlobal_Object *__obj, const ti_uia_family_c66_TimestampC66XGlobal_Params *__prms);
+__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Instance_init__E(ti_uia_family_c66_TimestampC66XGlobal_Object *obj, const ti_uia_family_c66_TimestampC66XGlobal_Params *prms);
 
 /* create */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_create, "ti_uia_family_c66_TimestampC66XGlobal_create")
-__extern ti_uia_family_c66_TimestampC66XGlobal_Handle ti_uia_family_c66_TimestampC66XGlobal_create( const ti_uia_family_c66_TimestampC66XGlobal_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern ti_uia_family_c66_TimestampC66XGlobal_Handle ti_uia_family_c66_TimestampC66XGlobal_create( const ti_uia_family_c66_TimestampC66XGlobal_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* construct */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_construct, "ti_uia_family_c66_TimestampC66XGlobal_construct")
-__extern void ti_uia_family_c66_TimestampC66XGlobal_construct( ti_uia_family_c66_TimestampC66XGlobal_Struct *__obj, const ti_uia_family_c66_TimestampC66XGlobal_Params *__prms );
+__extern void ti_uia_family_c66_TimestampC66XGlobal_construct(ti_uia_family_c66_TimestampC66XGlobal_Struct *obj, const ti_uia_family_c66_TimestampC66XGlobal_Params *prms);
 
 /* delete */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_delete, "ti_uia_family_c66_TimestampC66XGlobal_delete")
@@ -335,55 +337,55 @@ __extern void ti_uia_family_c66_TimestampC66XGlobal_destruct(ti_uia_family_c66_T
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Handle__label__S, "ti_uia_family_c66_TimestampC66XGlobal_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_family_c66_TimestampC66XGlobal_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_family_c66_TimestampC66XGlobal_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Module__startupDone__S, "ti_uia_family_c66_TimestampC66XGlobal_Module__startupDone__S")
-__extern xdc_Bool ti_uia_family_c66_TimestampC66XGlobal_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_family_c66_TimestampC66XGlobal_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Object__create__S, "ti_uia_family_c66_TimestampC66XGlobal_Object__create__S")
-__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__create__S( xdc_CPtr __aa, const xdc_UChar *__pa, xdc_SizeT __psz, xdc_runtime_Error_Block *__eb );
+__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Object__delete__S, "ti_uia_family_c66_TimestampC66XGlobal_Object__delete__S")
-__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Object__get__S, "ti_uia_family_c66_TimestampC66XGlobal_Object__get__S")
-__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Object__first__S, "ti_uia_family_c66_TimestampC66XGlobal_Object__first__S")
-__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__first__S( void );
+__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Object__next__S, "ti_uia_family_c66_TimestampC66XGlobal_Object__next__S")
-__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_family_c66_TimestampC66XGlobal_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_Params__init__S, "ti_uia_family_c66_TimestampC66XGlobal_Params__init__S")
-__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* get32__E */
 #define ti_uia_family_c66_TimestampC66XGlobal_get32 ti_uia_family_c66_TimestampC66XGlobal_get32__E
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_get32__E, "ti_uia_family_c66_TimestampC66XGlobal_get32")
-__extern xdc_Bits32 ti_uia_family_c66_TimestampC66XGlobal_get32__E( void );
+__extern xdc_Bits32 ti_uia_family_c66_TimestampC66XGlobal_get32__E( void);
 
 /* get64__E */
 #define ti_uia_family_c66_TimestampC66XGlobal_get64 ti_uia_family_c66_TimestampC66XGlobal_get64__E
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_get64__E, "ti_uia_family_c66_TimestampC66XGlobal_get64")
-__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_get64__E( xdc_runtime_Types_Timestamp64 *result );
+__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_get64__E( xdc_runtime_Types_Timestamp64 *result);
 
 /* getFreq__E */
 #define ti_uia_family_c66_TimestampC66XGlobal_getFreq ti_uia_family_c66_TimestampC66XGlobal_getFreq__E
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_getFreq__E, "ti_uia_family_c66_TimestampC66XGlobal_getFreq")
-__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_getFreq__E( xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_getFreq__E( xdc_runtime_Types_FreqHz *freq);
 
 /* setFreq__E */
 #define ti_uia_family_c66_TimestampC66XGlobal_setFreq ti_uia_family_c66_TimestampC66XGlobal_setFreq__E
 xdc__CODESECT(ti_uia_family_c66_TimestampC66XGlobal_setFreq__E, "ti_uia_family_c66_TimestampC66XGlobal_setFreq")
-__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_setFreq__E( xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_uia_family_c66_TimestampC66XGlobal_setFreq__E( xdc_runtime_Types_FreqHz *freq);
 
 
 /*
@@ -443,23 +445,23 @@ static inline CT__ti_uia_family_c66_TimestampC66XGlobal_Module__id ti_uia_family
 
 /* Module_hasMask */
 static inline xdc_Bool ti_uia_family_c66_TimestampC66XGlobal_Module_hasMask(void);
-static inline xdc_Bool ti_uia_family_c66_TimestampC66XGlobal_Module_hasMask(void) 
+static inline xdc_Bool ti_uia_family_c66_TimestampC66XGlobal_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C != (CT__ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_uia_family_c66_TimestampC66XGlobal_Module_getMask(void);
-static inline xdc_Bits16 ti_uia_family_c66_TimestampC66XGlobal_Module_getMask( void ) 
+static inline xdc_Bits16 ti_uia_family_c66_TimestampC66XGlobal_Module_getMask(void)
 {
-    return ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C != NULL ? *ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C != (CT__ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask)NULL) ? *ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C != NULL) {
+    if (ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C != (CT__ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask)NULL) {
         *ti_uia_family_c66_TimestampC66XGlobal_Module__diagsMask__C = mask;
     }
 }
@@ -468,8 +470,8 @@ static inline xdc_Void ti_uia_family_c66_TimestampC66XGlobal_Module_setMask(xdc_
 static inline void ti_uia_family_c66_TimestampC66XGlobal_Params_init(ti_uia_family_c66_TimestampC66XGlobal_Params *prms);
 static inline void ti_uia_family_c66_TimestampC66XGlobal_Params_init( ti_uia_family_c66_TimestampC66XGlobal_Params *prms ) 
 {
-    if (prms) {
-        ti_uia_family_c66_TimestampC66XGlobal_Params__init__S(prms, 0, sizeof(ti_uia_family_c66_TimestampC66XGlobal_Params), sizeof(xdc_runtime_IInstance_Params));
+    if (prms != NULL) {
+        ti_uia_family_c66_TimestampC66XGlobal_Params__init__S(prms, NULL, sizeof(ti_uia_family_c66_TimestampC66XGlobal_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
 
@@ -477,7 +479,7 @@ static inline void ti_uia_family_c66_TimestampC66XGlobal_Params_init( ti_uia_fam
 static inline void ti_uia_family_c66_TimestampC66XGlobal_Params_copy(ti_uia_family_c66_TimestampC66XGlobal_Params *dst, const ti_uia_family_c66_TimestampC66XGlobal_Params *src);
 static inline void ti_uia_family_c66_TimestampC66XGlobal_Params_copy(ti_uia_family_c66_TimestampC66XGlobal_Params *dst, const ti_uia_family_c66_TimestampC66XGlobal_Params *src) 
 {
-    if (dst) {
+    if (dst != NULL) {
         ti_uia_family_c66_TimestampC66XGlobal_Params__init__S(dst, (const void *)src, sizeof(ti_uia_family_c66_TimestampC66XGlobal_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
@@ -489,8 +491,8 @@ static inline void ti_uia_family_c66_TimestampC66XGlobal_Params_copy(ti_uia_fami
 #define ti_uia_family_c66_TimestampC66XGlobal_Object_sizeof() ti_uia_family_c66_TimestampC66XGlobal_Object__sizeof__C
 
 /* Object_get */
-static inline ti_uia_family_c66_TimestampC66XGlobal_Handle ti_uia_family_c66_TimestampC66XGlobal_Object_get(ti_uia_family_c66_TimestampC66XGlobal_Instance_State *oarr, int i);
-static inline ti_uia_family_c66_TimestampC66XGlobal_Handle ti_uia_family_c66_TimestampC66XGlobal_Object_get(ti_uia_family_c66_TimestampC66XGlobal_Instance_State *oarr, int i) 
+static inline ti_uia_family_c66_TimestampC66XGlobal_Handle ti_uia_family_c66_TimestampC66XGlobal_Object_get(ti_uia_family_c66_TimestampC66XGlobal_Object *oarr, int i);
+static inline ti_uia_family_c66_TimestampC66XGlobal_Handle ti_uia_family_c66_TimestampC66XGlobal_Object_get(ti_uia_family_c66_TimestampC66XGlobal_Object *oarr, int i) 
 {
     return (ti_uia_family_c66_TimestampC66XGlobal_Handle)ti_uia_family_c66_TimestampC66XGlobal_Object__get__S(oarr, i);
 }
@@ -629,7 +631,6 @@ struct ti_uia_family_c66_TimestampC66XGlobal_Object {
 #define TimestampC66XGlobal_Object_sizeof ti_uia_family_c66_TimestampC66XGlobal_Object_sizeof
 #define TimestampC66XGlobal_Params_copy ti_uia_family_c66_TimestampC66XGlobal_Params_copy
 #define TimestampC66XGlobal_Params_init ti_uia_family_c66_TimestampC66XGlobal_Params_init
-#define TimestampC66XGlobal_Instance_State ti_uia_family_c66_TimestampC66XGlobal_Instance_State
 #define TimestampC66XGlobal_delete ti_uia_family_c66_TimestampC66XGlobal_delete
 #define TimestampC66XGlobal_destruct ti_uia_family_c66_TimestampC66XGlobal_destruct
 #define TimestampC66XGlobal_Module_upCast ti_uia_family_c66_TimestampC66XGlobal_Module_upCast

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_uia_runtime
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -162,57 +162,6 @@ public class ti_uia_runtime
         if (isROV) {
             om.bind("ti.uia.runtime.LogSync.Object", om.findStrict("ti.uia.runtime.LogSync.Instance_State", "ti.uia.runtime"));
         }//isROV
-    }
-
-    void LoggerCircBuf$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerCircBuf.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.uia.runtime.LoggerCircBuf", new Value.Obj("ti.uia.runtime.LoggerCircBuf", po));
-        pkgV.bind("LoggerCircBuf", vo);
-        // decls 
-        // insts 
-        Object insP = om.bind("ti.uia.runtime.LoggerCircBuf.Instance", new Proto.Obj());
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerCircBuf$$Object", new Proto.Obj());
-        om.bind("ti.uia.runtime.LoggerCircBuf.Object", new Proto.Str(po, true));
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerCircBuf$$Params", new Proto.Obj());
-        om.bind("ti.uia.runtime.LoggerCircBuf.Params", new Proto.Str(po, true));
-    }
-
-    void LoggerProbePoint$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerProbePoint.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.uia.runtime.LoggerProbePoint", new Value.Obj("ti.uia.runtime.LoggerProbePoint", po));
-        pkgV.bind("LoggerProbePoint", vo);
-        // decls 
-        // insts 
-        Object insP = om.bind("ti.uia.runtime.LoggerProbePoint.Instance", new Proto.Obj());
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerProbePoint$$Object", new Proto.Obj());
-        om.bind("ti.uia.runtime.LoggerProbePoint.Object", new Proto.Str(po, true));
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerProbePoint$$Params", new Proto.Obj());
-        om.bind("ti.uia.runtime.LoggerProbePoint.Params", new Proto.Str(po, true));
-    }
-
-    void LoggerStopMode$$OBJECTS()
-    {
-        Proto.Obj po, spo;
-        Value.Obj vo;
-
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerStopMode.Module", new Proto.Obj());
-        vo = (Value.Obj)om.bind("ti.uia.runtime.LoggerStopMode", new Value.Obj("ti.uia.runtime.LoggerStopMode", po));
-        pkgV.bind("LoggerStopMode", vo);
-        // decls 
-        // insts 
-        Object insP = om.bind("ti.uia.runtime.LoggerStopMode.Instance", new Proto.Obj());
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerStopMode$$Object", new Proto.Obj());
-        om.bind("ti.uia.runtime.LoggerStopMode.Object", new Proto.Str(po, true));
-        po = (Proto.Obj)om.bind("ti.uia.runtime.LoggerStopMode$$Params", new Proto.Obj());
-        om.bind("ti.uia.runtime.LoggerStopMode.Params", new Proto.Str(po, true));
     }
 
     void LoggerSM$$OBJECTS()
@@ -574,7 +523,7 @@ public class ti_uia_runtime
     void LogSnapshot$$CONSTS()
     {
         // module LogSnapshot
-        om.bind("ti.uia.runtime.LogSnapshot.getSnapshotId", new Extern("ti_uia_runtime_LogSnapshot_getSnapshotId__E", "xdc_UInt32(*)(xdc_Void)", true, false));
+        om.bind("ti.uia.runtime.LogSnapshot.getSnapshotId", new Extern("ti_uia_runtime_LogSnapshot_getSnapshotId__E", "xdc_UArg(*)(xdc_Void)", true, false));
         om.bind("ti.uia.runtime.LogSnapshot.doPrint", new Extern("ti_uia_runtime_LogSnapshot_doPrint__E", "xdc_Void(*)(ti_uia_runtime_LogSnapshot_EventRec*)", true, false));
     }
 
@@ -595,21 +544,6 @@ public class ti_uia_runtime
         om.bind("ti.uia.runtime.LogSync.putSyncPoint", new Extern("ti_uia_runtime_LogSync_putSyncPoint__E", "xdc_Void(*)(xdc_Void)", true, false));
         om.bind("ti.uia.runtime.LogSync.writeSyncPointRaw", new Extern("ti_uia_runtime_LogSync_writeSyncPointRaw__E", "xdc_Void(*)(xdc_runtime_Types_Timestamp64*,xdc_runtime_Types_Timestamp64*,xdc_runtime_Types_FreqHz*)", true, false));
         om.bind("ti.uia.runtime.LogSync.isSyncEventRequired", new Extern("ti_uia_runtime_LogSync_isSyncEventRequired__E", "xdc_Bool(*)(xdc_Void)", true, false));
-    }
-
-    void LoggerCircBuf$$CONSTS()
-    {
-        // module LoggerCircBuf
-    }
-
-    void LoggerProbePoint$$CONSTS()
-    {
-        // module LoggerProbePoint
-    }
-
-    void LoggerStopMode$$CONSTS()
-    {
-        // module LoggerStopMode
     }
 
     void LoggerSM$$CONSTS()
@@ -919,155 +853,6 @@ public class ti_uia_runtime
         }//isCFG
     }
 
-    void LoggerCircBuf$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-        fxn = (Proto.Fxn)om.bind("ti.uia.runtime.LoggerCircBuf$$create", new Proto.Fxn(om.findStrict("ti.uia.runtime.LoggerCircBuf.Module", "ti.uia.runtime"), om.findStrict("ti.uia.runtime.LoggerCircBuf.Instance", "ti.uia.runtime"), 1, 0, false));
-                fxn.addArg(0, "__params", (Proto)om.findStrict("ti.uia.runtime.LoggerCircBuf.Params", "ti.uia.runtime"), Global.newObject());
-        sb = new StringBuilder();
-        sb.append("ti$uia$runtime$LoggerCircBuf$$create = function( __params ) {\n");
-            sb.append("var __mod = xdc.om['ti.uia.runtime.LoggerCircBuf'];\n");
-            sb.append("var __inst = xdc.om['ti.uia.runtime.LoggerCircBuf.Instance'].$$make();\n");
-            sb.append("__inst.$$bind('$package', xdc.om['ti.uia.runtime']);\n");
-            sb.append("__inst.$$bind('$index', __mod.$instances.length);\n");
-            sb.append("__inst.$$bind('$category', 'Instance');\n");
-            sb.append("__inst.$$bind('$args', {});\n");
-            sb.append("__inst.$$bind('$module', __mod);\n");
-            sb.append("__mod.$instances.$add(__inst);\n");
-            sb.append("__inst.transferBufSize = __mod.PARAMS.transferBufSize;\n");
-            sb.append("__inst.maxEventSize = __mod.PARAMS.maxEventSize;\n");
-            sb.append("__inst.exitFlush = __mod.PARAMS.exitFlush;\n");
-            sb.append("__inst.bufSection = __mod.PARAMS.bufSection;\n");
-            sb.append("__inst.numCores = __mod.PARAMS.numCores;\n");
-            sb.append("for (var __p in __params) __inst[__p] = __params[__p];\n");
-            sb.append("var save = xdc.om.$curpkg;\n");
-            sb.append("xdc.om.$$bind('$curpkg', __mod.$package.$name);\n");
-            sb.append("__mod.instance$meta$init.$fxn.apply(__inst, []);\n");
-            sb.append("xdc.om.$$bind('$curpkg', save);\n");
-            sb.append("__inst.$$bless();\n");
-            sb.append("return __inst;\n");
-        sb.append("}\n");
-        Global.eval(sb.toString());
-        fxn = (Proto.Fxn)om.bind("ti.uia.runtime.LoggerCircBuf$$construct", new Proto.Fxn(om.findStrict("ti.uia.runtime.LoggerCircBuf.Module", "ti.uia.runtime"), null, 2, 0, false));
-                fxn.addArg(0, "__obj", (Proto)om.findStrict("ti.uia.runtime.LoggerCircBuf$$Object", "ti.uia.runtime"), null);
-                fxn.addArg(1, "__params", (Proto)om.findStrict("ti.uia.runtime.LoggerCircBuf.Params", "ti.uia.runtime"), Global.newObject());
-        sb = new StringBuilder();
-        sb.append("ti$uia$runtime$LoggerCircBuf$$construct = function( __obj, __params ) {\n");
-            sb.append("var __mod = xdc.om['ti.uia.runtime.LoggerCircBuf'];\n");
-            sb.append("var __inst = __obj;\n");
-            sb.append("__inst.$$bind('$args', {});\n");
-            sb.append("__inst.$$bind('$module', __mod);\n");
-            sb.append("__mod.$objects.$add(__inst);\n");
-            sb.append("__inst.transferBufSize = __mod.PARAMS.transferBufSize;\n");
-            sb.append("__inst.maxEventSize = __mod.PARAMS.maxEventSize;\n");
-            sb.append("__inst.exitFlush = __mod.PARAMS.exitFlush;\n");
-            sb.append("__inst.bufSection = __mod.PARAMS.bufSection;\n");
-            sb.append("__inst.numCores = __mod.PARAMS.numCores;\n");
-            sb.append("for (var __p in __params) __inst[__p] = __params[__p];\n");
-            sb.append("__inst.$$bless();\n");
-            sb.append("return null;\n");
-        sb.append("}\n");
-        Global.eval(sb.toString());
-    }
-
-    void LoggerProbePoint$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-        fxn = (Proto.Fxn)om.bind("ti.uia.runtime.LoggerProbePoint$$create", new Proto.Fxn(om.findStrict("ti.uia.runtime.LoggerProbePoint.Module", "ti.uia.runtime"), om.findStrict("ti.uia.runtime.LoggerProbePoint.Instance", "ti.uia.runtime"), 1, 0, false));
-                fxn.addArg(0, "__params", (Proto)om.findStrict("ti.uia.runtime.LoggerProbePoint.Params", "ti.uia.runtime"), Global.newObject());
-        sb = new StringBuilder();
-        sb.append("ti$uia$runtime$LoggerProbePoint$$create = function( __params ) {\n");
-            sb.append("var __mod = xdc.om['ti.uia.runtime.LoggerProbePoint'];\n");
-            sb.append("var __inst = xdc.om['ti.uia.runtime.LoggerProbePoint.Instance'].$$make();\n");
-            sb.append("__inst.$$bind('$package', xdc.om['ti.uia.runtime']);\n");
-            sb.append("__inst.$$bind('$index', __mod.$instances.length);\n");
-            sb.append("__inst.$$bind('$category', 'Instance');\n");
-            sb.append("__inst.$$bind('$args', {});\n");
-            sb.append("__inst.$$bind('$module', __mod);\n");
-            sb.append("__mod.$instances.$add(__inst);\n");
-            sb.append("for (var __p in __params) __inst[__p] = __params[__p];\n");
-            sb.append("var save = xdc.om.$curpkg;\n");
-            sb.append("xdc.om.$$bind('$curpkg', __mod.$package.$name);\n");
-            sb.append("__mod.instance$meta$init.$fxn.apply(__inst, []);\n");
-            sb.append("xdc.om.$$bind('$curpkg', save);\n");
-            sb.append("__inst.$$bless();\n");
-            sb.append("return __inst;\n");
-        sb.append("}\n");
-        Global.eval(sb.toString());
-        fxn = (Proto.Fxn)om.bind("ti.uia.runtime.LoggerProbePoint$$construct", new Proto.Fxn(om.findStrict("ti.uia.runtime.LoggerProbePoint.Module", "ti.uia.runtime"), null, 2, 0, false));
-                fxn.addArg(0, "__obj", (Proto)om.findStrict("ti.uia.runtime.LoggerProbePoint$$Object", "ti.uia.runtime"), null);
-                fxn.addArg(1, "__params", (Proto)om.findStrict("ti.uia.runtime.LoggerProbePoint.Params", "ti.uia.runtime"), Global.newObject());
-        sb = new StringBuilder();
-        sb.append("ti$uia$runtime$LoggerProbePoint$$construct = function( __obj, __params ) {\n");
-            sb.append("var __mod = xdc.om['ti.uia.runtime.LoggerProbePoint'];\n");
-            sb.append("var __inst = __obj;\n");
-            sb.append("__inst.$$bind('$args', {});\n");
-            sb.append("__inst.$$bind('$module', __mod);\n");
-            sb.append("__mod.$objects.$add(__inst);\n");
-            sb.append("for (var __p in __params) __inst[__p] = __params[__p];\n");
-            sb.append("__inst.$$bless();\n");
-            sb.append("return null;\n");
-        sb.append("}\n");
-        Global.eval(sb.toString());
-    }
-
-    void LoggerStopMode$$CREATES()
-    {
-        Proto.Fxn fxn;
-        StringBuilder sb;
-
-        fxn = (Proto.Fxn)om.bind("ti.uia.runtime.LoggerStopMode$$create", new Proto.Fxn(om.findStrict("ti.uia.runtime.LoggerStopMode.Module", "ti.uia.runtime"), om.findStrict("ti.uia.runtime.LoggerStopMode.Instance", "ti.uia.runtime"), 1, 0, false));
-                fxn.addArg(0, "__params", (Proto)om.findStrict("ti.uia.runtime.LoggerStopMode.Params", "ti.uia.runtime"), Global.newObject());
-        sb = new StringBuilder();
-        sb.append("ti$uia$runtime$LoggerStopMode$$create = function( __params ) {\n");
-            sb.append("var __mod = xdc.om['ti.uia.runtime.LoggerStopMode'];\n");
-            sb.append("var __inst = xdc.om['ti.uia.runtime.LoggerStopMode.Instance'].$$make();\n");
-            sb.append("__inst.$$bind('$package', xdc.om['ti.uia.runtime']);\n");
-            sb.append("__inst.$$bind('$index', __mod.$instances.length);\n");
-            sb.append("__inst.$$bind('$category', 'Instance');\n");
-            sb.append("__inst.$$bind('$args', {});\n");
-            sb.append("__inst.$$bind('$module', __mod);\n");
-            sb.append("__mod.$instances.$add(__inst);\n");
-            sb.append("__inst.transferBufSize = __mod.PARAMS.transferBufSize;\n");
-            sb.append("__inst.maxEventSize = __mod.PARAMS.maxEventSize;\n");
-            sb.append("__inst.exitFlush = __mod.PARAMS.exitFlush;\n");
-            sb.append("__inst.bufSection = __mod.PARAMS.bufSection;\n");
-            sb.append("__inst.numCores = __mod.PARAMS.numCores;\n");
-            sb.append("for (var __p in __params) __inst[__p] = __params[__p];\n");
-            sb.append("var save = xdc.om.$curpkg;\n");
-            sb.append("xdc.om.$$bind('$curpkg', __mod.$package.$name);\n");
-            sb.append("__mod.instance$meta$init.$fxn.apply(__inst, []);\n");
-            sb.append("xdc.om.$$bind('$curpkg', save);\n");
-            sb.append("__inst.$$bless();\n");
-            sb.append("return __inst;\n");
-        sb.append("}\n");
-        Global.eval(sb.toString());
-        fxn = (Proto.Fxn)om.bind("ti.uia.runtime.LoggerStopMode$$construct", new Proto.Fxn(om.findStrict("ti.uia.runtime.LoggerStopMode.Module", "ti.uia.runtime"), null, 2, 0, false));
-                fxn.addArg(0, "__obj", (Proto)om.findStrict("ti.uia.runtime.LoggerStopMode$$Object", "ti.uia.runtime"), null);
-                fxn.addArg(1, "__params", (Proto)om.findStrict("ti.uia.runtime.LoggerStopMode.Params", "ti.uia.runtime"), Global.newObject());
-        sb = new StringBuilder();
-        sb.append("ti$uia$runtime$LoggerStopMode$$construct = function( __obj, __params ) {\n");
-            sb.append("var __mod = xdc.om['ti.uia.runtime.LoggerStopMode'];\n");
-            sb.append("var __inst = __obj;\n");
-            sb.append("__inst.$$bind('$args', {});\n");
-            sb.append("__inst.$$bind('$module', __mod);\n");
-            sb.append("__mod.$objects.$add(__inst);\n");
-            sb.append("__inst.transferBufSize = __mod.PARAMS.transferBufSize;\n");
-            sb.append("__inst.maxEventSize = __mod.PARAMS.maxEventSize;\n");
-            sb.append("__inst.exitFlush = __mod.PARAMS.exitFlush;\n");
-            sb.append("__inst.bufSection = __mod.PARAMS.bufSection;\n");
-            sb.append("__inst.numCores = __mod.PARAMS.numCores;\n");
-            sb.append("for (var __p in __params) __inst[__p] = __params[__p];\n");
-            sb.append("__inst.$$bless();\n");
-            sb.append("return null;\n");
-        sb.append("}\n");
-        Global.eval(sb.toString());
-    }
-
     void LoggerSM$$CREATES()
     {
         Proto.Fxn fxn;
@@ -1284,24 +1069,6 @@ public class ti_uia_runtime
         fxn = (Proto.Fxn)om.bind("ti.uia.runtime.LogSync$$isUsedByRta", new Proto.Fxn(om.findStrict("ti.uia.runtime.LogSync.Module", "ti.uia.runtime"), null, 0, -1, false));
     }
 
-    void LoggerCircBuf$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
-    void LoggerProbePoint$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
-    void LoggerStopMode$$FUNCTIONS()
-    {
-        Proto.Fxn fxn;
-
-    }
-
     void LoggerSM$$FUNCTIONS()
     {
         Proto.Fxn fxn;
@@ -1497,7 +1264,7 @@ public class ti_uia_runtime
         sizes.add(Global.newArray("tstamp", "Sxdc.runtime.Types;Timestamp64"));
         sizes.add(Global.newArray("serial", "UInt32"));
         sizes.add(Global.newArray("evt", "UInt32"));
-        sizes.add(Global.newArray("snapshotId", "TInt"));
+        sizes.add(Global.newArray("snapshotId", "UIArg"));
         sizes.add(Global.newArray("fmt", "TIArg"));
         sizes.add(Global.newArray("pData", "UPtr"));
         sizes.add(Global.newArray("lengthInMAUs", "UInt16"));
@@ -1537,18 +1304,6 @@ public class ti_uia_runtime
         so.bind("$alignof", fxn);
         fxn = Global.eval("function(fld) { return $$offsetof(xdc.om['ti.uia.runtime.LogSync.Instance_State'], fld); }");
         so.bind("$offsetof", fxn);
-    }
-
-    void LoggerCircBuf$$SIZES()
-    {
-    }
-
-    void LoggerProbePoint$$SIZES()
-    {
-    }
-
-    void LoggerStopMode$$SIZES()
-    {
     }
 
     void LoggerSM$$SIZES()
@@ -1982,7 +1737,7 @@ public class ti_uia_runtime
                 po.addFld("tstamp", (Proto)om.findStrict("xdc.runtime.Types.Timestamp64", "ti.uia.runtime"), $$DEFAULT, "w");
                 po.addFld("serial", Proto.Elm.newCNum("(xdc_Bits32)"), $$UNDEF, "w");
                 po.addFld("evt", Proto.Elm.newCNum("(xdc_Bits32)"), $$UNDEF, "w");
-                po.addFld("snapshotId", Proto.Elm.newCNum("(xdc_Int)"), $$UNDEF, "w");
+                po.addFld("snapshotId", new Proto.Adr("xdc_UArg", "Pv"), $$UNDEF, "w");
                 po.addFld("fmt", new Proto.Adr("xdc_IArg", "Pv"), $$UNDEF, "w");
                 po.addFld("pData", new Proto.Adr("xdc_Ptr", "Pv"), $$UNDEF, "w");
                 po.addFld("lengthInMAUs", Proto.Elm.newCNum("(xdc_UInt16)"), $$UNDEF, "w");
@@ -2079,182 +1834,6 @@ public class ti_uia_runtime
         po = (Proto.Obj)om.findStrict("ti.uia.runtime.LogSync$$Instance_State", "ti.uia.runtime");
         po.init("ti.uia.runtime.LogSync.Instance_State", null);
         po.addFld("$hostonly", $$T_Num, 0, "r");
-    }
-
-    void LoggerCircBuf$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        cap = (Scriptable)Global.callFxn("loadCapsule", xdcO, "ti/uia/runtime/LoggerCircBuf.xs");
-        om.bind("ti.uia.runtime.LoggerCircBuf$$capsule", cap);
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerCircBuf.Module", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerCircBuf.Module", $$Module);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("E_badLevel", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.uia.runtime"), $$DEFAULT, "wh");
-        po.addFld("isTimestampEnabled", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("enableFlush", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("statusLogger", (Proto)om.findStrict("xdc.runtime.IFilterLogger.Handle", "ti.uia.runtime"), $$UNDEF, "wh");
-        po.addFld("overflowLogger", (Proto)om.findStrict("xdc.runtime.ILogger.Handle", "ti.uia.runtime"), $$UNDEF, "wh");
-        po.addFld("level1Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level2Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level3Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level4Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("moduleToRouteToStatusLogger", $$T_Str, $$UNDEF, "wh");
-                po.addFxn("create", (Proto.Fxn)om.findStrict("ti.uia.runtime.LoggerCircBuf$$create", "ti.uia.runtime"), Global.get("ti$uia$runtime$LoggerCircBuf$$create"));
-                po.addFxn("construct", (Proto.Fxn)om.findStrict("ti.uia.runtime.LoggerCircBuf$$construct", "ti.uia.runtime"), Global.get("ti$uia$runtime$LoggerCircBuf$$construct"));
-        fxn = Global.get(cap, "module$use");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerCircBuf$$module$use", true);
-        if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$meta$init");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerCircBuf$$module$meta$init", true);
-        if (fxn != null) po.addFxn("module$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "instance$meta$init");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerCircBuf$$instance$meta$init", true);
-        if (fxn != null) po.addFxn("instance$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$validate");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerCircBuf$$module$validate", true);
-        if (fxn != null) po.addFxn("module$validate", $$T_Met, fxn);
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerCircBuf.Instance", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerCircBuf.Instance", $$Instance);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("transferBufSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("exitFlush", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("bufSection", $$T_Str, $$UNDEF, "wh");
-        po.addFld("bufHeap", (Proto)om.findStrict("xdc.runtime.IHeap.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("numCores", Proto.Elm.newCNum("(xdc_Int)"), $$UNDEF, "wh");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerCircBuf$$Params", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerCircBuf.Params", $$Params);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("transferBufSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("exitFlush", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("bufSection", $$T_Str, $$UNDEF, "wh");
-        po.addFld("bufHeap", (Proto)om.findStrict("xdc.runtime.IHeap.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("numCores", Proto.Elm.newCNum("(xdc_Int)"), $$UNDEF, "wh");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerCircBuf$$Object", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerCircBuf.Object", om.findStrict("ti.uia.runtime.LoggerCircBuf.Instance", "ti.uia.runtime"));
-    }
-
-    void LoggerProbePoint$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        cap = (Scriptable)Global.callFxn("loadCapsule", xdcO, "ti/uia/runtime/LoggerProbePoint.xs");
-        om.bind("ti.uia.runtime.LoggerProbePoint$$capsule", cap);
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerProbePoint.Module", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerProbePoint.Module", $$Module);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("isTimestampEnabled", $$T_Bool, true, "wh");
-        po.addFld("enableFlush", $$T_Bool, false, "wh");
-        po.addFld("statusLogger", (Proto)om.findStrict("xdc.runtime.IFilterLogger.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("overflowLogger", (Proto)om.findStrict("xdc.runtime.ILogger.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("level1Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level2Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level3Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level4Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("moduleToRouteToStatusLogger", $$T_Str, $$UNDEF, "wh");
-                po.addFxn("create", (Proto.Fxn)om.findStrict("ti.uia.runtime.LoggerProbePoint$$create", "ti.uia.runtime"), Global.get("ti$uia$runtime$LoggerProbePoint$$create"));
-                po.addFxn("construct", (Proto.Fxn)om.findStrict("ti.uia.runtime.LoggerProbePoint$$construct", "ti.uia.runtime"), Global.get("ti$uia$runtime$LoggerProbePoint$$construct"));
-        fxn = Global.get(cap, "module$use");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerProbePoint$$module$use", true);
-        if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$meta$init");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerProbePoint$$module$meta$init", true);
-        if (fxn != null) po.addFxn("module$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "instance$meta$init");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerProbePoint$$instance$meta$init", true);
-        if (fxn != null) po.addFxn("instance$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$validate");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerProbePoint$$module$validate", true);
-        if (fxn != null) po.addFxn("module$validate", $$T_Met, fxn);
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerProbePoint.Instance", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerProbePoint.Instance", $$Instance);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("transferBufSize", Proto.Elm.newCNum("(xdc_SizeT)"), 512L, "wh");
-        po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), 128L, "wh");
-        po.addFld("exitFlush", $$T_Bool, true, "wh");
-        po.addFld("bufSection", $$T_Str, null, "wh");
-        po.addFld("bufHeap", (Proto)om.findStrict("xdc.runtime.IHeap.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("numCores", Proto.Elm.newCNum("(xdc_Int)"), 1L, "wh");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerProbePoint$$Params", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerProbePoint.Params", $$Params);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("transferBufSize", Proto.Elm.newCNum("(xdc_SizeT)"), 512L, "wh");
-        po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), 128L, "wh");
-        po.addFld("exitFlush", $$T_Bool, true, "wh");
-        po.addFld("bufSection", $$T_Str, null, "wh");
-        po.addFld("bufHeap", (Proto)om.findStrict("xdc.runtime.IHeap.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("numCores", Proto.Elm.newCNum("(xdc_Int)"), 1L, "wh");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerProbePoint$$Object", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerProbePoint.Object", om.findStrict("ti.uia.runtime.LoggerProbePoint.Instance", "ti.uia.runtime"));
-    }
-
-    void LoggerStopMode$$TYPES()
-    {
-        Scriptable cap;
-        Proto.Obj po;
-        Proto.Str ps;
-        Proto.Typedef pt;
-        Object fxn;
-
-        cap = (Scriptable)Global.callFxn("loadCapsule", xdcO, "ti/uia/runtime/LoggerStopMode.xs");
-        om.bind("ti.uia.runtime.LoggerStopMode$$capsule", cap);
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerStopMode.Module", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerStopMode.Module", $$Module);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("E_badLevel", (Proto)om.findStrict("xdc.runtime.Error$$Id", "ti.uia.runtime"), $$DEFAULT, "wh");
-        po.addFld("isTimestampEnabled", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("enableFlush", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("statusLogger", (Proto)om.findStrict("xdc.runtime.IFilterLogger.Handle", "ti.uia.runtime"), $$UNDEF, "wh");
-        po.addFld("overflowLogger", (Proto)om.findStrict("xdc.runtime.ILogger.Handle", "ti.uia.runtime"), $$UNDEF, "wh");
-        po.addFld("level1Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level2Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level3Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("level4Mask", Proto.Elm.newCNum("(xdc_Bits16)"), 0L, "wh");
-        po.addFld("moduleToRouteToStatusLogger", $$T_Str, $$UNDEF, "wh");
-                po.addFxn("create", (Proto.Fxn)om.findStrict("ti.uia.runtime.LoggerStopMode$$create", "ti.uia.runtime"), Global.get("ti$uia$runtime$LoggerStopMode$$create"));
-                po.addFxn("construct", (Proto.Fxn)om.findStrict("ti.uia.runtime.LoggerStopMode$$construct", "ti.uia.runtime"), Global.get("ti$uia$runtime$LoggerStopMode$$construct"));
-        fxn = Global.get(cap, "module$use");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerStopMode$$module$use", true);
-        if (fxn != null) po.addFxn("module$use", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$meta$init");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerStopMode$$module$meta$init", true);
-        if (fxn != null) po.addFxn("module$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "instance$meta$init");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerStopMode$$instance$meta$init", true);
-        if (fxn != null) po.addFxn("instance$meta$init", $$T_Met, fxn);
-        fxn = Global.get(cap, "module$validate");
-        if (fxn != null) om.bind("ti.uia.runtime.LoggerStopMode$$module$validate", true);
-        if (fxn != null) po.addFxn("module$validate", $$T_Met, fxn);
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerStopMode.Instance", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerStopMode.Instance", $$Instance);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("transferBufSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("exitFlush", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("bufSection", $$T_Str, $$UNDEF, "wh");
-        po.addFld("bufHeap", (Proto)om.findStrict("xdc.runtime.IHeap.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("numCores", Proto.Elm.newCNum("(xdc_Int)"), $$UNDEF, "wh");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerStopMode$$Params", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerStopMode.Params", $$Params);
-                po.addFld("$hostonly", $$T_Num, 1, "r");
-        po.addFld("transferBufSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("maxEventSize", Proto.Elm.newCNum("(xdc_SizeT)"), $$UNDEF, "wh");
-        po.addFld("exitFlush", $$T_Bool, $$UNDEF, "wh");
-        po.addFld("bufSection", $$T_Str, $$UNDEF, "wh");
-        po.addFld("bufHeap", (Proto)om.findStrict("xdc.runtime.IHeap.Handle", "ti.uia.runtime"), null, "wh");
-        po.addFld("numCores", Proto.Elm.newCNum("(xdc_Int)"), $$UNDEF, "wh");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerStopMode$$Object", "ti.uia.runtime");
-        po.init("ti.uia.runtime.LoggerStopMode.Object", om.findStrict("ti.uia.runtime.LoggerStopMode.Instance", "ti.uia.runtime"));
     }
 
     void LoggerSM$$TYPES()
@@ -2971,18 +2550,6 @@ public class ti_uia_runtime
         po = (Proto.Obj)om.findStrict("ti.uia.runtime.LogSync$$Module_State", "ti.uia.runtime");
         vo.bind("Instance_State$fetchDesc", Global.newObject("type", "ti.uia.runtime.LogSync.Instance_State", "isScalar", false));
         po = (Proto.Obj)om.findStrict("ti.uia.runtime.LogSync$$Instance_State", "ti.uia.runtime");
-    }
-
-    void LoggerCircBuf$$ROV()
-    {
-    }
-
-    void LoggerProbePoint$$ROV()
-    {
-    }
-
-    void LoggerStopMode$$ROV()
-    {
     }
 
     void LoggerSM$$ROV()
@@ -3769,150 +3336,6 @@ public class ti_uia_runtime
         ((Value.Arr)pkgV.getv("$unitNames")).add("LogSync");
     }
 
-    void LoggerCircBuf$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.uia.runtime.LoggerCircBuf", "ti.uia.runtime");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerCircBuf.Module", "ti.uia.runtime");
-        vo.init2(po, "ti.uia.runtime.LoggerCircBuf", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Module");
-        vo.bind("$capsule", om.findStrict("ti.uia.runtime.LoggerCircBuf$$capsule", "ti.uia.runtime"));
-        vo.bind("Instance", om.findStrict("ti.uia.runtime.LoggerCircBuf.Instance", "ti.uia.runtime"));
-        vo.bind("Params", om.findStrict("ti.uia.runtime.LoggerCircBuf.Params", "ti.uia.runtime"));
-        vo.bind("PARAMS", ((Proto.Str)om.findStrict("ti.uia.runtime.LoggerCircBuf.Params", "ti.uia.runtime")).newInstance());
-        vo.bind("$package", om.findStrict("ti.uia.runtime", "ti.uia.runtime"));
-        tdefs.clear();
-        proxies.clear();
-        mcfgs.clear();
-        icfgs.clear();
-        inherits.clear();
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
-        vo.bind("$$icfgs", Global.newArray(icfgs.toArray()));
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$modules")).add(vo);
-        ((Value.Arr)om.findStrict("$modules", "ti.uia.runtime")).add(vo);
-        vo.bind("$$instflag", 1);
-        vo.bind("$$iobjflag", 1);
-        vo.bind("$$sizeflag", 1);
-        vo.bind("$$dlgflag", 0);
-        vo.bind("$$iflag", 0);
-        vo.bind("$$romcfgs", "|");
-        vo.bind("$$nortsflag", 0);
-        Proto.Str ps = (Proto.Str)vo.find("Module_State");
-        if (ps != null) vo.bind("$object", ps.newInstance());
-        vo.bind("$$meta_iobj", om.has("ti.uia.runtime.LoggerCircBuf$$instance$static$init", null) ? 1 : 0);
-        vo.bind("$$fxntab", Global.newArray());
-        vo.bind("$$logEvtCfgs", Global.newArray());
-        vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
-        Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.seal("length");
-        vo.bind("Object", om.findStrict("ti.uia.runtime.LoggerCircBuf.Object", "ti.uia.runtime"));
-        pkgV.bind("LoggerCircBuf", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("LoggerCircBuf");
-    }
-
-    void LoggerProbePoint$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.uia.runtime.LoggerProbePoint", "ti.uia.runtime");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerProbePoint.Module", "ti.uia.runtime");
-        vo.init2(po, "ti.uia.runtime.LoggerProbePoint", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Module");
-        vo.bind("$capsule", om.findStrict("ti.uia.runtime.LoggerProbePoint$$capsule", "ti.uia.runtime"));
-        vo.bind("Instance", om.findStrict("ti.uia.runtime.LoggerProbePoint.Instance", "ti.uia.runtime"));
-        vo.bind("Params", om.findStrict("ti.uia.runtime.LoggerProbePoint.Params", "ti.uia.runtime"));
-        vo.bind("PARAMS", ((Proto.Str)om.findStrict("ti.uia.runtime.LoggerProbePoint.Params", "ti.uia.runtime")).newInstance());
-        vo.bind("$package", om.findStrict("ti.uia.runtime", "ti.uia.runtime"));
-        tdefs.clear();
-        proxies.clear();
-        mcfgs.clear();
-        icfgs.clear();
-        inherits.clear();
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
-        vo.bind("$$icfgs", Global.newArray(icfgs.toArray()));
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$modules")).add(vo);
-        ((Value.Arr)om.findStrict("$modules", "ti.uia.runtime")).add(vo);
-        vo.bind("$$instflag", 1);
-        vo.bind("$$iobjflag", 1);
-        vo.bind("$$sizeflag", 1);
-        vo.bind("$$dlgflag", 0);
-        vo.bind("$$iflag", 0);
-        vo.bind("$$romcfgs", "|");
-        vo.bind("$$nortsflag", 0);
-        Proto.Str ps = (Proto.Str)vo.find("Module_State");
-        if (ps != null) vo.bind("$object", ps.newInstance());
-        vo.bind("$$meta_iobj", om.has("ti.uia.runtime.LoggerProbePoint$$instance$static$init", null) ? 1 : 0);
-        vo.bind("$$fxntab", Global.newArray());
-        vo.bind("$$logEvtCfgs", Global.newArray());
-        vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
-        Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.seal("length");
-        vo.bind("Object", om.findStrict("ti.uia.runtime.LoggerProbePoint.Object", "ti.uia.runtime"));
-        pkgV.bind("LoggerProbePoint", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("LoggerProbePoint");
-    }
-
-    void LoggerStopMode$$SINGLETONS()
-    {
-        Proto.Obj po;
-        Value.Obj vo;
-
-        vo = (Value.Obj)om.findStrict("ti.uia.runtime.LoggerStopMode", "ti.uia.runtime");
-        po = (Proto.Obj)om.findStrict("ti.uia.runtime.LoggerStopMode.Module", "ti.uia.runtime");
-        vo.init2(po, "ti.uia.runtime.LoggerStopMode", $$DEFAULT, false);
-        vo.bind("Module", po);
-        vo.bind("$category", "Module");
-        vo.bind("$capsule", om.findStrict("ti.uia.runtime.LoggerStopMode$$capsule", "ti.uia.runtime"));
-        vo.bind("Instance", om.findStrict("ti.uia.runtime.LoggerStopMode.Instance", "ti.uia.runtime"));
-        vo.bind("Params", om.findStrict("ti.uia.runtime.LoggerStopMode.Params", "ti.uia.runtime"));
-        vo.bind("PARAMS", ((Proto.Str)om.findStrict("ti.uia.runtime.LoggerStopMode.Params", "ti.uia.runtime")).newInstance());
-        vo.bind("$package", om.findStrict("ti.uia.runtime", "ti.uia.runtime"));
-        tdefs.clear();
-        proxies.clear();
-        mcfgs.clear();
-        icfgs.clear();
-        inherits.clear();
-        vo.bind("$$tdefs", Global.newArray(tdefs.toArray()));
-        vo.bind("$$proxies", Global.newArray(proxies.toArray()));
-        vo.bind("$$mcfgs", Global.newArray(mcfgs.toArray()));
-        vo.bind("$$icfgs", Global.newArray(icfgs.toArray()));
-        vo.bind("$$inherits", Global.newArray(inherits.toArray()));
-        ((Value.Arr)pkgV.getv("$modules")).add(vo);
-        ((Value.Arr)om.findStrict("$modules", "ti.uia.runtime")).add(vo);
-        vo.bind("$$instflag", 1);
-        vo.bind("$$iobjflag", 1);
-        vo.bind("$$sizeflag", 1);
-        vo.bind("$$dlgflag", 0);
-        vo.bind("$$iflag", 0);
-        vo.bind("$$romcfgs", "|");
-        vo.bind("$$nortsflag", 0);
-        Proto.Str ps = (Proto.Str)vo.find("Module_State");
-        if (ps != null) vo.bind("$object", ps.newInstance());
-        vo.bind("$$meta_iobj", om.has("ti.uia.runtime.LoggerStopMode$$instance$static$init", null) ? 1 : 0);
-        vo.bind("$$fxntab", Global.newArray());
-        vo.bind("$$logEvtCfgs", Global.newArray());
-        vo.bind("$$errorDescCfgs", Global.newArray());
-        vo.bind("$$assertDescCfgs", Global.newArray());
-        Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.seal("length");
-        vo.bind("Object", om.findStrict("ti.uia.runtime.LoggerStopMode.Object", "ti.uia.runtime"));
-        pkgV.bind("LoggerStopMode", vo);
-        ((Value.Arr)pkgV.getv("$unitNames")).add("LoggerStopMode");
-    }
-
     void LoggerSM$$SINGLETONS()
     {
         Proto.Obj po;
@@ -4022,9 +3445,9 @@ public class ti_uia_runtime
         vo.bind("$$errorDescCfgs", Global.newArray("E_badLevel"));
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./LoggerSM.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.uia.runtime.LoggerSM.Object", "ti.uia.runtime"));
         vo.bind("Instance_State", om.findStrict("ti.uia.runtime.LoggerSM.Instance_State", "ti.uia.runtime"));
@@ -5182,9 +4605,6 @@ public class ti_uia_runtime
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LogCtxChg", "ti.uia.runtime"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LogSnapshot", "ti.uia.runtime"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LogSync", "ti.uia.runtime"));
-        Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LoggerCircBuf", "ti.uia.runtime"));
-        Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LoggerProbePoint", "ti.uia.runtime"));
-        Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LoggerStopMode", "ti.uia.runtime"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LoggerSM", "ti.uia.runtime"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.LoggerTypes", "ti.uia.runtime"));
         Global.callFxn("module$meta$init", (Scriptable)om.findStrict("ti.uia.runtime.MultiCoreTypes", "ti.uia.runtime"));
@@ -5223,9 +4643,6 @@ public class ti_uia_runtime
         ((Value.Obj)om.getv("ti.uia.runtime.IUIATraceSyncClient")).bless();
         ((Value.Obj)om.getv("ti.uia.runtime.LogSnapshot")).bless();
         ((Value.Obj)om.getv("ti.uia.runtime.LogSync")).bless();
-        ((Value.Obj)om.getv("ti.uia.runtime.LoggerCircBuf")).bless();
-        ((Value.Obj)om.getv("ti.uia.runtime.LoggerProbePoint")).bless();
-        ((Value.Obj)om.getv("ti.uia.runtime.LoggerStopMode")).bless();
         ((Value.Obj)om.getv("ti.uia.runtime.LoggerSM")).bless();
         ((Value.Obj)om.getv("ti.uia.runtime.LoggerTypes")).bless();
         ((Value.Obj)om.getv("ti.uia.runtime.MultiCoreTypes")).bless();
@@ -5265,9 +4682,6 @@ public class ti_uia_runtime
         IUIATraceSyncClient$$OBJECTS();
         LogSnapshot$$OBJECTS();
         LogSync$$OBJECTS();
-        LoggerCircBuf$$OBJECTS();
-        LoggerProbePoint$$OBJECTS();
-        LoggerStopMode$$OBJECTS();
         LoggerSM$$OBJECTS();
         LoggerTypes$$OBJECTS();
         MultiCoreTypes$$OBJECTS();
@@ -5291,9 +4705,6 @@ public class ti_uia_runtime
         IUIATraceSyncClient$$CONSTS();
         LogSnapshot$$CONSTS();
         LogSync$$CONSTS();
-        LoggerCircBuf$$CONSTS();
-        LoggerProbePoint$$CONSTS();
-        LoggerStopMode$$CONSTS();
         LoggerSM$$CONSTS();
         LoggerTypes$$CONSTS();
         MultiCoreTypes$$CONSTS();
@@ -5317,9 +4728,6 @@ public class ti_uia_runtime
         IUIATraceSyncClient$$CREATES();
         LogSnapshot$$CREATES();
         LogSync$$CREATES();
-        LoggerCircBuf$$CREATES();
-        LoggerProbePoint$$CREATES();
-        LoggerStopMode$$CREATES();
         LoggerSM$$CREATES();
         LoggerTypes$$CREATES();
         MultiCoreTypes$$CREATES();
@@ -5343,9 +4751,6 @@ public class ti_uia_runtime
         IUIATraceSyncClient$$FUNCTIONS();
         LogSnapshot$$FUNCTIONS();
         LogSync$$FUNCTIONS();
-        LoggerCircBuf$$FUNCTIONS();
-        LoggerProbePoint$$FUNCTIONS();
-        LoggerStopMode$$FUNCTIONS();
         LoggerSM$$FUNCTIONS();
         LoggerTypes$$FUNCTIONS();
         MultiCoreTypes$$FUNCTIONS();
@@ -5369,9 +4774,6 @@ public class ti_uia_runtime
         IUIATraceSyncClient$$SIZES();
         LogSnapshot$$SIZES();
         LogSync$$SIZES();
-        LoggerCircBuf$$SIZES();
-        LoggerProbePoint$$SIZES();
-        LoggerStopMode$$SIZES();
         LoggerSM$$SIZES();
         LoggerTypes$$SIZES();
         MultiCoreTypes$$SIZES();
@@ -5395,9 +4797,6 @@ public class ti_uia_runtime
         IUIATraceSyncClient$$TYPES();
         LogSnapshot$$TYPES();
         LogSync$$TYPES();
-        LoggerCircBuf$$TYPES();
-        LoggerProbePoint$$TYPES();
-        LoggerStopMode$$TYPES();
         LoggerSM$$TYPES();
         LoggerTypes$$TYPES();
         MultiCoreTypes$$TYPES();
@@ -5422,9 +4821,6 @@ public class ti_uia_runtime
             IUIATraceSyncClient$$ROV();
             LogSnapshot$$ROV();
             LogSync$$ROV();
-            LoggerCircBuf$$ROV();
-            LoggerProbePoint$$ROV();
-            LoggerStopMode$$ROV();
             LoggerSM$$ROV();
             LoggerTypes$$ROV();
             MultiCoreTypes$$ROV();
@@ -5450,9 +4846,6 @@ public class ti_uia_runtime
         IUIATraceSyncClient$$SINGLETONS();
         LogSnapshot$$SINGLETONS();
         LogSync$$SINGLETONS();
-        LoggerCircBuf$$SINGLETONS();
-        LoggerProbePoint$$SINGLETONS();
-        LoggerStopMode$$SINGLETONS();
         LoggerSM$$SINGLETONS();
         LoggerTypes$$SINGLETONS();
         MultiCoreTypes$$SINGLETONS();

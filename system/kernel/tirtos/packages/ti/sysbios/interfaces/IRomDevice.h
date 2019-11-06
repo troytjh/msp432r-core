@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -32,10 +32,12 @@
 #define ti_sysbios_interfaces_IRomDevice__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_IRomDevice___VERS 200
@@ -92,17 +94,17 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_IRomDevice_Module
 }
 
 /* getRevision */
-static inline xdc_UInt ti_sysbios_interfaces_IRomDevice_getRevision(ti_sysbios_interfaces_IRomDevice_Module __mod);
-static inline xdc_UInt ti_sysbios_interfaces_IRomDevice_getRevision( ti_sysbios_interfaces_IRomDevice_Module __mod )
+static inline xdc_UInt ti_sysbios_interfaces_IRomDevice_getRevision(ti_sysbios_interfaces_IRomDevice_Module mod);
+static inline xdc_UInt ti_sysbios_interfaces_IRomDevice_getRevision( ti_sysbios_interfaces_IRomDevice_Module mod )
 {
-    return __mod->getRevision();
+    return mod->getRevision();
 }
 
 /* checkRevision */
-static inline xdc_Void ti_sysbios_interfaces_IRomDevice_checkRevision(ti_sysbios_interfaces_IRomDevice_Module __mod);
-static inline xdc_Void ti_sysbios_interfaces_IRomDevice_checkRevision( ti_sysbios_interfaces_IRomDevice_Module __mod )
+static inline xdc_Void ti_sysbios_interfaces_IRomDevice_checkRevision(ti_sysbios_interfaces_IRomDevice_Module mod);
+static inline xdc_Void ti_sysbios_interfaces_IRomDevice_checkRevision( ti_sysbios_interfaces_IRomDevice_Module mod )
 {
-    __mod->checkRevision();
+    mod->checkRevision();
 }
 
 
@@ -119,18 +121,18 @@ static inline xdc_Void ti_sysbios_interfaces_IRomDevice_checkRevision( ti_sysbio
 
 /* getRevision_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_IRomDevice_getRevision_FxnT)(void);
-static inline ti_sysbios_interfaces_IRomDevice_getRevision_FxnT ti_sysbios_interfaces_IRomDevice_getRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module __mod);
-static inline ti_sysbios_interfaces_IRomDevice_getRevision_FxnT ti_sysbios_interfaces_IRomDevice_getRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module __mod)
+static inline ti_sysbios_interfaces_IRomDevice_getRevision_FxnT ti_sysbios_interfaces_IRomDevice_getRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module mod);
+static inline ti_sysbios_interfaces_IRomDevice_getRevision_FxnT ti_sysbios_interfaces_IRomDevice_getRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module mod)
 {
-    return (ti_sysbios_interfaces_IRomDevice_getRevision_FxnT)__mod->getRevision;
+    return (ti_sysbios_interfaces_IRomDevice_getRevision_FxnT)mod->getRevision;
 }
 
 /* checkRevision_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_IRomDevice_checkRevision_FxnT)(void);
-static inline ti_sysbios_interfaces_IRomDevice_checkRevision_FxnT ti_sysbios_interfaces_IRomDevice_checkRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module __mod);
-static inline ti_sysbios_interfaces_IRomDevice_checkRevision_FxnT ti_sysbios_interfaces_IRomDevice_checkRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module __mod)
+static inline ti_sysbios_interfaces_IRomDevice_checkRevision_FxnT ti_sysbios_interfaces_IRomDevice_checkRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module mod);
+static inline ti_sysbios_interfaces_IRomDevice_checkRevision_FxnT ti_sysbios_interfaces_IRomDevice_checkRevision_fxnP(ti_sysbios_interfaces_IRomDevice_Module mod)
 {
-    return (ti_sysbios_interfaces_IRomDevice_checkRevision_FxnT)__mod->checkRevision;
+    return (ti_sysbios_interfaces_IRomDevice_checkRevision_FxnT)mod->checkRevision;
 }
 
 

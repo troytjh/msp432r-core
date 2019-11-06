@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,33 +33,212 @@
  *  @file       NVS.h
  *  @brief      Non-Volatile Storage driver interface
  *
- *  To use the NVS driver, ensure that the correct driver library for your
- *  device is linked in and include this header file as follows:
- *  @code
- *  #include <ti/drivers/NVS.h>
- *  @endcode
- *
- *  This module serves as the main interface for applications. Its purpose
- *  is to redirect the NVS APIs to specific driver implementations
- *  which are specified using a pointer to a #NVS_FxnTable.
- *
+ *  @anchor ti_drivers_NVS_Overview
  *  # Overview #
  *
  *  The NVS module allows you to manage non-volatile memory.  Using the
  *  NVS APIs, you can read and write data from and to persistent storage.
  *
- *  Each NVS object manages a 'region' of non-volatile memory of a size
- *  specified in the NVS object's hardware attributes.  A 'sector' refers to
- *  the smallest unit of non-volatile storage that can be erased at one time,
- *  and the 'sectorSize' is the size of this unit. Flash sector size is
- *  hardware specific and may be meaningless for some persistent storage
- *  systems.  However, in the case of flash memory devices, the size
- *  of a managed region must be an integer multiple of the sector size.
+ *  Each NVS object is used to manage a region of non-volatile memory.
+ *  The size of the region is specified in the device specific driver's
+ *  hardware attributes.
+ *  A sector is the smallest unit of non-volatile storage that can be erased
+ *  at one time. The size of the sector, or sector size, is hardware specific
+ *  and may be meaningless for some non-volatile storage hardware. For flash
+ *  memory devices, the region must be aligned with the sector size. That is,
+ *  the region must start on a sector boundary. Additionally, the overall size
+ *  of the region must be an integer multiple of the sector size.
  *
+ *  <hr>
+ *  @anchor ti_drivers_NVS_Usage
+ *  # Usage
+ *
+ *  This section provides a basic @ref ti_drivers_NVS_Synopsis
+ *  "usage summary" and a set of @ref ti_drivers_NVS_Examples "examples"
+ *  in the form of commented code fragments. Detailed descriptions of the
+ *  APIs are provided in subsequent sections.
+
+ *  The NVS driver interface provides device independent APIs, data types,
+ *  and macros.  The following code example opens an NVS region instance,
+ *  writes a string into it, then prints the string after reading it back
+ *  into a local buffer, and also prints the string from its directly
+ *  addressable location in flash memory.
+ *
+ *  @anchor ti_drivers_NVS_Synopsis
+ *  ## Synopsis
+ *  @anchor ti_drivers_NVS_Synopsis_Code
+ *  @code
+ *  // Import NVS Driver definitions
+ *  #include <ti/drivers/NVS.h>
+ *
+ *  // One time init of NVS driver
+ *  NVS_init();
+ *
+ *  // Initialize optional NVS parameters
+ *  NVS_Params_init(&nvsParams);
+ *
+ *  // Open NVS driver instance
+ *  nvsRegion = NVS_open(config_NVS0, &nvsParams);
+ *
+ *  // write "Hello" to the base address of region 0, verify after write
+ *  status = NVS_write(nvsRegion, 0, "Hello", strlen("Hello")+1, NVS_POST_VERIFY);
+ *
+ *  // Close NVS region
+ *  NVS_close(nvsRegion);
+ *
+ *  @endcode
+ *
+ *  <hr>
+ *  @anchor ti_drivers_NVS_Examples
+ *  # Examples
+ *
+ *  @li @ref ti_drivers_NVS_Examples_open "Opening an NVS region instance"
+ *  @li @ref ti_drivers_NVS_Examples_typical "Typical NVS region operations"
+ *
+ *  @anchor ti_drivers_NVS_Examples_open
+ *  ## Opening an NVS region instance
+ *
+ *  @code
+ *      NVS_Handle nvsRegion;
+ *      NVS_Params nvsParams;
+ *
+ *      NVS_Params_init(&nvsParams);
+ *      nvsRegion = NVS_open(CONFIG_NVS0, &nvsParams);
+ *  @endcode
+ *
+ *  @anchor ti_drivers_NVS_Examples_typical
+ *  ## Erasing, writing, reading an NVS region
+ *
+ *  The following code example opens an NVS region instance, erases the first
+ *  sector of that region, writes a string into it, then prints the string
+ *  after reading it back into a local buffer. If the string is directly CPU
+ *  addressable (i.e. not in SPI flash), the string is printed from
+ *  its location in flash memory.
+ *
+ *  @code
+ *
+ *      // Import NVS Driver definitions
+ *      #include <ti/drivers/NVS.h>
+ *
+ *      NVS_Handle nvsRegion;
+ *      NVS_Attrs regionAttrs;
+ *
+ *      uint_fast16_t status;
+ *      char buf[32];
+ *
+ *      // initialize the NVS driver
+ *      NVS_init();
+ *
+ *      //
+ *      // Open the NVS region specified by the 0th element in the NVS_config[]
+ *      // array defined in ti_drivers_config.c.
+ *      //
+ *      // Use default NVS_Params to open this memory region, hence 'NULL'
+ *      //
+ *      nvsRegion = NVS_open(CONFIG_NVS0, NULL);
+ *
+ *      // Confirm that the NVS region opened properly
+ *      if (nvsRegion == NULL) {
+ *          // Error handling code
+ *      }
+ *
+ *      // Fetch the generic NVS region attributes for nvsRegion
+ *      NVS_getAttrs(nvsRegion, &regionAttrs);
+ *
+ *      // Erase the first sector of nvsRegion
+ *      status = NVS_erase(nvsRegion, 0, regionAttrs.sectorSize);
+ *      if (status != NVS_STATUS_SUCCESS) {
+ *          // Error handling code
+ *      }
+ *
+ *      // Write "Hello" to the base address of nvsRegion, verify after write
+ *      status = NVS_write(nvsRegion, 0, "Hello", strlen("Hello")+1, NVS_POST_VERIFY);
+ *      if (status != NVS_STATUS_SUCCESS) {
+ *          // Error handling code
+ *      }
+ *
+ *      // Copy "Hello" from nvsRegion into local 'buf'
+ *      status = NVS_read(nvsRegion, 0, buf, strlen("Hello")+1);
+ *      if (status != NVS_STATUS_SUCCESS) {
+ *          // Error handling code
+ *      }
+ *
+ *      // Print the string from fetched NVS storage
+ *      System_printf("%s\n", buf);
+ *
+ *      //
+ *      // Print the string using direct flash address reference if valid
+ *      //
+ *      // When the NVS driver is managing SPI flash non volatile
+ *      // storage, the regionBase attribute will be `NVS_REGION_NOT_ADDRESSABLE`
+ *      //
+ *      if (regionAttrs.regionBase != NVS_REGION_NOT_ADDRESSABLE) {
+ *         System_printf("%s\n", regionAttrs.regionBase);
+ *      }
+ *
+ *      // close the region
+ *      NVS_close(nvsRegion);
+ *
+ *  @endcode
+ *
+ *  <hr>
+ *  @anchor ti_drivers_NVS_Configuration
+ *  # Configuration
+ *
+ *  Refer to the @ref driver_configuration "Driver's Configuration" section
+ *  for driver configuration information.
+ *  <hr>
+ *
+ *  # Example discussion
+ *
+ *  Details for the @ref ti_drivers_NVS_Examples_typical "Typical NVS region operations"
+ *  example code above are described in the following subsections.
+ *
+ *  ### NVS Driver Configuration #
+ *
+ *  In order to use the NVS APIs, the application is required to provide
+ *  device-specific NVS configuration in the ti_drivers_config.c file.
+ *  The NVS driver interface defines a configuration data structure,
+ *  #NVS_Config.
+ *
+ *  The application must declare an array of #NVS_Config elements, named
+ *  \p NVS_config[].  Each element of \p NVS_config[] is populated with
+ *  pointers to a device specific NVS driver implementation's function
+ *  table, driver object, and hardware attributes.  The hardware attributes
+ *  define properties such as the NVS region's base address and size,
+ *  Each element in \p NVS_config[] corresponds to a NVS instance, and none
+ *  of the elements should have NULL pointers.
+ *
+ *  You will need to check the device-specific NVS driver implementation's
+ *  header file for example configuration.  Please also refer to the
+ *  ti_drivers_config.c file of any of the examples to see the NVS configuration.
+ *
+ *  ### Initializing the NVS Driver #
+ *
+ *  NVS_init() must be called before any other NVS APIs.  This function
+ *  calls the device implementation's NVS initialization function, for each
+ *  element of \p NVS_config[].
+ *
+ *  ### Opening the NVS Driver #
+ *
+ *  Opening a NVS requires four steps:
+ *  1.  Optionally create and initialize a #NVS_Params structure.
+ *  2.  Fill in the desired parameters.
+ *  3.  Call NVS_open(), passing the index of the NVS region in the #NVS_Config
+ *      structure, and the address of the #NVS_Params structure.
+ *  4.  Check that the #NVS_Handle returned by NVS_open() is non-NULL,
+ *      and save it.  The handle will be used to read and write to the
+ *      NVS you just opened.
+ *
+ *  \note Each NVS index can only be opened exclusively. Calling NVS_open()
+ *  multiple times with the same index will result in an error. The index can
+ *  be re-used if NVS_close() is called first.
+ *
+ *  <hr>
  *  # Thread Safety #
  *
  *  All NVS APIs are globally thread safe. Consequently, only one write,
- *  erase, or read in the case of SPI flash operation is allowed to be
+ *  erase (or read in the case of SPI flash) operation is allowed to be
  *  performed at a time, even for distinct NVS regions. Threads initiating
  *  new NVS writes or erases will block until any current operation completes.
  *
@@ -73,120 +252,6 @@
  *  Care must be taken by the user to not perform flash write or erase
  *  operations during latency critical phases of an application. See the
  *  NVS_lock() and NVS_unlock() API descriptions for more information.
- *
- *  # Usage #
- *
- *  The NVS driver interface provides device independent APIs, data types,
- *  and macros.  The following code example opens an NVS region instance,
- *  writes a string into it, then prints the string after reading it back
- *  into a local buffer, and also prints the string from its directly
- *  addressable location in flash memory.
- *
- *  @code
- *    NVS_Handle rHandle;
- *    NVS_Attrs regionAttrs;
- *    NVS_Params nvsParams;
- *    uint_fast16_t status;
- *    char buf[32];
- *
- *    // Initialize the NVS driver
- *    NVS_init();
- *
- *    //
- *    // Open the NVS region specified by the 0th element in the NVS_config[] array
- *    // in Board.c
- *    //
- *    rHandle = NVS_open(0, NULL); // use default NVS_Params to open this flash region
- *
- *    // confirm that the NVS region opened properly
- *    if (rHandle == NULL) {
- *        ...
- *    }
- *
- *    // fetch the generic NVS region attributes
- *    NVS_getAttrs(rHandle, &regionAttrs);
- *
- *    // erase the first sector of the NVS region
- *    status = NVS_erase(rHandle, 0, regionAttrs.sectorSize);
- *    if (status != NVS_STATUS_SUCCESS) {
- *        ...
- *    }
- *
- *    // write "Hello" to the base address of region 0, verify after write
- *    status = NVS_write(rHandle, 0, "Hello", strlen("Hello")+1, NVS_POST_VERIFY);
- *    if (status != NVS_STATUS_SUCCESS) {
- *        ...
- *    }
- *
- *    // copy "Hello" from region0 into local 'buf'
- *    status = NVS_read(rHandle, 0, buf, strlen("Hello")+1);
- *    if (status != NVS_STATUS_SUCCESS) {
- *        ...
- *    }
- *
- *    // print string from fetched NVS storage
- *    System_printf("%s\n", buf);
- *
- *    // print string using direct address reference if valid
- *    if (regionAttrs.regionBase != NVS_REGION_NOT_ADDRESSABLE) {
- *       System_printf("%s\n", regionAttrs.regionBase);
- *    }
- *
- *    // close the region
- *    NVS_close(rHandle);
- *
- *  @endcode
- *
- *  Details for the example code above are described in the following
- *  subsections.
- *
- *  ### NVS Driver Configuration #
- *
- *  In order to use the NVS APIs, the application is required
- *  to provide device-specific NVS configuration in the Board.c file.
- *  The NVS driver interface defines a configuration data structure:
- *
- *  @code
- *  typedef struct NVS_Config_ {
- *      NVS_FxnTable const    *fxnTablePtr;
- *      void                  *object;
- *      void                  *hwAttrs;
- *  } NVS_Config;
- *  @endcode
- *
- *  The application must declare an array of NVS_Config elements, named
- *  NVS_config[].  Each element of NVS_config[] is populated with
- *  pointers to a device specific NVS driver implementation's function
- *  table, driver object, and hardware attributes.  The hardware attributes
- *  define properties such as the NVS region's base address and size,
- *  Each element in NVS_config[] corresponds to a NVS instance, and none
- *  of the elements should have NULL pointers.
- *
- *  You will need to check the device-specific NVS driver implementation's
- *  header file for example configuration.  Please also refer to the
- *  Board.c file of any of the provided examples to see the NVS configuration.
- *
- *  ### Initializing the NVS Driver #
- *
- *  NVS_init() must be called before any other NVS APIs.  This function
- *  calls the device implementation's NVS initialization function, for each
- *  element of NVS_config[].
- *
- *  ### Opening the NVS Driver #
- *
- *  Opening a NVS requires four steps:
- *  1.  Optionally create and initialize a NVS_Params structure.
- *  2.  Fill in the desired parameters.
- *  3.  Call NVS_open(), passing the index of the NVS region in the NVS_config
- *      structure, and the address of the NVS_Params structure.
- *  4.  Check that the NVS handle returned by NVS_open() is non-NULL,
- *      and save it.  The handle will be used to read and write to the
- *      NVS you just opened.
- *
- *  Only one NVS index can be used at a time; calling NVS_open() a second
- *  time with the same index previously passed to NVS_open() will result in
- *  an error.  You can, though, re-use the index if the instance is closed
- *  via NVS_close().
  *
  *****************************************************************************
  */
@@ -244,7 +309,7 @@ extern "C" {
 
 /*!
  *  @brief   Successful status code returned by:
- *  NVS_control(), NVS_read(), NVS_write(), NVS_erase(),
+ *  NVS_control(), NVS_read(), NVS_write(), NVS_erase(), or
  *  NVS_lock().
  *
  *  APIs returns NVS_STATUS_SUCCESS if the API was executed
@@ -254,7 +319,7 @@ extern "C" {
 
 /*!
  *  @brief   Generic error status code returned by:
- *  NVS_control(), NVS_erase(), NVS_write(),
+ *  NVS_control(), NVS_erase(), or NVS_write(),
  *
  *  APIs return NVS_STATUS_ERROR if the API was not executed
  *  successfully.
@@ -265,7 +330,7 @@ extern "C" {
  *  @brief   An error status code returned by NVS_control() for undefined
  *  command codes.
  *
- *  NVS_control() returns NVS_STATUS_UNDEFINEDCMD if the control code is not
+ *  NVS_control() returns #NVS_STATUS_UNDEFINEDCMD if the control code is not
  *  recognized by the driver implementation.
  */
 #define NVS_STATUS_UNDEFINEDCMD     (-2)
@@ -273,14 +338,15 @@ extern "C" {
 /*!
  *  @brief An error status code returned by NVS_lock()
  *
- *  NVS_lock() will return this value if the 'timeout' has expired
+ *  NVS_lock() will return this value if the @p timeout has expired
  */
 #define NVS_STATUS_TIMEOUT          (-3)
 
 /*!
- *  @brief An error status code returned by NVS_read()/NVS_write()/NVS_erase()
-
- *  Error status code returned if the 'offset' argument is invalid
+ *  @brief An error status code returned by NVS_read(), NVS_write(), or
+ *  NVS_erase()
+ *
+ *  Error status code returned if the @p offset argument is invalid
  *  (e.g., when offset + bufferSize exceeds the size of the region).
  */
 #define NVS_STATUS_INV_OFFSET       (-4)
@@ -288,7 +354,7 @@ extern "C" {
 /*!
  *  @brief An error status code
  *
- *  Error status code returned by NVS_erase() if the 'offset' argument is
+ *  Error status code returned by NVS_erase() if the @p offset argument is
  *  not aligned on a flash sector address.
  */
 #define NVS_STATUS_INV_ALIGNMENT    (-5)
@@ -296,8 +362,8 @@ extern "C" {
 /*!
  *  @brief An error status code returned by NVS_erase() and NVS_write()
  *
- *  Error status code returned by NVS_erase() if the 'size' argument is
- *  not a multiple of the flash sector size, or if 'offset' + 'size'
+ *  Error status code returned by NVS_erase() if the @p size argument is
+ *  not a multiple of the flash sector size, or if @p offset + @p size
  *  extends past the end of the region.
  */
 #define NVS_STATUS_INV_SIZE         (-6)
@@ -305,7 +371,7 @@ extern "C" {
 /*!
  *  @brief An error status code returned by NVS_write()
  *
- *  NVS_write() will return this value if 'NVS_PRE_VERIFY' is
+ *  NVS_write() will return this value if #NVS_WRITE_PRE_VERIFY is
  *  requested and a flash location can not be changed to the value
  *  desired.
  */
@@ -339,7 +405,7 @@ extern "C" {
 /*!
  *  @brief Erase write flag.
  *
- *  If NVS_WRITE_ERASE is set in the flags passed to NVS_write(), the
+ *  If #NVS_WRITE_ERASE is set in the flags passed to NVS_write(), the
  *  affected destination flash sectors will be erased prior to the
  *  start of the write operation.
  */
@@ -348,17 +414,17 @@ extern "C" {
 /*!
  *  @brief Validate write flag.
  *
- *  If NVS_WRITE_PRE_VERIFY is set in the flags passed to NVS_write(), the
+ *  If #NVS_WRITE_PRE_VERIFY is set in the flags passed to NVS_write(), the
  *  destination address range will be pre-tested to guarantee that the source
- *  data can be successfully written. If NVS_WRITE_ERASE is also requested in
- *  the write flags, then the NVS_WRITE_PRE_VERIFY modifier is ignored.
+ *  data can be successfully written. If #NVS_WRITE_ERASE is also requested in
+ *  the write flags, then the #NVS_WRITE_PRE_VERIFY modifier is ignored.
  */
 #define NVS_WRITE_PRE_VERIFY        (0x2)
 
 /*!
  *  @brief Validate write flag.
  *
- *  If NVS_WRITE_POST_VERIFY is set in the flags passed to NVS_write(), the
+ *  If #NVS_WRITE_POST_VERIFY is set in the flags passed to NVS_write(), the
  *  destination address range will be tested after the write is finished to
  *  verify that the write operation was completed successfully.
  */
@@ -407,7 +473,8 @@ extern "C" {
  *
  *  @sa       NVS_Params_init()
  */
-typedef struct NVS_Params {
+typedef struct
+{
     void *custom;    /*!< Custom argument used by driver implementation */
 } NVS_Params;
 
@@ -416,22 +483,17 @@ typedef struct NVS_Params {
  *
  *  The address of an NVS_Attrs structure is passed to NVS_getAttrs().
  *
- *  'regionBase' is the base address of the region if directly accessible by
- *  the MCU. If the flash region is within external flash (e.g., SPI flash),
- *  this field will be set to NVS_REGION_NOT_ADDRESSABLE.
- *
- *  'regionSize' is the size, in bytes, of the NVS region that the
- *  application chooses to manage.
- *
- *  'sectorSize' is the size of the sector erase page. This attribute is
- *  device specific.
- *
  *  @sa     NVS_getAttrs()
  */
-typedef struct NVS_Attrs {
-    void   *regionBase;    /*! Base address of flash region to manage */
-    size_t  regionSize;    /*! Region size (in bytes) */
-    size_t  sectorSize;    /*! Erase sector size (in bytes) */
+typedef struct
+{
+    void   *regionBase;   /*!< Base address of the NVS region. If the NVS
+                               region is not directly accessible by the MCU
+                               (such as SPI flash), this field will be set to
+                               #NVS_REGION_NOT_ADDRESSABLE. */
+    size_t  regionSize;   /*!< NVS region size in bytes. */
+    size_t  sectorSize;   /*!< Erase sector size in bytes. This attribute is
+                               device specific. */
 } NVS_Attrs;
 
 /*!
@@ -509,7 +571,8 @@ typedef void (*NVS_UnlockFxn) (NVS_Handle handle);
  *              required set of functions to control a specific NVS driver
  *              implementation.
  */
-typedef struct NVS_FxnTable {
+typedef struct
+{
     /*! Function to close the specified NVS region */
     NVS_CloseFxn        closeFxn;
 
@@ -552,7 +615,8 @@ typedef struct NVS_FxnTable {
  *
  *  @sa     NVS_init()
  */
-typedef struct NVS_Config_ {
+typedef struct NVS_Config_
+{
     /*! Pointer to a table of driver-specific implementations of NVS APIs */
     NVS_FxnTable  const *fxnTablePtr;
 
@@ -564,7 +628,7 @@ typedef struct NVS_Config_ {
 } NVS_Config;
 
 /*!
- *  @brief  Function to close an NVS handle
+ *  @brief  Function to close an #NVS_Handle.
  *
  *  @param  handle      A handle returned from NVS_open()
  *
@@ -574,17 +638,17 @@ extern void NVS_close(NVS_Handle handle);
 
 /*!
  *  @brief  Function performs implementation specific features on a given
- *          NVS_Handle.
+ *          #NVS_Handle.
  *
  *  @pre    NVS_open() must be called first.
  *
- *  @param  handle      An NVS handle returned from NVS_open()
+ *  @param  handle      An #NVS_Handle returned from NVS_open()
  *
  *  @param  cmd         A command value defined by the driver specific
  *                      implementation
  *
- *  @param  arg         An optional R/W (read/write) argument that is
- *                      accompanied with cmd
+ *  @param  arg         An optional read or write argument that is
+ *                      accompanied with @p cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -594,13 +658,13 @@ extern void NVS_close(NVS_Handle handle);
 extern int_fast16_t NVS_control(NVS_Handle handle, uint_fast16_t cmd, uintptr_t arg);
 
 /*!
- *  @brief  Erase 'size' bytes of the region beginning at 'offset' bytes
- *  from the base of the region referenced by NVS handle
+ *  @brief  Erase @p size bytes of the region beginning at @p offset bytes
+ *  from the base of the region referenced by the #NVS_Handle.
  *
  *  @warning Erasing internal flash on most devices can introduce
  *  significant interrupt latencies while the erase operation is in
  *  in progress. The user may want to surround certain real-time
- *  critical code sections with NVS_lock()/NVS_unlock() calls in order
+ *  critical code sections with NVS_lock() and NVS_unlock() calls in order
  *  to prevent uncoordinated flash erase operations from negatively
  *  impacting performance.
  *
@@ -612,21 +676,24 @@ extern int_fast16_t NVS_control(NVS_Handle handle, uint_fast16_t cmd, uintptr_t 
  *  @param   size       The number of bytes to erase (must be integer
  *                      multiple of sector size)
  *
- *  @return  NVS_STATUS_SUCCESS         Success.
- *  @return  NVS_STATUS_INV_ALIGNMENT   If 'offset' is not aligned on
- *                                      a sector boundary
- *  @return  NVS_STATUS_INV_OFFSET      If 'offset' exceeds region size
- *  @return  NVS_STATUS_INV_SIZE        If 'size' or 'offset + size'
- *                                      exceeds region size, or if 'size'
- *                                      is not an integer multiple of
- *                                      the flash sector size.
- *  @return  NVS_STATUS_ERROR           If an internal error occurred
- *                                      erasing the flash.
+ *  @retval  #NVS_STATUS_SUCCESS         Success.
+ *  @retval  #NVS_STATUS_INV_ALIGNMENT   If @p offset is not aligned on
+ *                                       a sector boundary
+ *  @retval  #NVS_STATUS_INV_OFFSET      If @p offset exceeds region size
+ *  @retval  #NVS_STATUS_INV_SIZE        If @p size or @p offset + @p size
+ *                                       exceeds region size, or if @p size
+ *                                       is not an integer multiple of
+ *                                       the flash sector size.
+ *  @retval  #NVS_STATUS_ERROR           If an internal error occurred
+ *                                       erasing the flash.
  */
 extern int_fast16_t NVS_erase(NVS_Handle handle, size_t offset, size_t size);
 
 /*!
  *  @brief  Function to get the NVS attributes
+ *
+ *  This function will populate a #NVS_Attrs structure with attributes
+ *  specific to the memory region associated with the #NVS_Handle.
  *
  *  @param  handle      A handle returned from NVS_open()
  *
@@ -666,10 +733,10 @@ extern void NVS_init(void);
  *  @param  handle      A handle returned from NVS_open()
  *
  *  @param  timeout     Timeout (in milliseconds) to wait,
- *                      or NVS_LOCK_WAIT_FOREVER, NVS_LOCK_NO_WAIT
+ *                      or #NVS_LOCK_WAIT_FOREVER, #NVS_LOCK_NO_WAIT
  *
- *  @return  NVS_STATUS_SUCCESS         Success.
- *  @return  NVS_STATUS_TIMEOUT         If 'timeout' has expired.
+ *  @retval  #NVS_STATUS_SUCCESS         Success.
+ *  @retval  #NVS_STATUS_TIMEOUT         If @p timeout has expired.
  */
 extern int_fast16_t NVS_lock(NVS_Handle handle, uint32_t timeout);
 
@@ -678,30 +745,26 @@ extern int_fast16_t NVS_lock(NVS_Handle handle, uint32_t timeout);
  *
  *  @pre    NVS_init() was called.
  *
- *  @param  index         Index in the NVS_config table of the region
+ *  @param  index         Index in the #NVS_Config table of the region
  *                        to manage.
  *
  *  @param  params        Pointer to a parameter region.  If NULL, default
  *                        parameter values will be used.
  *
- *  @return  a non-zero handle      Success.
- *  @return  NULL                   Open failed.
+ *  @return  A non-zero handle on success, else NULL.
  */
 extern NVS_Handle NVS_open(uint_least8_t index, NVS_Params *params);
 
 /*!
  *  @brief  Function to initialize the NVS_Params struct to its defaults
  *
- *  @param  params      An pointer to NVS_Params structure for
- *                      initialization
- *
- *  Defaults values are:
- *      eraseOnOpen = false;
+ *  @param  params      A pointer to NVS_Params structure for
+ *                      initialization.
  */
 extern void NVS_Params_init(NVS_Params *params);
 
 /*!
- *  @brief   Read data from an NVS region.
+ *  @brief   Read data from the NVS region associated with the #NVS_Handle.
  *
  *  @param   handle     A handle returned from NVS_open()
  *
@@ -712,9 +775,9 @@ extern void NVS_Params_init(NVS_Params *params);
  *
  *  @param   bufferSize The size of the buffer (number of bytes to read).
  *
- *  @return  NVS_STATUS_SUCCESS     Success.
- *  @return  NVS_STATUS_INV_OFFSET  If 'offset + size' exceed the size
- *                                  of the region.
+ *  @retval  #NVS_STATUS_SUCCESS     Success.
+ *  @retval  #NVS_STATUS_INV_OFFSET  If @p offset + @p size exceed the size
+ *                                   of the region.
  */
 extern int_fast16_t NVS_read(NVS_Handle handle, size_t offset, void *buffer,
                     size_t bufferSize);
@@ -730,12 +793,12 @@ extern int_fast16_t NVS_read(NVS_Handle handle, size_t offset, void *buffer,
 extern void NVS_unlock(NVS_Handle handle);
 
 /*!
- *  @brief   Write data to an NVS region.
+ *  @brief   Write data to the NVS region associated with the #NVS_Handle.
  *
  *  @warning Writing to internal flash on most devices can introduce
  *  significant interrupt latencies while the write operation is in
  *  in progress. The user may want to surround certain real-time
- *  critical code sections with NVS_lock()/NVS_unlock() calls in order
+ *  critical code sections with NVS_lock() and NVS_unlock() calls in order
  *  to prevent uncoordinated flash write operations from negatively
  *  impacting performance.
  *
@@ -749,25 +812,25 @@ extern void NVS_unlock(NVS_Handle handle);
  *
  *  @param   bufferSize The size of the buffer (number of bytes to write).
  *
- *  @param   flags      Write flags (NVS_WRITE_ERASE, NVS_WRITE_PRE_VERIFY,
- *                      NVS_WRITE_POST_VERIFY).
+ *  @param   flags      Write flags (#NVS_WRITE_ERASE, #NVS_WRITE_PRE_VERIFY,
+ *                      #NVS_WRITE_POST_VERIFY).
  *
- *  @return  NVS_STATUS_SUCCESS         Success.
- *  @return  NVS_STATUS_ERROR           If the internal flash write operation
- *                                      failed, or if 'NVS_WRITE_POST_VERIFY'
+ *  @retval  #NVS_STATUS_SUCCESS        Success.
+ *  @retval  #NVS_STATUS_ERROR          If the internal flash write operation
+ *                                      failed, or if #NVS_WRITE_POST_VERIFY
  *                                      was requested and the destination flash
  *                                      range does not match the source
- *                                      'buffer' data.
- *  @return  NVS_STATUS_INV_OFFSET      If 'offset + size' exceed the size
+ *                                      @p buffer data.
+ *  @retval  #NVS_STATUS_INV_OFFSET     If @p offset + @p size exceed the size
  *                                      of the region.
- *  @return  NVS_STATUS_INV_WRITE       If 'NVS_WRITE_PRE_VERIFY' is requested
+ *  @retval  #NVS_STATUS_INV_WRITE      If #NVS_WRITE_PRE_VERIFY is requested
  *                                      and the destination flash address range
  *                                      cannot be change to the values desired.
- *  @return  NVS_STATUS_INV_ALIGNMENT   If 'NVS_WRITE_ERASE' is requested
- *                                      and 'offset' is not aligned on
- *                                      a sector bondary
+ *  @retval  #NVS_STATUS_INV_ALIGNMENT  If #NVS_WRITE_ERASE is requested
+ *                                      and @p offset is not aligned on
+ *                                      a sector boundary
  *
- *  @remark  This call may region to ensure atomic access to the region.
+ *  @remark  This call may lock a region to ensure atomic access to the region.
  */
 extern int_fast16_t NVS_write(NVS_Handle handle, size_t offset, void *buffer,
                      size_t bufferSize, uint_fast16_t flags);

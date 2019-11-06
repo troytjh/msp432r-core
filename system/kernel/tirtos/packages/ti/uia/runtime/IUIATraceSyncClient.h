@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -33,10 +33,12 @@
 #define ti_uia_runtime_IUIATraceSyncClient__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_IUIATraceSyncClient___VERS 200
@@ -117,12 +119,12 @@ static inline ti_uia_runtime_IUIATraceSyncClient_Module ti_uia_runtime_IUIATrace
 static inline ti_uia_runtime_IUIATraceSyncClient_Module ti_uia_runtime_IUIATraceSyncClient_Module_downCast(ti_uia_events_IUIAMetaProvider_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_IUIATraceSyncClient_Interface__BASE__C) {
             return (ti_uia_runtime_IUIATraceSyncClient_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_ti_uia_events_IUIAMetaProvider */

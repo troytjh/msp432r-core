@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,44 +39,44 @@
  */
 function getLibs()
 {
-    var driversConfig = xdc.module("ti.drivers.Config");
     var dplBase = xdc.loadPackage("ti.dpl").packageBase;
-    var instrumentedString = "";
     var libName = "";
     var retString = "";
     var targetSuffix = "";
 
-    if (!driversConfig.$used) {
-        return (null);
-    }
-
     /* Determine libraries required by device name. */
-    if (Program.cpu.deviceName.match(/CC13.*2/)) {
+    if (Program.cpu.deviceName.match(/CC13.2/)) {
         libName = "_cc13x2";
     }
-    if (Program.cpu.deviceName.match(/CC13.*/)) {
+    else if (Program.cpu.deviceName.match(/CC13.0/)) {
         libName = "_cc13x0";
     }
-    else if (Program.cpu.deviceName.match(/CC26.*R2/)) {
+    else if (Program.cpu.deviceName.match(/CC26.0R2/)) {
         libName = "_cc26x0r2";
     }
-    else if (Program.cpu.deviceName.match(/CC26.*2/)) {
+    else if (Program.cpu.deviceName.match(/CC26.2/)) {
         libName = "_cc26x2";
     }
-    else if (Program.cpu.deviceName.match(/CC26.*/)) {
+    else if (Program.cpu.deviceName.match(/CC26.0/)) {
         libName = "_cc26x0";
     }
-    else if (Program.cpu.deviceName.match(/CC32.*/)) {
+    else if (Program.cpu.deviceName.match(/CC3220/)) {
         libName = "_cc32xx";
     }
     else if (Program.cpu.deviceName.match(/MSP432E4.*/)) {
         libName = "_msp432e4";
     }
-    else if (Program.cpu.deviceName.match(/MSP432.*01/)) {
+    else if (Program.cpu.deviceName.match(/MSP432P4.1.I/)) {
+        libName = "_msp432p4x1xi";
+    }
+    else if (Program.cpu.deviceName.match(/MSP432P4.1.T/)) {
+        libName = "_msp432p4x1xt";
+    }
+    else if (Program.cpu.deviceName.match(/MSP432P401/)) {
         libName = "_msp432p401x";
     }
-    else if (Program.cpu.deviceName.match(/MSP432.*11/)) {
-        libName = "_msp432p4x1xi";
+    else if (Program.cpu.deviceName.match(/MTL1_CORE/)) {
+        libName = "_mtxx";
     }
     else {
         throw ("DPL not found for this device " + Program.cpu.deviceName +

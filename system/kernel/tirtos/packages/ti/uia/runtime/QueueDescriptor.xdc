@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2017, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ import xdc.rov.ViewInfo;
  *
  *  The QueueDescriptor module maintains a list of descriptors. Each descriptor
  *  contains information that a host tool can use to get debug information
- *  about a debug buffer (e.g. LoggerCircBuf instance buffer).
+ *  about a debug buffer (e.g. LoggerStopMode instance buffer).
  *
  *  The QueueDescriptor module contains two global variables that the host
  *  can access.

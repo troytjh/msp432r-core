@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -107,7 +107,7 @@ extern const NVS_FxnTable NVSRAM_fxnTable;
  *  The 'regionSize' must be an integer multiple of the 'sectorSize'.
  *
  *  Defining and reserving RAM memory regions can be done entirely within the
- *  Board.c file.
+ *  ti_drivers_config.c file.
  *
  *  The example below defines a char array, 'ramBuf' and uses compiler
  *  pragmas to place 'ramBuf' at an aligned address within RAM.
@@ -115,14 +115,7 @@ extern const NVS_FxnTable NVSRAM_fxnTable;
  *  @code
  *  #define SECTORSIZE (4096)
  *
- *  #if defined(__TI_COMPILER_VERSION__)
- *  #pragma DATA_ALIGN(ramBuf, 4096)
- *  #elif defined(__IAR_SYSTEMS_ICC__)
- *  #pragma data_alignment=4096
- *  #elif defined(__GNUC__)
- *  __attribute__ ((aligned (4096)))
- *  #endif
- *  static char ramBuf[SECTORSIZE * 4];
+ *  static char ramBuf[SECTORSIZE * 4] __attribute__ ((aligned (4096)));
  *
  *  NVSRAM_HWAttrs NVSRAMHWAttrs[1] = {
  *      {
@@ -135,7 +128,8 @@ extern const NVS_FxnTable NVSRAM_fxnTable;
  *
  *  @endcode
  */
-typedef struct NVSRAM_HWAttrs {
+typedef struct
+{
     void   *regionBase;    /*!< Base address of RAM region */
     size_t  regionSize;    /*!< The size of the region in bytes */
     size_t  sectorSize;    /*!< Sector size in bytes */
@@ -146,7 +140,8 @@ typedef struct NVSRAM_HWAttrs {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct NVSRAM_Object {
+typedef struct
+{
     size_t sectorBaseMask;
     bool   isOpen;
 } NVSRAM_Object;

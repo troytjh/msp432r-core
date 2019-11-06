@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -33,10 +33,12 @@
 #define ti_uia_runtime_IUIATraceSyncProvider__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_IUIATraceSyncProvider___VERS 200
@@ -113,10 +115,10 @@ static inline xdc_runtime_Types_ModuleId ti_uia_runtime_IUIATraceSyncProvider_Mo
 }
 
 /* injectIntoTrace */
-static inline xdc_Void ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace(ti_uia_runtime_IUIATraceSyncProvider_Module __mod, xdc_UInt32 serialNum, ti_uia_runtime_IUIATraceSyncProvider_ContextType ctxType);
-static inline xdc_Void ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace( ti_uia_runtime_IUIATraceSyncProvider_Module __mod, xdc_UInt32 serialNum, ti_uia_runtime_IUIATraceSyncProvider_ContextType ctxType )
+static inline xdc_Void ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace(ti_uia_runtime_IUIATraceSyncProvider_Module mod, xdc_UInt32 serialNum, ti_uia_runtime_IUIATraceSyncProvider_ContextType ctxType);
+static inline xdc_Void ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace( ti_uia_runtime_IUIATraceSyncProvider_Module mod, xdc_UInt32 serialNum, ti_uia_runtime_IUIATraceSyncProvider_ContextType ctxType )
 {
-    __mod->injectIntoTrace(serialNum, ctxType);
+    mod->injectIntoTrace(serialNum, ctxType);
 }
 
 
@@ -133,10 +135,10 @@ static inline xdc_Void ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace( ti_
 
 /* injectIntoTrace_{FxnT,fxnP} */
 typedef xdc_Void (*ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_FxnT)(xdc_UInt32 serialNum, ti_uia_runtime_IUIATraceSyncProvider_ContextType ctxType);
-static inline ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_FxnT ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_fxnP(ti_uia_runtime_IUIATraceSyncProvider_Module __mod);
-static inline ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_FxnT ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_fxnP(ti_uia_runtime_IUIATraceSyncProvider_Module __mod)
+static inline ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_FxnT ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_fxnP(ti_uia_runtime_IUIATraceSyncProvider_Module mod);
+static inline ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_FxnT ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_fxnP(ti_uia_runtime_IUIATraceSyncProvider_Module mod)
 {
-    return (ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_FxnT)__mod->injectIntoTrace;
+    return (ti_uia_runtime_IUIATraceSyncProvider_injectIntoTrace_FxnT)mod->injectIntoTrace;
 }
 
 
@@ -159,12 +161,12 @@ static inline ti_uia_runtime_IUIATraceSyncProvider_Module ti_uia_runtime_IUIATra
 static inline ti_uia_runtime_IUIATraceSyncProvider_Module ti_uia_runtime_IUIATraceSyncProvider_Module_downCast(ti_uia_events_IUIAMetaProvider_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_IUIATraceSyncProvider_Interface__BASE__C) {
             return (ti_uia_runtime_IUIATraceSyncProvider_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_ti_uia_events_IUIAMetaProvider */

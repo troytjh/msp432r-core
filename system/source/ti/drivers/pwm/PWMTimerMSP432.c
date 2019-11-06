@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,6 +71,7 @@ void PWMTimerMSP432_init(PWM_Handle handle);
 PWM_Handle PWMTimerMSP432_open(PWM_Handle handle, PWM_Params *params);
 int_fast16_t PWMTimerMSP432_setDuty(PWM_Handle handle, uint32_t dutyValue);
 int_fast16_t PWMTimerMSP432_setPeriod(PWM_Handle handle, uint32_t periodValue);
+int_fast16_t PWMTimerMSP432_setDutyAndPeriod(PWM_Handle handle, uint32_t dutyValue, uint32_t periodValue);
 void PWMTimerMSP432_start(PWM_Handle handle);
 void PWMTimerMSP432_stop(PWM_Handle handle);
 
@@ -103,6 +104,7 @@ const PWM_FxnTable PWMTimerMSP432_fxnTable = {
     PWMTimerMSP432_open,
     PWMTimerMSP432_setDuty,
     PWMTimerMSP432_setPeriod,
+    PWMTimerMSP432_setDutyAndPeriod,
     PWMTimerMSP432_start,
     PWMTimerMSP432_stop
 };
@@ -313,7 +315,7 @@ static uint32_t getDutyCounts(PWM_Duty_Units dutyUnits, uint32_t dutyValue,
             break;
 
         case PWM_DUTY_US:
-            duty = dutyValue * (clockFreq/1000000);
+            duty = (dutyValue != 0) ? (dutyValue * (clockFreq/1000000)) - 1 : 0;
             break;
 
         default:
@@ -339,12 +341,12 @@ static uint32_t getPeriodCounts(PWM_Period_Units periodUnits,
 
         case PWM_PERIOD_HZ:
             if (periodValue && periodValue <= clockFreq) {
-                period = clockFreq / periodValue;
+                period = (clockFreq / periodValue) - 1;
             }
             break;
 
         case PWM_PERIOD_US:
-            period = periodValue * (clockFreq/1000000);
+            period = (periodValue * (clockFreq/1000000)) - 1;
             break;
 
         default:
@@ -534,7 +536,7 @@ PWM_Handle PWMTimerMSP432_open(PWM_Handle handle, PWM_Params *params)
     PowerMSP432_Freqs               powerFreqs;
     uint32_t                        periodCounts, dutyCounts;
     uint32_t                        clockFreq;
-    uint16_t                        port, pin, value;
+    uint16_t                        port, pin, value, pinmask;
     uint8_t                         structIndex, prescalar;
 
     if (PinConfigCompareRegister(hwAttrs->pwmPin) ==
@@ -612,20 +614,21 @@ PWM_Handle PWMTimerMSP432_open(PWM_Handle handle, PWM_Params *params)
     value = PinConfigValue(hwAttrs->pwmPin);
     port = PinConfigPort(hwAttrs->pwmPin);
     pin = (hwAttrs->pwmPin) & 0x7;
+    pinmask = 1 << pin;
 
     if (value != 0) {
         mapPin(port, pin, value);
     }
 
     /* Set the idleLevel */
-    MAP_GPIO_setAsOutputPin(port, pin);
-    MAP_GPIO_setDriveStrengthHigh(port, pin);
+    MAP_GPIO_setAsOutputPin(port, pinmask);
+    MAP_GPIO_setDriveStrengthHigh(port, pinmask);
 
     if (object->idleLevel) {
-        MAP_GPIO_setOutputHighOnPin(port, pin);
+        MAP_GPIO_setOutputHighOnPin(port, pinmask);
     }
     else {
-        MAP_GPIO_setOutputLowOnPin(port, pin);
+        MAP_GPIO_setOutputLowOnPin(port, pinmask);
     }
 
     /* Initialize the peripheral & set the period & duty */
@@ -792,6 +795,15 @@ int_fast16_t PWMTimerMSP432_setPeriod(PWM_Handle handle, uint32_t periodValue)
 }
 
 /*
+ *  ======== PWMTimerMSP432_setDutyAndPeriod ========
+ *  @pre    Function assumes that handle is not NULL
+ */
+int_fast16_t PWMTimerMSP432_setDutyAndPeriod(PWM_Handle handle, uint32_t dutyValue, uint32_t periodValue)
+{
+    return (PWM_STATUS_ERROR);
+}
+
+/*
  *  ======== PWMTimerMSP432_start ========
  *  @pre    Function assumes that handle is not NULL
  */
@@ -800,7 +812,7 @@ void PWMTimerMSP432_start(PWM_Handle handle)
     uintptr_t                       key;
     PWMTimerMSP432_Object          *object = handle->object;
     PWMTimerMSP432_HWAttrsV2 const *hwAttrs = handle->hwAttrs;
-    uint16_t                        pin;
+    uint16_t                        pinmask;
     uint16_t                        port;
     uint16_t                        moduleFunction;
 
@@ -824,9 +836,9 @@ void PWMTimerMSP432_start(PWM_Handle handle)
         moduleFunction = (PinConfigValue(hwAttrs->pwmPin) == 0) ?
             PinConfigModuleFunction(hwAttrs->pwmPin) :
             GPIO_PRIMARY_MODULE_FUNCTION;
-        pin  = PinConfigPin(hwAttrs->pwmPin);
+        pinmask  = PinConfigPin(hwAttrs->pwmPin);
 
-        MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(port, pin,
+        MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(port, pinmask,
             moduleFunction);
 
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x
@@ -838,7 +850,6 @@ void PWMTimerMSP432_start(PWM_Handle handle)
     }
 
     HwiP_restore(key);
-
 }
 
 /*
@@ -850,10 +861,10 @@ void PWMTimerMSP432_stop(PWM_Handle handle)
     uintptr_t                       key;
     PWMTimerMSP432_Object          *object = handle->object;
     PWMTimerMSP432_HWAttrsV2 const *hwAttrs = handle->hwAttrs;
-    uint16_t                        pin;
+    uint16_t                        pinmask;
     uint16_t                        port;
 
-    pin = PinConfigPin(hwAttrs->pwmPin);
+    pinmask = PinConfigPin(hwAttrs->pwmPin);
     port = PinConfigPort(hwAttrs->pwmPin);
 
     key = HwiP_disable();
@@ -870,14 +881,14 @@ void PWMTimerMSP432_stop(PWM_Handle handle)
         }
 
         /* Set idleLevel */
-        MAP_GPIO_setAsOutputPin(port, pin);
-        MAP_GPIO_setDriveStrengthHigh(port, pin);
+        MAP_GPIO_setAsOutputPin(port, pinmask);
+        MAP_GPIO_setDriveStrengthHigh(port, pinmask);
 
         if (object->idleLevel) {
-            MAP_GPIO_setOutputHighOnPin(port, pin);
+            MAP_GPIO_setOutputHighOnPin(port, pinmask);
         }
         else {
-            MAP_GPIO_setOutputLowOnPin(port, pin);
+            MAP_GPIO_setOutputLowOnPin(port, pinmask);
         }
 
 #if DeviceFamily_ID == DeviceFamily_ID_MSP432P401x

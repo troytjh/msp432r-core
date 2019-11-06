@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017, Texas Instruments Incorporated
+ * Copyright (c) 2014-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,37 @@ var Hwi = null;
 var timers = null;
 var ClockFreqs = null;
 
+if (xdc.om.$name == "cfg" || typeof(genCdoc) != "undefined") {
+    var deviceTable = {
+        "ti_catalog_msp432": {
+            "MSP432P4x": {
+                timer: [
+                    {
+                        name: "Timer_TA0",
+                        baseAddr: 0x40000000,
+                        intNum:  24,
+                    },
+                    {
+                        name: "Timer_TA1",
+                        baseAddr: 0x40000400,
+                        intNum:  26,
+                    },
+                    {
+                        name: "Timer_TA2",
+                        baseAddr: 0x40000800,
+                        intNum:  28,
+                    },
+                    {
+                        name: "Timer_TA3",
+                        baseAddr: 0x40000C00,
+                        intNum:  30,
+                    },
+                ],
+            },
+        }
+    }
+}
+
 /*
  *  ======== module$meta$init ========
  */
@@ -67,7 +98,7 @@ function module$meta$init()
      * Clock.TickMode_DYNAMIC on newer devices
      */
     Program = xdc.module('xdc.cfg.Program');
-    if (!Program.platformName.match(/MSP432P401/)) {
+    if (!Program.cpu.deviceName.match(/MSP432P401/)) {
         Timer.defaultDynamic = true;
     }
 }

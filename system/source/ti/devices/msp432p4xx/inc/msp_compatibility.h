@@ -56,8 +56,6 @@
 // Intrinsics with ARM equivalents
 #if defined ( __TI_ARM__ ) /* TI CGT Compiler */
 
-#include <cmsis_ccs.h>
-
 #define __sleep()                       __wfi()
 #define __deep_sleep()                  { (*((volatile uint32_t *)(0xE000ED10))) |= 0x00000004; __wfi(); (*((volatile uint32_t *)(0xE000ED10))) &= ~0x00000004; }
 #define __low_power_mode_off_on_exit()  { (*((volatile uint32_t *)(0xE000ED10))) &= ~0x00000002; }
@@ -76,20 +74,23 @@
 #include <stdint.h>
 
 #define __INLINE                        inline
-#include <cmsis_iar.h>
-
 #define __sleep()                       __WFI()
 #define __deep_sleep()                  { (*((volatile uint32_t *)(0xE000ED10))) |= 0x00000004; __WFI(); (*((volatile uint32_t *)(0xE000ED10))) &= ~0x00000004; }
 #define __low_power_mode_off_on_exit()  { (*((volatile uint32_t *)(0xE000ED10))) &= ~0x00000002; }
 #define __get_SP_register()             __get_MSP()
 #define __set_SP_register()             __set_MSP()
-#define __get_interrupt_state()         __get_PRIMASK()
-#define __set_interrupt_state(x)        __set_PRIMASK(x)
-#define __enable_interrupt()            __asm("  cpsie i")
 #define __enable_interrupts()           __asm("  cpsie i")
-#define __disable_interrupt()           __asm("  cpsid i")
 #define __disable_interrupts()          __asm("  cpsid i")
-#define __no_operation()                __asm("  nop")
+
+#if (__VER__ < 8020002)
+    #define __get_interrupt_state()         __get_PRIMASK()
+    #define __set_interrupt_state(x)        __set_PRIMASK(x)
+    #define __enable_interrupt()            __asm("  cpsie i")
+    #define __disable_interrupt()           __asm("  cpsid i")
+    #define __no_operation()                __asm("  nop")
+#else
+    #include "intrinsics.h"
+#endif
 
 // Intrinsics without ARM equivalents
 #define __bcd_add_short(x,y)            { while(1); /* Using not-supported MSP430 intrinsic. No replacement available. */ }

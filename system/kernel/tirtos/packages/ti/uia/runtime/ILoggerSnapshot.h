@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_uia_runtime_ILoggerSnapshot__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_runtime_ILoggerSnapshot___VERS 200
@@ -111,24 +113,24 @@ struct ti_uia_runtime_ILoggerSnapshot_Params {
 struct ti_uia_runtime_ILoggerSnapshot_Fxns__ {
     const xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2* __sysp;
-    xdc_Bool (*enable)(void* __inst);
-    xdc_Bool (*disable)(void* __inst);
-    xdc_Void (*write0)(void* __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
-    xdc_Void (*write1)(void* __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
-    xdc_Void (*write2)(void* __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
-    xdc_Void (*write4)(void* __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
-    xdc_Void (*write8)(void* __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
-    xdc_Void (*setFilterLevel)(void* __inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
-    xdc_runtime_Diags_Mask (*getFilterLevel)(void* __inst, xdc_runtime_Diags_EventLevel level);
-    ti_uia_runtime_IUIATransfer_TransferType (*getTransferType)(void* __inst);
-    xdc_Bool (*getContents)(void* __inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT* cpSize);
-    xdc_Bool (*isEmpty)(void* __inst);
-    xdc_SizeT (*getMaxLength)(void* __inst);
-    xdc_UInt16 (*getInstanceId)(void* __inst);
-    ti_uia_runtime_IUIATransfer_Priority (*getPriority)(void* __inst);
-    xdc_Void (*setPriority)(void* __inst, ti_uia_runtime_IUIATransfer_Priority priority);
-    xdc_Void (*reset)(void* __inst);
-    xdc_Void (*writeMemoryRange)(void* __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
+    xdc_Bool (*enable)(void* inst);
+    xdc_Bool (*disable)(void* inst);
+    xdc_Void (*write0)(void* inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
+    xdc_Void (*write1)(void* inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
+    xdc_Void (*write2)(void* inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
+    xdc_Void (*write4)(void* inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
+    xdc_Void (*write8)(void* inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
+    xdc_Void (*setFilterLevel)(void* inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
+    xdc_runtime_Diags_Mask (*getFilterLevel)(void* inst, xdc_runtime_Diags_EventLevel level);
+    ti_uia_runtime_IUIATransfer_TransferType (*getTransferType)(void* inst);
+    xdc_Bool (*getContents)(void* inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT* cpSize);
+    xdc_Bool (*isEmpty)(void* inst);
+    xdc_SizeT (*getMaxLength)(void* inst);
+    xdc_UInt16 (*getInstanceId)(void* inst);
+    ti_uia_runtime_IUIATransfer_Priority (*getPriority)(void* inst);
+    xdc_Void (*setPriority)(void* inst, ti_uia_runtime_IUIATransfer_Priority priority);
+    xdc_Void (*reset)(void* inst);
+    xdc_Void (*writeMemoryRange)(void* inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_uia_runtime_ILoggerSnapshot_Module__BASE__CR
@@ -146,11 +148,11 @@ __extern const xdc_runtime_Types_Base ti_uia_runtime_ILoggerSnapshot_Interface__
 
 /* create */
 xdc__CODESECT(ti_uia_runtime_ILoggerSnapshot_create, "ti_uia_runtime_ILoggerSnapshot_create")
-__extern ti_uia_runtime_ILoggerSnapshot_Handle ti_uia_runtime_ILoggerSnapshot_create(ti_uia_runtime_ILoggerSnapshot_Module __mod, const ti_uia_runtime_ILoggerSnapshot_Params *__prms, xdc_runtime_Error_Block *__eb);
+__extern ti_uia_runtime_ILoggerSnapshot_Handle ti_uia_runtime_ILoggerSnapshot_create(ti_uia_runtime_ILoggerSnapshot_Module mod, const ti_uia_runtime_ILoggerSnapshot_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* delete */
 xdc__CODESECT(ti_uia_runtime_ILoggerSnapshot_delete, "ti_uia_runtime_ILoggerSnapshot_delete")
-__extern xdc_Void ti_uia_runtime_ILoggerSnapshot_delete(ti_uia_runtime_ILoggerSnapshot_Handle *__inst);
+__extern xdc_Void ti_uia_runtime_ILoggerSnapshot_delete(ti_uia_runtime_ILoggerSnapshot_Handle *inst);
 
 /* Handle_to_Module */
 static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapshot_Handle_to_Module(ti_uia_runtime_ILoggerSnapshot_Handle inst);
@@ -174,129 +176,129 @@ static inline xdc_runtime_Types_ModuleId ti_uia_runtime_ILoggerSnapshot_Module_i
 }
 
 /* enable */
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_enable(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_enable( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_enable(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_enable( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    return __inst->__fxns->enable((void*)__inst);
+    return inst->__fxns->enable((void*)inst);
 }
 
 /* disable */
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_disable(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_disable( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_disable(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_disable( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    return __inst->__fxns->disable((void*)__inst);
+    return inst->__fxns->disable((void*)inst);
 }
 
 /* write0 */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write0(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write0( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write0(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write0( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid )
 {
-    __inst->__fxns->write0((void*)__inst, evt, mid);
+    inst->__fxns->write0((void*)inst, evt, mid);
 }
 
 /* write1 */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write1(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write1( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1 )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write1(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write1( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1 )
 {
-    __inst->__fxns->write1((void*)__inst, evt, mid, a1);
+    inst->__fxns->write1((void*)inst, evt, mid, a1);
 }
 
 /* write2 */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write2(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write2( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2 )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write2(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write2( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2 )
 {
-    __inst->__fxns->write2((void*)__inst, evt, mid, a1, a2);
+    inst->__fxns->write2((void*)inst, evt, mid, a1, a2);
 }
 
 /* write4 */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write4(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write4( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4 )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write4(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write4( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4 )
 {
-    __inst->__fxns->write4((void*)__inst, evt, mid, a1, a2, a3, a4);
+    inst->__fxns->write4((void*)inst, evt, mid, a1, a2, a3, a4);
 }
 
 /* write8 */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write8(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write8( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8 )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write8(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_write8( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8 )
 {
-    __inst->__fxns->write8((void*)__inst, evt, mid, a1, a2, a3, a4, a5, a6, a7, a8);
+    inst->__fxns->write8((void*)inst, evt, mid, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
 /* setFilterLevel */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setFilterLevel(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setFilterLevel( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setFilterLevel(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setFilterLevel( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel )
 {
-    __inst->__fxns->setFilterLevel((void*)__inst, mask, filterLevel);
+    inst->__fxns->setFilterLevel((void*)inst, mask, filterLevel);
 }
 
 /* getFilterLevel */
-static inline xdc_runtime_Diags_Mask ti_uia_runtime_ILoggerSnapshot_getFilterLevel(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Diags_EventLevel level);
-static inline xdc_runtime_Diags_Mask ti_uia_runtime_ILoggerSnapshot_getFilterLevel( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Diags_EventLevel level )
+static inline xdc_runtime_Diags_Mask ti_uia_runtime_ILoggerSnapshot_getFilterLevel(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Diags_EventLevel level);
+static inline xdc_runtime_Diags_Mask ti_uia_runtime_ILoggerSnapshot_getFilterLevel( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Diags_EventLevel level )
 {
-    return __inst->__fxns->getFilterLevel((void*)__inst, level);
+    return inst->__fxns->getFilterLevel((void*)inst, level);
 }
 
 /* getTransferType */
-static inline ti_uia_runtime_IUIATransfer_TransferType ti_uia_runtime_ILoggerSnapshot_getTransferType(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_IUIATransfer_TransferType ti_uia_runtime_ILoggerSnapshot_getTransferType( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline ti_uia_runtime_IUIATransfer_TransferType ti_uia_runtime_ILoggerSnapshot_getTransferType(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_IUIATransfer_TransferType ti_uia_runtime_ILoggerSnapshot_getTransferType( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    return __inst->__fxns->getTransferType((void*)__inst);
+    return inst->__fxns->getTransferType((void*)inst);
 }
 
 /* getContents */
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_getContents(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize);
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_getContents( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize )
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_getContents(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize);
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_getContents( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize )
 {
-    return __inst->__fxns->getContents((void*)__inst, hdrBuf, size, cpSize);
+    return inst->__fxns->getContents((void*)inst, hdrBuf, size, cpSize);
 }
 
 /* isEmpty */
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_isEmpty(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_isEmpty( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_isEmpty(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline xdc_Bool ti_uia_runtime_ILoggerSnapshot_isEmpty( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    return __inst->__fxns->isEmpty((void*)__inst);
+    return inst->__fxns->isEmpty((void*)inst);
 }
 
 /* getMaxLength */
-static inline xdc_SizeT ti_uia_runtime_ILoggerSnapshot_getMaxLength(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline xdc_SizeT ti_uia_runtime_ILoggerSnapshot_getMaxLength( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline xdc_SizeT ti_uia_runtime_ILoggerSnapshot_getMaxLength(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline xdc_SizeT ti_uia_runtime_ILoggerSnapshot_getMaxLength( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    return __inst->__fxns->getMaxLength((void*)__inst);
+    return inst->__fxns->getMaxLength((void*)inst);
 }
 
 /* getInstanceId */
-static inline xdc_UInt16 ti_uia_runtime_ILoggerSnapshot_getInstanceId(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline xdc_UInt16 ti_uia_runtime_ILoggerSnapshot_getInstanceId( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline xdc_UInt16 ti_uia_runtime_ILoggerSnapshot_getInstanceId(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline xdc_UInt16 ti_uia_runtime_ILoggerSnapshot_getInstanceId( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    return __inst->__fxns->getInstanceId((void*)__inst);
+    return inst->__fxns->getInstanceId((void*)inst);
 }
 
 /* getPriority */
-static inline ti_uia_runtime_IUIATransfer_Priority ti_uia_runtime_ILoggerSnapshot_getPriority(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_IUIATransfer_Priority ti_uia_runtime_ILoggerSnapshot_getPriority( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline ti_uia_runtime_IUIATransfer_Priority ti_uia_runtime_ILoggerSnapshot_getPriority(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_IUIATransfer_Priority ti_uia_runtime_ILoggerSnapshot_getPriority( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    return __inst->__fxns->getPriority((void*)__inst);
+    return inst->__fxns->getPriority((void*)inst);
 }
 
 /* setPriority */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setPriority(ti_uia_runtime_ILoggerSnapshot_Handle __inst, ti_uia_runtime_IUIATransfer_Priority priority);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setPriority( ti_uia_runtime_ILoggerSnapshot_Handle __inst, ti_uia_runtime_IUIATransfer_Priority priority )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setPriority(ti_uia_runtime_ILoggerSnapshot_Handle inst, ti_uia_runtime_IUIATransfer_Priority priority);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_setPriority( ti_uia_runtime_ILoggerSnapshot_Handle inst, ti_uia_runtime_IUIATransfer_Priority priority )
 {
-    __inst->__fxns->setPriority((void*)__inst, priority);
+    inst->__fxns->setPriority((void*)inst, priority);
 }
 
 /* reset */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_reset(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_reset( ti_uia_runtime_ILoggerSnapshot_Handle __inst )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_reset(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_reset( ti_uia_runtime_ILoggerSnapshot_Handle inst )
 {
-    __inst->__fxns->reset((void*)__inst);
+    inst->__fxns->reset((void*)inst);
 }
 
 /* writeMemoryRange */
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_writeMemoryRange(ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
-static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_writeMemoryRange( ti_uia_runtime_ILoggerSnapshot_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs )
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_writeMemoryRange(ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
+static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_writeMemoryRange( ti_uia_runtime_ILoggerSnapshot_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs )
 {
-    __inst->__fxns->writeMemoryRange((void*)__inst, evt, mid, snapshotId, fileName, LineNum, fmt, startAdrs, lengthInMAUs);
+    inst->__fxns->writeMemoryRange((void*)inst, evt, mid, snapshotId, fileName, LineNum, fmt, startAdrs, lengthInMAUs);
 }
 
 
@@ -312,147 +314,147 @@ static inline xdc_Void ti_uia_runtime_ILoggerSnapshot_writeMemoryRange( ti_uia_r
  */
 
 /* enable_{FxnT,fxnP} */
-typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_enable_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_enable_FxnT ti_uia_runtime_ILoggerSnapshot_enable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_enable_FxnT ti_uia_runtime_ILoggerSnapshot_enable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_enable_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_enable_FxnT ti_uia_runtime_ILoggerSnapshot_enable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_enable_FxnT ti_uia_runtime_ILoggerSnapshot_enable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_enable_FxnT)__inst->__fxns->enable;
+    return (ti_uia_runtime_ILoggerSnapshot_enable_FxnT)inst->__fxns->enable;
 }
 
 /* disable_{FxnT,fxnP} */
-typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_disable_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_disable_FxnT ti_uia_runtime_ILoggerSnapshot_disable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_disable_FxnT ti_uia_runtime_ILoggerSnapshot_disable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_disable_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_disable_FxnT ti_uia_runtime_ILoggerSnapshot_disable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_disable_FxnT ti_uia_runtime_ILoggerSnapshot_disable_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_disable_FxnT)__inst->__fxns->disable;
+    return (ti_uia_runtime_ILoggerSnapshot_disable_FxnT)inst->__fxns->disable;
 }
 
 /* write0_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write0_FxnT)(xdc_Void *__inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
-static inline ti_uia_runtime_ILoggerSnapshot_write0_FxnT ti_uia_runtime_ILoggerSnapshot_write0_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_write0_FxnT ti_uia_runtime_ILoggerSnapshot_write0_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write0_FxnT)(xdc_Void *inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
+static inline ti_uia_runtime_ILoggerSnapshot_write0_FxnT ti_uia_runtime_ILoggerSnapshot_write0_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_write0_FxnT ti_uia_runtime_ILoggerSnapshot_write0_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_write0_FxnT)__inst->__fxns->write0;
+    return (ti_uia_runtime_ILoggerSnapshot_write0_FxnT)inst->__fxns->write0;
 }
 
 /* write1_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write1_FxnT)(xdc_Void *__inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
-static inline ti_uia_runtime_ILoggerSnapshot_write1_FxnT ti_uia_runtime_ILoggerSnapshot_write1_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_write1_FxnT ti_uia_runtime_ILoggerSnapshot_write1_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write1_FxnT)(xdc_Void *inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
+static inline ti_uia_runtime_ILoggerSnapshot_write1_FxnT ti_uia_runtime_ILoggerSnapshot_write1_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_write1_FxnT ti_uia_runtime_ILoggerSnapshot_write1_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_write1_FxnT)__inst->__fxns->write1;
+    return (ti_uia_runtime_ILoggerSnapshot_write1_FxnT)inst->__fxns->write1;
 }
 
 /* write2_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write2_FxnT)(xdc_Void *__inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
-static inline ti_uia_runtime_ILoggerSnapshot_write2_FxnT ti_uia_runtime_ILoggerSnapshot_write2_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_write2_FxnT ti_uia_runtime_ILoggerSnapshot_write2_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write2_FxnT)(xdc_Void *inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
+static inline ti_uia_runtime_ILoggerSnapshot_write2_FxnT ti_uia_runtime_ILoggerSnapshot_write2_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_write2_FxnT ti_uia_runtime_ILoggerSnapshot_write2_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_write2_FxnT)__inst->__fxns->write2;
+    return (ti_uia_runtime_ILoggerSnapshot_write2_FxnT)inst->__fxns->write2;
 }
 
 /* write4_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write4_FxnT)(xdc_Void *__inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
-static inline ti_uia_runtime_ILoggerSnapshot_write4_FxnT ti_uia_runtime_ILoggerSnapshot_write4_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_write4_FxnT ti_uia_runtime_ILoggerSnapshot_write4_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write4_FxnT)(xdc_Void *inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
+static inline ti_uia_runtime_ILoggerSnapshot_write4_FxnT ti_uia_runtime_ILoggerSnapshot_write4_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_write4_FxnT ti_uia_runtime_ILoggerSnapshot_write4_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_write4_FxnT)__inst->__fxns->write4;
+    return (ti_uia_runtime_ILoggerSnapshot_write4_FxnT)inst->__fxns->write4;
 }
 
 /* write8_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write8_FxnT)(xdc_Void *__inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
-static inline ti_uia_runtime_ILoggerSnapshot_write8_FxnT ti_uia_runtime_ILoggerSnapshot_write8_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_write8_FxnT ti_uia_runtime_ILoggerSnapshot_write8_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_write8_FxnT)(xdc_Void *inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
+static inline ti_uia_runtime_ILoggerSnapshot_write8_FxnT ti_uia_runtime_ILoggerSnapshot_write8_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_write8_FxnT ti_uia_runtime_ILoggerSnapshot_write8_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_write8_FxnT)__inst->__fxns->write8;
+    return (ti_uia_runtime_ILoggerSnapshot_write8_FxnT)inst->__fxns->write8;
 }
 
 /* setFilterLevel_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT)(xdc_Void *__inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
-static inline ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_setFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_setFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT)(xdc_Void *inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
+static inline ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_setFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_setFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT)__inst->__fxns->setFilterLevel;
+    return (ti_uia_runtime_ILoggerSnapshot_setFilterLevel_FxnT)inst->__fxns->setFilterLevel;
 }
 
 /* getFilterLevel_{FxnT,fxnP} */
-typedef xdc_runtime_Diags_Mask (*ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT)(xdc_Void *__inst, xdc_runtime_Diags_EventLevel level);
-static inline ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_getFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_getFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_runtime_Diags_Mask (*ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT)(xdc_Void *inst, xdc_runtime_Diags_EventLevel level);
+static inline ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_getFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT ti_uia_runtime_ILoggerSnapshot_getFilterLevel_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT)__inst->__fxns->getFilterLevel;
+    return (ti_uia_runtime_ILoggerSnapshot_getFilterLevel_FxnT)inst->__fxns->getFilterLevel;
 }
 
 /* getTransferType_{FxnT,fxnP} */
-typedef ti_uia_runtime_IUIATransfer_TransferType (*ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT ti_uia_runtime_ILoggerSnapshot_getTransferType_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT ti_uia_runtime_ILoggerSnapshot_getTransferType_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef ti_uia_runtime_IUIATransfer_TransferType (*ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT ti_uia_runtime_ILoggerSnapshot_getTransferType_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT ti_uia_runtime_ILoggerSnapshot_getTransferType_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT)__inst->__fxns->getTransferType;
+    return (ti_uia_runtime_ILoggerSnapshot_getTransferType_FxnT)inst->__fxns->getTransferType;
 }
 
 /* getContents_{FxnT,fxnP} */
-typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_getContents_FxnT)(xdc_Void *__inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT* cpSize);
-static inline ti_uia_runtime_ILoggerSnapshot_getContents_FxnT ti_uia_runtime_ILoggerSnapshot_getContents_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getContents_FxnT ti_uia_runtime_ILoggerSnapshot_getContents_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_getContents_FxnT)(xdc_Void *inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT* cpSize);
+static inline ti_uia_runtime_ILoggerSnapshot_getContents_FxnT ti_uia_runtime_ILoggerSnapshot_getContents_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getContents_FxnT ti_uia_runtime_ILoggerSnapshot_getContents_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_getContents_FxnT)__inst->__fxns->getContents;
+    return (ti_uia_runtime_ILoggerSnapshot_getContents_FxnT)inst->__fxns->getContents;
 }
 
 /* isEmpty_{FxnT,fxnP} */
-typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT ti_uia_runtime_ILoggerSnapshot_isEmpty_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT ti_uia_runtime_ILoggerSnapshot_isEmpty_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Bool (*ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT ti_uia_runtime_ILoggerSnapshot_isEmpty_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT ti_uia_runtime_ILoggerSnapshot_isEmpty_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT)__inst->__fxns->isEmpty;
+    return (ti_uia_runtime_ILoggerSnapshot_isEmpty_FxnT)inst->__fxns->isEmpty;
 }
 
 /* getMaxLength_{FxnT,fxnP} */
-typedef xdc_SizeT (*ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT ti_uia_runtime_ILoggerSnapshot_getMaxLength_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT ti_uia_runtime_ILoggerSnapshot_getMaxLength_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_SizeT (*ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT ti_uia_runtime_ILoggerSnapshot_getMaxLength_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT ti_uia_runtime_ILoggerSnapshot_getMaxLength_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT)__inst->__fxns->getMaxLength;
+    return (ti_uia_runtime_ILoggerSnapshot_getMaxLength_FxnT)inst->__fxns->getMaxLength;
 }
 
 /* getInstanceId_{FxnT,fxnP} */
-typedef xdc_UInt16 (*ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT ti_uia_runtime_ILoggerSnapshot_getInstanceId_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT ti_uia_runtime_ILoggerSnapshot_getInstanceId_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_UInt16 (*ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT ti_uia_runtime_ILoggerSnapshot_getInstanceId_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT ti_uia_runtime_ILoggerSnapshot_getInstanceId_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT)__inst->__fxns->getInstanceId;
+    return (ti_uia_runtime_ILoggerSnapshot_getInstanceId_FxnT)inst->__fxns->getInstanceId;
 }
 
 /* getPriority_{FxnT,fxnP} */
-typedef ti_uia_runtime_IUIATransfer_Priority (*ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT ti_uia_runtime_ILoggerSnapshot_getPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT ti_uia_runtime_ILoggerSnapshot_getPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef ti_uia_runtime_IUIATransfer_Priority (*ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT ti_uia_runtime_ILoggerSnapshot_getPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT ti_uia_runtime_ILoggerSnapshot_getPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT)__inst->__fxns->getPriority;
+    return (ti_uia_runtime_ILoggerSnapshot_getPriority_FxnT)inst->__fxns->getPriority;
 }
 
 /* setPriority_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT)(xdc_Void *__inst, ti_uia_runtime_IUIATransfer_Priority priority);
-static inline ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT ti_uia_runtime_ILoggerSnapshot_setPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT ti_uia_runtime_ILoggerSnapshot_setPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT)(xdc_Void *inst, ti_uia_runtime_IUIATransfer_Priority priority);
+static inline ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT ti_uia_runtime_ILoggerSnapshot_setPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT ti_uia_runtime_ILoggerSnapshot_setPriority_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT)__inst->__fxns->setPriority;
+    return (ti_uia_runtime_ILoggerSnapshot_setPriority_FxnT)inst->__fxns->setPriority;
 }
 
 /* reset_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_reset_FxnT)(xdc_Void *__inst);
-static inline ti_uia_runtime_ILoggerSnapshot_reset_FxnT ti_uia_runtime_ILoggerSnapshot_reset_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_reset_FxnT ti_uia_runtime_ILoggerSnapshot_reset_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_reset_FxnT)(xdc_Void *inst);
+static inline ti_uia_runtime_ILoggerSnapshot_reset_FxnT ti_uia_runtime_ILoggerSnapshot_reset_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_reset_FxnT ti_uia_runtime_ILoggerSnapshot_reset_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_reset_FxnT)__inst->__fxns->reset;
+    return (ti_uia_runtime_ILoggerSnapshot_reset_FxnT)inst->__fxns->reset;
 }
 
 /* writeMemoryRange_{FxnT,fxnP} */
-typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT)(xdc_Void *__inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
-static inline ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst);
-static inline ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle __inst)
+typedef xdc_Void (*ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT)(xdc_Void *inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
+static inline ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst);
+static inline ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_fxnP(ti_uia_runtime_ILoggerSnapshot_Handle inst)
 {
-    return (ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT)__inst->__fxns->writeMemoryRange;
+    return (ti_uia_runtime_ILoggerSnapshot_writeMemoryRange_FxnT)inst->__fxns->writeMemoryRange;
 }
 
 
@@ -475,12 +477,12 @@ static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapsh
 static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapshot_Module_downCast(ti_uia_runtime_IUIATransfer_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_ILoggerSnapshot_Interface__BASE__C) {
             return (ti_uia_runtime_ILoggerSnapshot_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_ti_uia_runtime_IUIATransfer */
@@ -502,7 +504,7 @@ static inline ti_uia_runtime_ILoggerSnapshot_Handle ti_uia_runtime_ILoggerSnapsh
 {
     ti_uia_runtime_IUIATransfer_Handle i2 = (ti_uia_runtime_IUIATransfer_Handle)i;
     const xdc_runtime_Types_Base* b;
-    for (b = i2->__fxns->__base; b; b = b->base) {
+    for (b = i2->__fxns->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_ILoggerSnapshot_Interface__BASE__C) {
             return (ti_uia_runtime_ILoggerSnapshot_Handle)i;
         }
@@ -528,12 +530,12 @@ static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapsh
 static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapshot_Module_downCast2(xdc_runtime_IFilterLogger_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_ILoggerSnapshot_Interface__BASE__C) {
             return (ti_uia_runtime_ILoggerSnapshot_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_IFilterLogger */
@@ -555,7 +557,7 @@ static inline ti_uia_runtime_ILoggerSnapshot_Handle ti_uia_runtime_ILoggerSnapsh
 {
     xdc_runtime_IFilterLogger_Handle i2 = (xdc_runtime_IFilterLogger_Handle)i;
     const xdc_runtime_Types_Base* b;
-    for (b = i2->__fxns->__base; b; b = b->base) {
+    for (b = i2->__fxns->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_ILoggerSnapshot_Interface__BASE__C) {
             return (ti_uia_runtime_ILoggerSnapshot_Handle)i;
         }
@@ -581,12 +583,12 @@ static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapsh
 static inline ti_uia_runtime_ILoggerSnapshot_Module ti_uia_runtime_ILoggerSnapshot_Module_downCast3(xdc_runtime_ILogger_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_ILoggerSnapshot_Interface__BASE__C) {
             return (ti_uia_runtime_ILoggerSnapshot_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ILogger */
@@ -608,7 +610,7 @@ static inline ti_uia_runtime_ILoggerSnapshot_Handle ti_uia_runtime_ILoggerSnapsh
 {
     xdc_runtime_ILogger_Handle i2 = (xdc_runtime_ILogger_Handle)i;
     const xdc_runtime_Types_Base* b;
-    for (b = i2->__fxns->__base; b; b = b->base) {
+    for (b = i2->__fxns->__base; b != NULL; b = b->base) {
         if (b == &ti_uia_runtime_ILoggerSnapshot_Interface__BASE__C) {
             return (ti_uia_runtime_ILoggerSnapshot_Handle)i;
         }

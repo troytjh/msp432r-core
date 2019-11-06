@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,12 +34,12 @@
  *
  */
 
+#include <file.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <file.h>
 
-#include <ff.h>
-#include <ffcio.h>
+#include "ff.h"
+#include "ffcio.h"
 
 static FIL *filTable[_NSTREAM];
 
@@ -104,7 +104,7 @@ int ffcio_open(const char *path, unsigned flags, int llv_fd)
     }
 
     if (flags & O_APPEND) {
-            ;
+        fflags |= FA_OPEN_APPEND;
     }
 
     if (f_open(filTable[dev_fd], path, fflags) != FR_OK) {
@@ -175,13 +175,12 @@ fpos_t ffcio_lseek(int dev_fd, fpos_t offset, int origin)
 {
     FRESULT result;
 
-    /* HACK: FatFS has no "tell" functions, so peek inside FIL object */
     if (origin == SEEK_CUR) {
-        offset += filTable[dev_fd]->fptr;
+        offset += f_tell(filTable[dev_fd]);
     }
 
     if (origin == SEEK_END) {
-        offset += filTable[dev_fd]->fsize;
+        offset += f_size(filTable[dev_fd]);
     }
 
     result = f_lseek(filTable[dev_fd], offset);

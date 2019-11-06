@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -38,10 +38,12 @@
 #define ti_sysbios_family_arm_m3_Hwi__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_family_arm_m3_Hwi___VERS 200
@@ -88,10 +90,10 @@ typedef ti_sysbios_interfaces_IHwi_MaskingOption ti_sysbios_family_arm_m3_Hwi_Ma
 typedef ti_sysbios_interfaces_IHwi_StackInfo ti_sysbios_family_arm_m3_Hwi_StackInfo;
 
 /* VectorFuncPtr */
-typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_VectorFuncPtr)(xdc_Void);
+typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_VectorFuncPtr)(xdc_Void );
 
 /* ExceptionHookFuncPtr */
-typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_ExceptionHookFuncPtr)(ti_sysbios_family_arm_m3_Hwi_ExcContext* __arg1);
+typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_ExceptionHookFuncPtr)(ti_sysbios_family_arm_m3_Hwi_ExcContext* arg1);
 
 /* CCR */
 struct ti_sysbios_family_arm_m3_Hwi_CCR {
@@ -105,77 +107,77 @@ struct ti_sysbios_family_arm_m3_Hwi_CCR {
 
 /* NVIC */
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20[56];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20[56];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20[56];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20[56];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_20;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER[8];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER[8];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER[8];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER[8];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ISER;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120[24];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120[24];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120[24];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120[24];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_120;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER[8];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER[8];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER[8];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER[8];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ICER;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0[24];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0[24];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0[24];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0[24];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_1A0;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR[8];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR[8];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR[8];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR[8];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ISPR;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220[24];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220[24];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220[24];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220[24];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_220;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR[8];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR[8];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR[8];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR[8];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__ICPR;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0[24];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0[24];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0[24];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0[24];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_2A0;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR[8];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR[8];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR[8];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR[8];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__IABR;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320[56];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320[56];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320[56];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320[56];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_320;
 typedef xdc_UInt8 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR;
-typedef xdc_UInt8 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR[240];
-typedef xdc_UInt8 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR[240];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR;
+typedef xdc_UInt8 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR[240];
+typedef xdc_UInt8 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR[240];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__IPR;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0[516];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0[516];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0[516];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0[516];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_4F0;
 typedef xdc_UInt8 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR;
-typedef xdc_UInt8 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR[12];
-typedef xdc_UInt8 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR[12];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR;
+typedef xdc_UInt8 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR[12];
+typedef xdc_UInt8 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR[12];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__SHPR;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74[5];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74[5];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74[5];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74[5];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D74;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C[93];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C[93];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C[93];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C[93];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_D8C;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04[12];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04[12];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04[12];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04[12];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F04;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48;
-typedef xdc_UInt32 __ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48[34];
-typedef xdc_UInt32 __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48[34];
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48;
+typedef xdc_UInt32 ARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48[34];
+typedef xdc_UInt32 CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48[34];
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48 __TA_ti_sysbios_family_arm_m3_Hwi_NVIC__RES_F48;
 struct ti_sysbios_family_arm_m3_Hwi_NVIC {
     xdc_UInt32 RES_00;
     xdc_UInt32 ICTR;
@@ -308,7 +310,7 @@ struct ti_sysbios_family_arm_m3_Hwi_Struct2__ {
 typedef ti_sysbios_family_arm_m3_Hwi_Struct2__ ti_sysbios_family_arm_m3_Hwi_Struct2;
 
 /* ExcHandlerFuncPtr */
-typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_ExcHandlerFuncPtr)(xdc_UInt* __arg1, xdc_UInt __arg2);
+typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_ExcHandlerFuncPtr)(xdc_UInt* arg1, xdc_UInt arg2);
 
 /* MaskingOption_NONE */
 #define ti_sysbios_family_arm_m3_Hwi_MaskingOption_NONE ti_sysbios_interfaces_IHwi_MaskingOption_NONE
@@ -342,38 +344,38 @@ typedef struct ti_sysbios_family_arm_m3_Hwi_Args__create {
  */
 
 /* HandlerFuncPtr */
-typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_HandlerFuncPtr)(ti_sysbios_family_arm_m3_Hwi_Handle __arg1, xdc_UInt __arg2);
+typedef xdc_Void (*ti_sysbios_family_arm_m3_Hwi_HandlerFuncPtr)(ti_sysbios_family_arm_m3_Hwi_Handle arg1, xdc_UInt arg2);
 
 /* Instance_State */
 typedef xdc_Ptr __T1_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv;
-typedef xdc_Ptr *__ARRAY1_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv;
-typedef const xdc_Ptr *__CARRAY1_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv;
-typedef __ARRAY1_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv __TA_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv;
+typedef xdc_Ptr *ARRAY1_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv;
+typedef const xdc_Ptr *CARRAY1_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv;
+typedef ARRAY1_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv __TA_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv;
 
 /* Module_State */
 typedef xdc_Bool __T1_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive;
-typedef xdc_Bool *__ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive;
-typedef const xdc_Bool *__CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive;
-typedef __ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive;
+typedef xdc_Bool *ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive;
+typedef const xdc_Bool *CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive;
+typedef ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__excActive;
 typedef ti_sysbios_family_arm_m3_Hwi_ExcContext *__T1_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext;
-typedef ti_sysbios_family_arm_m3_Hwi_ExcContext **__ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext;
-typedef const ti_sysbios_family_arm_m3_Hwi_ExcContext **__CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext;
-typedef __ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext;
+typedef ti_sysbios_family_arm_m3_Hwi_ExcContext **ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext;
+typedef const ti_sysbios_family_arm_m3_Hwi_ExcContext **CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext;
+typedef ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__excContext;
 typedef xdc_Ptr __T1_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack;
-typedef xdc_Ptr *__ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack;
-typedef const xdc_Ptr *__CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack;
-typedef __ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack;
+typedef xdc_Ptr *ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack;
+typedef const xdc_Ptr *CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack;
+typedef ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__excStack;
 typedef xdc_UInt8 __T1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity;
-typedef xdc_UInt8 *__ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity;
-typedef const xdc_UInt8 *__CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity;
-typedef __ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity;
+typedef xdc_UInt8 *ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity;
+typedef const xdc_UInt8 *CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity;
+typedef ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinity;
 typedef xdc_UInt32 __T1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
-typedef xdc_UInt32 *__ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
-typedef const xdc_UInt32 *__CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
-typedef __ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks __T2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
-typedef xdc_UInt32 **__ARRAY2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
-typedef const xdc_UInt32 **__CARRAY2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
-typedef __ARRAY2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
+typedef xdc_UInt32 *ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
+typedef const xdc_UInt32 *CARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
+typedef ARRAY1_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks __T2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
+typedef xdc_UInt32 **ARRAY2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
+typedef const xdc_UInt32 **CARRAY2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
+typedef ARRAY2_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks __TA_ti_sysbios_family_arm_m3_Hwi_Module_State__intAffinityMasks;
 
 
 /*
@@ -638,6 +640,15 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_A_unsupportedMaskingOpti
 #define ti_sysbios_family_arm_m3_Hwi_A_unsupportedMaskingOption (ti_sysbios_family_arm_m3_Hwi_A_unsupportedMaskingOption__C)
 #endif
 
+/* E_badIntNum */
+typedef xdc_runtime_Error_Id CT__ti_sysbios_family_arm_m3_Hwi_E_badIntNum;
+__extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_E_badIntNum ti_sysbios_family_arm_m3_Hwi_E_badIntNum__C;
+#ifdef ti_sysbios_family_arm_m3_Hwi_E_badIntNum__CR
+#define ti_sysbios_family_arm_m3_Hwi_E_badIntNum (*((CT__ti_sysbios_family_arm_m3_Hwi_E_badIntNum*)(xdcRomConstPtr + ti_sysbios_family_arm_m3_Hwi_E_badIntNum__C_offset)))
+#else
+#define ti_sysbios_family_arm_m3_Hwi_E_badIntNum (ti_sysbios_family_arm_m3_Hwi_E_badIntNum__C)
+#endif
+
 /* E_alreadyDefined */
 typedef xdc_runtime_Error_Id CT__ti_sysbios_family_arm_m3_Hwi_E_alreadyDefined;
 __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_E_alreadyDefined ti_sysbios_family_arm_m3_Hwi_E_alreadyDefined__C;
@@ -775,10 +786,10 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_excHookFunc ti_sysbios_f
 
 /* excHookFuncs */
 typedef ti_sysbios_family_arm_m3_Hwi_ExceptionHookFuncPtr __T1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
-typedef ti_sysbios_family_arm_m3_Hwi_ExceptionHookFuncPtr *__ARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
-typedef const ti_sysbios_family_arm_m3_Hwi_ExceptionHookFuncPtr *__CARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs __TA_ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs CT__ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
+typedef ti_sysbios_family_arm_m3_Hwi_ExceptionHookFuncPtr *ARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
+typedef const ti_sysbios_family_arm_m3_Hwi_ExceptionHookFuncPtr *CARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs __TA_ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_excHookFuncs CT__ti_sysbios_family_arm_m3_Hwi_excHookFuncs;
 __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_excHookFuncs ti_sysbios_family_arm_m3_Hwi_excHookFuncs__C;
 #ifdef ti_sysbios_family_arm_m3_Hwi_excHookFuncs__CR
 #define ti_sysbios_family_arm_m3_Hwi_excHookFuncs (*((CT__ti_sysbios_family_arm_m3_Hwi_excHookFuncs*)(xdcRomConstPtr + ti_sysbios_family_arm_m3_Hwi_excHookFuncs__C_offset)))
@@ -834,8 +845,17 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_swiDisable ti_sysbios_fa
 #define ti_sysbios_family_arm_m3_Hwi_swiDisable (ti_sysbios_family_arm_m3_Hwi_swiDisable__C)
 #endif
 
+/* swiRestore */
+typedef xdc_Void (*CT__ti_sysbios_family_arm_m3_Hwi_swiRestore)(xdc_UInt arg1);
+__extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_swiRestore ti_sysbios_family_arm_m3_Hwi_swiRestore__C;
+#ifdef ti_sysbios_family_arm_m3_Hwi_swiRestore__CR
+#define ti_sysbios_family_arm_m3_Hwi_swiRestore (*((CT__ti_sysbios_family_arm_m3_Hwi_swiRestore*)(xdcRomConstPtr + ti_sysbios_family_arm_m3_Hwi_swiRestore__C_offset)))
+#else
+#define ti_sysbios_family_arm_m3_Hwi_swiRestore (ti_sysbios_family_arm_m3_Hwi_swiRestore__C)
+#endif
+
 /* swiRestoreHwi */
-typedef xdc_Void (*CT__ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi)(xdc_UInt __arg1);
+typedef xdc_Void (*CT__ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi)(xdc_UInt arg1);
 __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi__C;
 #ifdef ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi__CR
 #define ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi (*((CT__ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi*)(xdcRomConstPtr + ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi__C_offset)))
@@ -853,7 +873,7 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_taskDisable ti_sysbios_f
 #endif
 
 /* taskRestoreHwi */
-typedef xdc_Void (*CT__ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi)(xdc_UInt __arg1);
+typedef xdc_Void (*CT__ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi)(xdc_UInt arg1);
 __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi__C;
 #ifdef ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi__CR
 #define ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi (*((CT__ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi*)(xdcRomConstPtr + ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi__C_offset)))
@@ -876,10 +896,10 @@ __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_ccr ti_sysbios_family_ar
 
 /* hooks */
 typedef ti_sysbios_family_arm_m3_Hwi_HookSet __T1_ti_sysbios_family_arm_m3_Hwi_hooks;
-typedef struct { int length; ti_sysbios_family_arm_m3_Hwi_HookSet *elem; } __ARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks;
-typedef struct { int length; ti_sysbios_family_arm_m3_Hwi_HookSet const *elem; } __CARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks;
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks __TA_ti_sysbios_family_arm_m3_Hwi_hooks;
-typedef __CARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks CT__ti_sysbios_family_arm_m3_Hwi_hooks;
+typedef struct { int length; ti_sysbios_family_arm_m3_Hwi_HookSet *elem; } ARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks;
+typedef struct { int length; ti_sysbios_family_arm_m3_Hwi_HookSet const *elem; } CARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks;
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks __TA_ti_sysbios_family_arm_m3_Hwi_hooks;
+typedef CARRAY1_ti_sysbios_family_arm_m3_Hwi_hooks CT__ti_sysbios_family_arm_m3_Hwi_hooks;
 __extern __FAR__ const CT__ti_sysbios_family_arm_m3_Hwi_hooks ti_sysbios_family_arm_m3_Hwi_hooks__C;
 #ifdef ti_sysbios_family_arm_m3_Hwi_hooks__CR
 #define ti_sysbios_family_arm_m3_Hwi_hooks (*((CT__ti_sysbios_family_arm_m3_Hwi_hooks*)(xdcRomConstPtr + ti_sysbios_family_arm_m3_Hwi_hooks__C_offset)))
@@ -910,12 +930,12 @@ struct ti_sysbios_family_arm_m3_Hwi_Params {
 /* Struct */
 struct ti_sysbios_family_arm_m3_Hwi_Struct {
     const ti_sysbios_family_arm_m3_Hwi_Fxns__ *__fxns;
-    xdc_UArg __f0;
-    ti_sysbios_family_arm_m3_Hwi_FuncPtr __f1;
-    ti_sysbios_family_arm_m3_Hwi_Irp __f2;
-    xdc_UInt8 __f3;
-    xdc_Int16 __f4;
-    __TA_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv __f5;
+    xdc_UArg f0;
+    ti_sysbios_family_arm_m3_Hwi_FuncPtr f1;
+    ti_sysbios_family_arm_m3_Hwi_Irp f2;
+    xdc_UInt8 f3;
+    xdc_Int16 f4;
+    __TA_ti_sysbios_family_arm_m3_Hwi_Instance_State__hookEnv f5;
     xdc_runtime_Types_CordAddr __name;
 };
 
@@ -941,11 +961,11 @@ struct ti_sysbios_family_arm_m3_Hwi_Fxns__ {
     xdc_UInt (*enableInterrupt)(xdc_UInt intNum);
     xdc_Void (*restoreInterrupt)(xdc_UInt intNum, xdc_UInt key);
     xdc_Void (*clearInterrupt)(xdc_UInt intNum);
-    ti_sysbios_interfaces_IHwi_FuncPtr (*getFunc)(ti_sysbios_family_arm_m3_Hwi_Handle __inst, xdc_UArg* arg);
-    xdc_Void (*setFunc)(ti_sysbios_family_arm_m3_Hwi_Handle __inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
-    xdc_Ptr (*getHookContext)(ti_sysbios_family_arm_m3_Hwi_Handle __inst, xdc_Int id);
-    xdc_Void (*setHookContext)(ti_sysbios_family_arm_m3_Hwi_Handle __inst, xdc_Int id, xdc_Ptr hookContext);
-    ti_sysbios_interfaces_IHwi_Irp (*getIrp)(ti_sysbios_family_arm_m3_Hwi_Handle __inst);
+    ti_sysbios_interfaces_IHwi_FuncPtr (*getFunc)(ti_sysbios_family_arm_m3_Hwi_Handle inst, xdc_UArg* arg);
+    xdc_Void (*setFunc)(ti_sysbios_family_arm_m3_Hwi_Handle inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
+    xdc_Ptr (*getHookContext)(ti_sysbios_family_arm_m3_Hwi_Handle inst, xdc_Int id);
+    xdc_Void (*setHookContext)(ti_sysbios_family_arm_m3_Hwi_Handle inst, xdc_Int id, xdc_Ptr hookContext);
+    ti_sysbios_interfaces_IHwi_Irp (*getIrp)(ti_sysbios_family_arm_m3_Hwi_Handle inst);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_sysbios_family_arm_m3_Hwi_Module__FXNS__CR
@@ -970,19 +990,19 @@ __extern xdc_Int ti_sysbios_family_arm_m3_Hwi_Module_startup__F( xdc_Int state )
 
 /* Instance_init__E */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Instance_init__E, "ti_sysbios_family_arm_m3_Hwi_Instance_init")
-__extern xdc_Int ti_sysbios_family_arm_m3_Hwi_Instance_init__E(ti_sysbios_family_arm_m3_Hwi_Object *__obj, xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *__prms, xdc_runtime_Error_Block *__eb);
+__extern xdc_Int ti_sysbios_family_arm_m3_Hwi_Instance_init__E(ti_sysbios_family_arm_m3_Hwi_Object *obj, xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* Instance_finalize__E */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Instance_finalize__E, "ti_sysbios_family_arm_m3_Hwi_Instance_finalize")
-__extern void ti_sysbios_family_arm_m3_Hwi_Instance_finalize__E(ti_sysbios_family_arm_m3_Hwi_Object *__obj, int __ec);
+__extern void ti_sysbios_family_arm_m3_Hwi_Instance_finalize__E(ti_sysbios_family_arm_m3_Hwi_Object *obj, int ec);
 
 /* create */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_create, "ti_sysbios_family_arm_m3_Hwi_create")
-__extern ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_create( xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_create( xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* construct */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_construct, "ti_sysbios_family_arm_m3_Hwi_construct")
-__extern void ti_sysbios_family_arm_m3_Hwi_construct( ti_sysbios_family_arm_m3_Hwi_Struct *__obj, xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern void ti_sysbios_family_arm_m3_Hwi_construct(ti_sysbios_family_arm_m3_Hwi_Struct *obj, xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* delete */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_delete, "ti_sysbios_family_arm_m3_Hwi_delete")
@@ -994,285 +1014,300 @@ __extern void ti_sysbios_family_arm_m3_Hwi_destruct(ti_sysbios_family_arm_m3_Hwi
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Handle__label__S, "ti_sysbios_family_arm_m3_Hwi_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_family_arm_m3_Hwi_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_family_arm_m3_Hwi_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Module__startupDone__S, "ti_sysbios_family_arm_m3_Hwi_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_family_arm_m3_Hwi_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_family_arm_m3_Hwi_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Object__create__S, "ti_sysbios_family_arm_m3_Hwi_Object__create__S")
-__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__create__S( xdc_CPtr __aa, const xdc_UChar *__pa, xdc_SizeT __psz, xdc_runtime_Error_Block *__eb );
+__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Object__delete__S, "ti_sysbios_family_arm_m3_Hwi_Object__delete__S")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Object__get__S, "ti_sysbios_family_arm_m3_Hwi_Object__get__S")
-__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Object__first__S, "ti_sysbios_family_arm_m3_Hwi_Object__first__S")
-__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Object__next__S, "ti_sysbios_family_arm_m3_Hwi_Object__next__S")
-__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Params__init__S, "ti_sysbios_family_arm_m3_Hwi_Params__init__S")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* getStackInfo__E */
 #define ti_sysbios_family_arm_m3_Hwi_getStackInfo ti_sysbios_family_arm_m3_Hwi_getStackInfo__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_getStackInfo__E, "ti_sysbios_family_arm_m3_Hwi_getStackInfo")
-__extern xdc_Bool ti_sysbios_family_arm_m3_Hwi_getStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth );
+__extern xdc_Bool ti_sysbios_family_arm_m3_Hwi_getStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth);
 
 /* getCoreStackInfo__E */
 #define ti_sysbios_family_arm_m3_Hwi_getCoreStackInfo ti_sysbios_family_arm_m3_Hwi_getCoreStackInfo__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_getCoreStackInfo__E, "ti_sysbios_family_arm_m3_Hwi_getCoreStackInfo")
-__extern xdc_Bool ti_sysbios_family_arm_m3_Hwi_getCoreStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId );
+__extern xdc_Bool ti_sysbios_family_arm_m3_Hwi_getCoreStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId);
 
 /* startup__E */
 #define ti_sysbios_family_arm_m3_Hwi_startup ti_sysbios_family_arm_m3_Hwi_startup__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_startup__E, "ti_sysbios_family_arm_m3_Hwi_startup")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_startup__E( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_startup__E( void);
 
 /* switchFromBootStack__E */
 #define ti_sysbios_family_arm_m3_Hwi_switchFromBootStack ti_sysbios_family_arm_m3_Hwi_switchFromBootStack__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_switchFromBootStack__E, "ti_sysbios_family_arm_m3_Hwi_switchFromBootStack")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_switchFromBootStack__E( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_switchFromBootStack__E( void);
 
 /* post__E */
 #define ti_sysbios_family_arm_m3_Hwi_post ti_sysbios_family_arm_m3_Hwi_post__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_post__E, "ti_sysbios_family_arm_m3_Hwi_post")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_post__E( xdc_UInt intNum );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_post__E( xdc_UInt intNum);
 
 /* getTaskSP__E */
 #define ti_sysbios_family_arm_m3_Hwi_getTaskSP ti_sysbios_family_arm_m3_Hwi_getTaskSP__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_getTaskSP__E, "ti_sysbios_family_arm_m3_Hwi_getTaskSP")
-__extern xdc_Char *ti_sysbios_family_arm_m3_Hwi_getTaskSP__E( void );
+__extern xdc_Char *ti_sysbios_family_arm_m3_Hwi_getTaskSP__E( void);
 
 /* disableInterrupt__E */
 #define ti_sysbios_family_arm_m3_Hwi_disableInterrupt ti_sysbios_family_arm_m3_Hwi_disableInterrupt__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_disableInterrupt__E, "ti_sysbios_family_arm_m3_Hwi_disableInterrupt")
-__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_disableInterrupt__E( xdc_UInt intNum );
+__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_disableInterrupt__E( xdc_UInt intNum);
 
 /* enableInterrupt__E */
 #define ti_sysbios_family_arm_m3_Hwi_enableInterrupt ti_sysbios_family_arm_m3_Hwi_enableInterrupt__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_enableInterrupt__E, "ti_sysbios_family_arm_m3_Hwi_enableInterrupt")
-__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_enableInterrupt__E( xdc_UInt intNum );
+__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_enableInterrupt__E( xdc_UInt intNum);
 
 /* restoreInterrupt__E */
 #define ti_sysbios_family_arm_m3_Hwi_restoreInterrupt ti_sysbios_family_arm_m3_Hwi_restoreInterrupt__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_restoreInterrupt__E, "ti_sysbios_family_arm_m3_Hwi_restoreInterrupt")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_restoreInterrupt__E( xdc_UInt intNum, xdc_UInt key );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_restoreInterrupt__E( xdc_UInt intNum, xdc_UInt key);
 
 /* clearInterrupt__E */
 #define ti_sysbios_family_arm_m3_Hwi_clearInterrupt ti_sysbios_family_arm_m3_Hwi_clearInterrupt__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_clearInterrupt__E, "ti_sysbios_family_arm_m3_Hwi_clearInterrupt")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_clearInterrupt__E( xdc_UInt intNum );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_clearInterrupt__E( xdc_UInt intNum);
 
 /* getFunc__E */
 #define ti_sysbios_family_arm_m3_Hwi_getFunc ti_sysbios_family_arm_m3_Hwi_getFunc__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_getFunc__E, "ti_sysbios_family_arm_m3_Hwi_getFunc")
-__extern ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_family_arm_m3_Hwi_getFunc__E( ti_sysbios_family_arm_m3_Hwi_Handle __inst, xdc_UArg *arg );
+__extern ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_family_arm_m3_Hwi_getFunc__E( ti_sysbios_family_arm_m3_Hwi_Handle instp, xdc_UArg *arg);
 
 /* setFunc__E */
 #define ti_sysbios_family_arm_m3_Hwi_setFunc ti_sysbios_family_arm_m3_Hwi_setFunc__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_setFunc__E, "ti_sysbios_family_arm_m3_Hwi_setFunc")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setFunc__E( ti_sysbios_family_arm_m3_Hwi_Handle __inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setFunc__E( ti_sysbios_family_arm_m3_Hwi_Handle instp, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
 
 /* getHookContext__E */
 #define ti_sysbios_family_arm_m3_Hwi_getHookContext ti_sysbios_family_arm_m3_Hwi_getHookContext__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_getHookContext__E, "ti_sysbios_family_arm_m3_Hwi_getHookContext")
-__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_getHookContext__E( ti_sysbios_family_arm_m3_Hwi_Handle __inst, xdc_Int id );
+__extern xdc_Ptr ti_sysbios_family_arm_m3_Hwi_getHookContext__E( ti_sysbios_family_arm_m3_Hwi_Handle instp, xdc_Int id);
 
 /* setHookContext__E */
 #define ti_sysbios_family_arm_m3_Hwi_setHookContext ti_sysbios_family_arm_m3_Hwi_setHookContext__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_setHookContext__E, "ti_sysbios_family_arm_m3_Hwi_setHookContext")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setHookContext__E( ti_sysbios_family_arm_m3_Hwi_Handle __inst, xdc_Int id, xdc_Ptr hookContext );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setHookContext__E( ti_sysbios_family_arm_m3_Hwi_Handle instp, xdc_Int id, xdc_Ptr hookContext);
 
 /* getIrp__E */
 #define ti_sysbios_family_arm_m3_Hwi_getIrp ti_sysbios_family_arm_m3_Hwi_getIrp__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_getIrp__E, "ti_sysbios_family_arm_m3_Hwi_getIrp")
-__extern ti_sysbios_interfaces_IHwi_Irp ti_sysbios_family_arm_m3_Hwi_getIrp__E( ti_sysbios_family_arm_m3_Hwi_Handle __inst );
+__extern ti_sysbios_interfaces_IHwi_Irp ti_sysbios_family_arm_m3_Hwi_getIrp__E( ti_sysbios_family_arm_m3_Hwi_Handle instp);
 
 /* construct2__E */
 #define ti_sysbios_family_arm_m3_Hwi_construct2 ti_sysbios_family_arm_m3_Hwi_construct2__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_construct2__E, "ti_sysbios_family_arm_m3_Hwi_construct2")
-__extern ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_construct2__E( ti_sysbios_family_arm_m3_Hwi_Struct2 *hwi, xdc_Int intNum, ti_sysbios_family_arm_m3_Hwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *prms );
+__extern ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_construct2__E( ti_sysbios_family_arm_m3_Hwi_Struct2 *hwi, xdc_Int intNum, ti_sysbios_family_arm_m3_Hwi_FuncPtr hwiFxn, const ti_sysbios_family_arm_m3_Hwi_Params *prms);
 
 /* disableFxn__E */
 #define ti_sysbios_family_arm_m3_Hwi_disableFxn ti_sysbios_family_arm_m3_Hwi_disableFxn__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_disableFxn__E, "ti_sysbios_family_arm_m3_Hwi_disableFxn")
-__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_disableFxn__E( void );
+__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_disableFxn__E( void);
 
 /* enableFxn__E */
 #define ti_sysbios_family_arm_m3_Hwi_enableFxn ti_sysbios_family_arm_m3_Hwi_enableFxn__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_enableFxn__E, "ti_sysbios_family_arm_m3_Hwi_enableFxn")
-__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_enableFxn__E( void );
+__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_enableFxn__E( void);
 
 /* restoreFxn__E */
 #define ti_sysbios_family_arm_m3_Hwi_restoreFxn ti_sysbios_family_arm_m3_Hwi_restoreFxn__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_restoreFxn__E, "ti_sysbios_family_arm_m3_Hwi_restoreFxn")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_restoreFxn__E( xdc_UInt key );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_restoreFxn__E( xdc_UInt key);
 
 /* plug__E */
 #define ti_sysbios_family_arm_m3_Hwi_plug ti_sysbios_family_arm_m3_Hwi_plug__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_plug__E, "ti_sysbios_family_arm_m3_Hwi_plug")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_plug__E( xdc_UInt intNum, xdc_Void *fxn );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_plug__E( xdc_UInt intNum, xdc_Void *fxn);
 
 /* getHandle__E */
 #define ti_sysbios_family_arm_m3_Hwi_getHandle ti_sysbios_family_arm_m3_Hwi_getHandle__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_getHandle__E, "ti_sysbios_family_arm_m3_Hwi_getHandle")
-__extern ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_getHandle__E( xdc_UInt intNum );
+__extern ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_getHandle__E( xdc_UInt intNum);
 
 /* setPriority__E */
 #define ti_sysbios_family_arm_m3_Hwi_setPriority ti_sysbios_family_arm_m3_Hwi_setPriority__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_setPriority__E, "ti_sysbios_family_arm_m3_Hwi_setPriority")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setPriority__E( xdc_UInt intNum, xdc_UInt priority );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setPriority__E( xdc_UInt intNum, xdc_UInt priority);
 
 /* excSetBuffers__E */
 #define ti_sysbios_family_arm_m3_Hwi_excSetBuffers ti_sysbios_family_arm_m3_Hwi_excSetBuffers__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excSetBuffers__E, "ti_sysbios_family_arm_m3_Hwi_excSetBuffers")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excSetBuffers__E( xdc_Ptr excContextBuffer, xdc_Ptr excStackBuffer );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excSetBuffers__E( xdc_Ptr excContextBuffer, xdc_Ptr excStackBuffer);
 
 /* initNVIC__E */
 #define ti_sysbios_family_arm_m3_Hwi_initNVIC ti_sysbios_family_arm_m3_Hwi_initNVIC__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_initNVIC__E, "ti_sysbios_family_arm_m3_Hwi_initNVIC")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_initNVIC__E( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_initNVIC__E( void);
 
 /* initStacks__E */
 #define ti_sysbios_family_arm_m3_Hwi_initStacks ti_sysbios_family_arm_m3_Hwi_initStacks__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_initStacks__E, "ti_sysbios_family_arm_m3_Hwi_initStacks")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_initStacks__E( xdc_Ptr hwiStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_initStacks__E( xdc_Ptr hwiStack);
 
 /* flushVnvic__E */
 #define ti_sysbios_family_arm_m3_Hwi_flushVnvic ti_sysbios_family_arm_m3_Hwi_flushVnvic__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_flushVnvic__E, "ti_sysbios_family_arm_m3_Hwi_flushVnvic")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_flushVnvic__E( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_flushVnvic__E( void);
 
 /* reconfig__E */
 #define ti_sysbios_family_arm_m3_Hwi_reconfig ti_sysbios_family_arm_m3_Hwi_reconfig__E
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_reconfig__E, "ti_sysbios_family_arm_m3_Hwi_reconfig")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_reconfig__E( ti_sysbios_family_arm_m3_Hwi_Handle __inst, ti_sysbios_family_arm_m3_Hwi_FuncPtr fxn, const ti_sysbios_family_arm_m3_Hwi_Params *params );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_reconfig__E( ti_sysbios_family_arm_m3_Hwi_Handle instp, ti_sysbios_family_arm_m3_Hwi_FuncPtr fxn, const ti_sysbios_family_arm_m3_Hwi_Params *params);
 
 /* postInit__I */
 #define ti_sysbios_family_arm_m3_Hwi_postInit ti_sysbios_family_arm_m3_Hwi_postInit__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_postInit__I, "ti_sysbios_family_arm_m3_Hwi_postInit")
-__extern xdc_Int ti_sysbios_family_arm_m3_Hwi_postInit__I( ti_sysbios_family_arm_m3_Hwi_Object *hwi, xdc_runtime_Error_Block *eb );
+__extern xdc_Int ti_sysbios_family_arm_m3_Hwi_postInit__I( ti_sysbios_family_arm_m3_Hwi_Object *hwi, xdc_runtime_Error_Block *eb);
 
 /* updateNvic__I */
 #define ti_sysbios_family_arm_m3_Hwi_updateNvic ti_sysbios_family_arm_m3_Hwi_updateNvic__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_updateNvic__I, "ti_sysbios_family_arm_m3_Hwi_updateNvic")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_updateNvic__I( xdc_UInt intNum );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_updateNvic__I( xdc_UInt intNum);
 
 /* excHandlerAsm__I */
 #define ti_sysbios_family_arm_m3_Hwi_excHandlerAsm ti_sysbios_family_arm_m3_Hwi_excHandlerAsm__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excHandlerAsm__I, "ti_sysbios_family_arm_m3_Hwi_excHandlerAsm")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandlerAsm__I( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandlerAsm__I( void);
 
 /* excHandler__I */
 #define ti_sysbios_family_arm_m3_Hwi_excHandler ti_sysbios_family_arm_m3_Hwi_excHandler__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excHandler__I, "ti_sysbios_family_arm_m3_Hwi_excHandler")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandler__I( xdc_UInt *excStack, xdc_UInt lr );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandler__I( xdc_UInt *excStack, xdc_UInt lr);
 
 /* excHandlerMin__I */
 #define ti_sysbios_family_arm_m3_Hwi_excHandlerMin ti_sysbios_family_arm_m3_Hwi_excHandlerMin__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excHandlerMin__I, "ti_sysbios_family_arm_m3_Hwi_excHandlerMin")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandlerMin__I( xdc_UInt *excStack, xdc_UInt lr );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandlerMin__I( xdc_UInt *excStack, xdc_UInt lr);
 
 /* excHandlerMax__I */
 #define ti_sysbios_family_arm_m3_Hwi_excHandlerMax ti_sysbios_family_arm_m3_Hwi_excHandlerMax__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excHandlerMax__I, "ti_sysbios_family_arm_m3_Hwi_excHandlerMax")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandlerMax__I( xdc_UInt *excStack, xdc_UInt lr );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHandlerMax__I( xdc_UInt *excStack, xdc_UInt lr);
 
 /* excFillContext__I */
 #define ti_sysbios_family_arm_m3_Hwi_excFillContext ti_sysbios_family_arm_m3_Hwi_excFillContext__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excFillContext__I, "ti_sysbios_family_arm_m3_Hwi_excFillContext")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excFillContext__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excFillContext__I( xdc_UInt *excStack);
 
 /* excNmi__I */
 #define ti_sysbios_family_arm_m3_Hwi_excNmi ti_sysbios_family_arm_m3_Hwi_excNmi__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excNmi__I, "ti_sysbios_family_arm_m3_Hwi_excNmi")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excNmi__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excNmi__I( xdc_UInt *excStack);
 
 /* excHardFault__I */
 #define ti_sysbios_family_arm_m3_Hwi_excHardFault ti_sysbios_family_arm_m3_Hwi_excHardFault__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excHardFault__I, "ti_sysbios_family_arm_m3_Hwi_excHardFault")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHardFault__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excHardFault__I( xdc_UInt *excStack);
 
 /* excMemFault__I */
 #define ti_sysbios_family_arm_m3_Hwi_excMemFault ti_sysbios_family_arm_m3_Hwi_excMemFault__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excMemFault__I, "ti_sysbios_family_arm_m3_Hwi_excMemFault")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excMemFault__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excMemFault__I( xdc_UInt *excStack);
 
 /* excBusFault__I */
 #define ti_sysbios_family_arm_m3_Hwi_excBusFault ti_sysbios_family_arm_m3_Hwi_excBusFault__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excBusFault__I, "ti_sysbios_family_arm_m3_Hwi_excBusFault")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excBusFault__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excBusFault__I( xdc_UInt *excStack);
 
 /* excUsageFault__I */
 #define ti_sysbios_family_arm_m3_Hwi_excUsageFault ti_sysbios_family_arm_m3_Hwi_excUsageFault__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excUsageFault__I, "ti_sysbios_family_arm_m3_Hwi_excUsageFault")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excUsageFault__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excUsageFault__I( xdc_UInt *excStack);
 
 /* excSvCall__I */
 #define ti_sysbios_family_arm_m3_Hwi_excSvCall ti_sysbios_family_arm_m3_Hwi_excSvCall__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excSvCall__I, "ti_sysbios_family_arm_m3_Hwi_excSvCall")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excSvCall__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excSvCall__I( xdc_UInt *excStack);
 
 /* excDebugMon__I */
 #define ti_sysbios_family_arm_m3_Hwi_excDebugMon ti_sysbios_family_arm_m3_Hwi_excDebugMon__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excDebugMon__I, "ti_sysbios_family_arm_m3_Hwi_excDebugMon")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excDebugMon__I( xdc_UInt *excStack );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excDebugMon__I( xdc_UInt *excStack);
 
 /* excReserved__I */
 #define ti_sysbios_family_arm_m3_Hwi_excReserved ti_sysbios_family_arm_m3_Hwi_excReserved__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excReserved__I, "ti_sysbios_family_arm_m3_Hwi_excReserved")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excReserved__I( xdc_UInt *excStack, xdc_UInt excNum );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excReserved__I( xdc_UInt *excStack, xdc_UInt excNum);
 
 /* excNoIsr__I */
 #define ti_sysbios_family_arm_m3_Hwi_excNoIsr ti_sysbios_family_arm_m3_Hwi_excNoIsr__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excNoIsr__I, "ti_sysbios_family_arm_m3_Hwi_excNoIsr")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excNoIsr__I( xdc_UInt *excStack, xdc_UInt excNum );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excNoIsr__I( xdc_UInt *excStack, xdc_UInt excNum);
 
 /* excDumpRegs__I */
 #define ti_sysbios_family_arm_m3_Hwi_excDumpRegs ti_sysbios_family_arm_m3_Hwi_excDumpRegs__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_excDumpRegs__I, "ti_sysbios_family_arm_m3_Hwi_excDumpRegs")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excDumpRegs__I( xdc_UInt lr );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_excDumpRegs__I( xdc_UInt lr);
 
 /* pendSV__I */
 #define ti_sysbios_family_arm_m3_Hwi_pendSV ti_sysbios_family_arm_m3_Hwi_pendSV__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_pendSV__I, "ti_sysbios_family_arm_m3_Hwi_pendSV")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_pendSV__I( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_pendSV__I( void);
+
+/* setStackLimit__I */
+#define ti_sysbios_family_arm_m3_Hwi_setStackLimit ti_sysbios_family_arm_m3_Hwi_setStackLimit__I
+xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_setStackLimit__I, "ti_sysbios_family_arm_m3_Hwi_setStackLimit")
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_setStackLimit__I( xdc_Ptr stackBase);
+
+/* swiDisableNull__I */
+#define ti_sysbios_family_arm_m3_Hwi_swiDisableNull ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I
+xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I, "ti_sysbios_family_arm_m3_Hwi_swiDisableNull")
+__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_swiDisableNull__I( void);
+
+/* swiRestoreNull__I */
+#define ti_sysbios_family_arm_m3_Hwi_swiRestoreNull ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I
+xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I, "ti_sysbios_family_arm_m3_Hwi_swiRestoreNull")
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_swiRestoreNull__I( xdc_UInt key);
 
 /* dispatch__I */
 #define ti_sysbios_family_arm_m3_Hwi_dispatch ti_sysbios_family_arm_m3_Hwi_dispatch__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_dispatch__I, "ti_sysbios_family_arm_m3_Hwi_dispatch")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_dispatch__I( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_dispatch__I( void);
 
 /* romInitNVIC__I */
 #define ti_sysbios_family_arm_m3_Hwi_romInitNVIC ti_sysbios_family_arm_m3_Hwi_romInitNVIC__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_romInitNVIC__I, "ti_sysbios_family_arm_m3_Hwi_romInitNVIC")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_romInitNVIC__I( void );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_romInitNVIC__I( void);
 
 /* dispatchC__I */
 #define ti_sysbios_family_arm_m3_Hwi_dispatchC ti_sysbios_family_arm_m3_Hwi_dispatchC__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_dispatchC__I, "ti_sysbios_family_arm_m3_Hwi_dispatchC")
-__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_dispatchC__I( ti_sysbios_family_arm_m3_Hwi_Irp irp, xdc_UInt32 dummy1, xdc_UInt32 dummy2, ti_sysbios_family_arm_m3_Hwi_Object *hwi );
+__extern xdc_UInt ti_sysbios_family_arm_m3_Hwi_dispatchC__I( ti_sysbios_family_arm_m3_Hwi_Irp irp, xdc_UInt32 dummy1, xdc_UInt32 dummy2, ti_sysbios_family_arm_m3_Hwi_Object *hwi);
 
 /* doSwiRestore__I */
 #define ti_sysbios_family_arm_m3_Hwi_doSwiRestore ti_sysbios_family_arm_m3_Hwi_doSwiRestore__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_doSwiRestore__I, "ti_sysbios_family_arm_m3_Hwi_doSwiRestore")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_doSwiRestore__I( xdc_UInt tskKey );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_doSwiRestore__I( xdc_UInt tskKey);
 
 /* doTaskRestore__I */
 #define ti_sysbios_family_arm_m3_Hwi_doTaskRestore ti_sysbios_family_arm_m3_Hwi_doTaskRestore__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_doTaskRestore__I, "ti_sysbios_family_arm_m3_Hwi_doTaskRestore")
-__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_doTaskRestore__I( xdc_UInt tskKey );
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_doTaskRestore__I( xdc_UInt tskKey);
 
 
 /*
@@ -1304,7 +1339,7 @@ static inline ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_H
 static inline ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_Handle_downCast(ti_sysbios_interfaces_IHwi_Handle i)
 {
     ti_sysbios_interfaces_IHwi_Handle i2 = (ti_sysbios_interfaces_IHwi_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_sysbios_family_arm_m3_Hwi_Module__FXNS__C ? (ti_sysbios_family_arm_m3_Hwi_Handle)i : (ti_sysbios_family_arm_m3_Hwi_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_sysbios_family_arm_m3_Hwi_Module__FXNS__C) ? (ti_sysbios_family_arm_m3_Hwi_Handle)i : (ti_sysbios_family_arm_m3_Hwi_Handle)NULL;
 }
 
 /* Handle_from_ti_sysbios_interfaces_IHwi */
@@ -1333,23 +1368,23 @@ static inline CT__ti_sysbios_family_arm_m3_Hwi_Module__id ti_sysbios_family_arm_
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_family_arm_m3_Hwi_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_family_arm_m3_Hwi_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_family_arm_m3_Hwi_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C != (CT__ti_sysbios_family_arm_m3_Hwi_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_family_arm_m3_Hwi_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_family_arm_m3_Hwi_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_family_arm_m3_Hwi_Module_getMask(void)
 {
-    return ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C != NULL ? *ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C != (CT__ti_sysbios_family_arm_m3_Hwi_Module__diagsMask)NULL) ? *ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_family_arm_m3_Hwi_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_family_arm_m3_Hwi_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C != (CT__ti_sysbios_family_arm_m3_Hwi_Module__diagsMask)NULL) {
         *ti_sysbios_family_arm_m3_Hwi_Module__diagsMask__C = mask;
     }
 }
@@ -1358,8 +1393,8 @@ static inline xdc_Void ti_sysbios_family_arm_m3_Hwi_Module_setMask(xdc_Bits16 ma
 static inline void ti_sysbios_family_arm_m3_Hwi_Params_init(ti_sysbios_family_arm_m3_Hwi_Params *prms);
 static inline void ti_sysbios_family_arm_m3_Hwi_Params_init( ti_sysbios_family_arm_m3_Hwi_Params *prms ) 
 {
-    if (prms) {
-        ti_sysbios_family_arm_m3_Hwi_Params__init__S(prms, 0, sizeof(ti_sysbios_family_arm_m3_Hwi_Params), sizeof(xdc_runtime_IInstance_Params));
+    if (prms != NULL) {
+        ti_sysbios_family_arm_m3_Hwi_Params__init__S(prms, NULL, sizeof(ti_sysbios_family_arm_m3_Hwi_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
 
@@ -1367,7 +1402,7 @@ static inline void ti_sysbios_family_arm_m3_Hwi_Params_init( ti_sysbios_family_a
 static inline void ti_sysbios_family_arm_m3_Hwi_Params_copy(ti_sysbios_family_arm_m3_Hwi_Params *dst, const ti_sysbios_family_arm_m3_Hwi_Params *src);
 static inline void ti_sysbios_family_arm_m3_Hwi_Params_copy(ti_sysbios_family_arm_m3_Hwi_Params *dst, const ti_sysbios_family_arm_m3_Hwi_Params *src) 
 {
-    if (dst) {
+    if (dst != NULL) {
         ti_sysbios_family_arm_m3_Hwi_Params__init__S(dst, (const void *)src, sizeof(ti_sysbios_family_arm_m3_Hwi_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
@@ -1379,8 +1414,8 @@ static inline void ti_sysbios_family_arm_m3_Hwi_Params_copy(ti_sysbios_family_ar
 #define ti_sysbios_family_arm_m3_Hwi_Object_sizeof() ti_sysbios_family_arm_m3_Hwi_Object__sizeof__C
 
 /* Object_get */
-static inline ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_Object_get(ti_sysbios_family_arm_m3_Hwi_Instance_State *oarr, int i);
-static inline ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_Object_get(ti_sysbios_family_arm_m3_Hwi_Instance_State *oarr, int i) 
+static inline ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_Object_get(ti_sysbios_family_arm_m3_Hwi_Object *oarr, int i);
+static inline ti_sysbios_family_arm_m3_Hwi_Handle ti_sysbios_family_arm_m3_Hwi_Object_get(ti_sysbios_family_arm_m3_Hwi_Object *oarr, int i) 
 {
     return (ti_sysbios_family_arm_m3_Hwi_Handle)ti_sysbios_family_arm_m3_Hwi_Object__get__S(oarr, i);
 }
@@ -1538,6 +1573,7 @@ struct ti_sysbios_family_arm_m3_Hwi_Object {
 #define Hwi_LM_begin ti_sysbios_family_arm_m3_Hwi_LM_begin
 #define Hwi_LD_end ti_sysbios_family_arm_m3_Hwi_LD_end
 #define Hwi_A_unsupportedMaskingOption ti_sysbios_family_arm_m3_Hwi_A_unsupportedMaskingOption
+#define Hwi_E_badIntNum ti_sysbios_family_arm_m3_Hwi_E_badIntNum
 #define Hwi_E_alreadyDefined ti_sysbios_family_arm_m3_Hwi_E_alreadyDefined
 #define Hwi_E_hwiLimitExceeded ti_sysbios_family_arm_m3_Hwi_E_hwiLimitExceeded
 #define Hwi_E_exception ti_sysbios_family_arm_m3_Hwi_E_exception
@@ -1558,6 +1594,7 @@ struct ti_sysbios_family_arm_m3_Hwi_Object {
 #define Hwi_priGroup ti_sysbios_family_arm_m3_Hwi_priGroup
 #define Hwi_numSparseInterrupts ti_sysbios_family_arm_m3_Hwi_numSparseInterrupts
 #define Hwi_swiDisable ti_sysbios_family_arm_m3_Hwi_swiDisable
+#define Hwi_swiRestore ti_sysbios_family_arm_m3_Hwi_swiRestore
 #define Hwi_swiRestoreHwi ti_sysbios_family_arm_m3_Hwi_swiRestoreHwi
 #define Hwi_taskDisable ti_sysbios_family_arm_m3_Hwi_taskDisable
 #define Hwi_taskRestoreHwi ti_sysbios_family_arm_m3_Hwi_taskRestoreHwi

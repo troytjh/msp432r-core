@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,24 +61,25 @@
 
 #include <package/internal/LoggerRunMode.xdc.h>
 
-#define HDR_OFFSET_IN_WORDS 4        /* Size of the UIA header */
-#define BYTES_IN_EVENTWORD 4
+#if xdc_target__sizeof_Ptr == 8
+
+#define HDR_OFFSET_IN_PTRS   2  /* Size of the UIA header in Ptrs */
+#define BYTES_IN_EVENTWORD   8  /* Number of bytes in UArg */
+#define NUM_WRITE8_WORDS     9  /* 8 UArg + 2 32-bit event header (no TS) */
+#define NUM_WRITE8_WORDS_TS 10  /* 8 UArgs + 4 32-bit event header (with TS) */
+
+#else
+
+#define HDR_OFFSET_IN_PTRS   4  /* Size of the UIA header in Ptrs */
+#define BYTES_IN_EVENTWORD   4  /* Number of bytes in UArg */
+#define NUM_WRITE8_WORDS    10  /* 8 UArgs + 4 32-bit event headet (no TS) */
+#define NUM_WRITE8_WORDS_TS 12  /* 8 UArgs + 4 32-bit event headet (with TS) */
+
+#endif
+
 #define BYTES_IN_INVALID_HDR 4
+
 #define MAU_TO_BITS32(mau)          ((mau) / sizeof(Bits32))
-
-/* 4 word event header + 8 args + 1 (next event header word 1) */
-#define MAX_WRITE8_EVENTWORDS 13
-
-#define TIMESTAMP_BYTES ((LoggerRunMode_isTimestampEnabled) ? 8 : 0)
-#define TIMESTAMP_EVENTWORDS ((LoggerRunMode_isTimestampEnabled) ? 2 : 0)
-
-#define SNAPSHOT_HDR_EVENTWORDS (8 + TIMESTAMP_EVENTWORDS)
-
-#define WRITE0_SIZE_IN_BYTES 8
-#define WRITE1_SIZE_IN_BYTES 12
-#define WRITE2_SIZE_IN_BYTES 16
-#define WRITE4_SIZE_IN_BYTES 24
-#define WRITE8_SIZE_IN_BYTES 40
 
 #define bits32ToBits8(len) ((len) * 4)
 #define bits32ToMau(len)   ((len) * sizeof(Bits32))
@@ -97,7 +98,7 @@
  *  write8 event size in 32-bit words.  Set by startup at
  *  runtime to 10 if timestamps are disabled.
  */
-static Int numWrite8Words = 12;
+static Int numWrite8Words;
 
 
 /*
@@ -109,18 +110,18 @@ Void LoggerRunMode_flush(LoggerRunMode_Object *obj)
     UInt key = Hwi_disable();
 
     /* If there is data in the buffer */
-    if (obj->write > obj->buffer + HDR_OFFSET_IN_WORDS) {
+    if (obj->write > obj->buffer + HDR_OFFSET_IN_PTRS) {
         /* Set UIA packet length and sequence number */
         UIAPacket_setEventLength((UIAPacket_Hdr*)obj->buffer,
                 (Bits32)((obj->write - obj->buffer) * BYTES_IN_EVENTWORD));
 
         /* Send filled buffer to exchange function */
-        obj->buffer = (UInt32 *)LoggerRunMode_exchange(obj, (Ptr)obj->buffer,
+        obj->buffer = (UArg *)LoggerRunMode_exchange(obj, (Ptr)obj->buffer,
                 (Ptr)obj->write);
 
         /* Update ptrs to new buffer */
-        obj->write = obj->buffer + HDR_OFFSET_IN_WORDS;
-        obj->end = obj->buffer + obj->packetSize / sizeof(UInt32) -
+        obj->write = obj->buffer + HDR_OFFSET_IN_PTRS;
+        obj->end = obj->buffer + obj->packetSize / sizeof(UArg) -
                 numWrite8Words;
         UIAPacket_setSequenceCounts((UIAPacket_Hdr*)obj->buffer,
                 obj->pktSequenceNum, obj->eventSequenceNum);
@@ -155,6 +156,7 @@ Ptr LoggerRunMode_exchange(LoggerRunMode_Object *obj, Ptr full,
     char *packet = ((char *)full) + obj->packetSize;
     UInt32 *pPayload;
     UInt32 coreNum = 0;
+    UInt32 len;
 
 #ifdef xdc_target__isaCompatible_64P
     if (LoggerRunMode_numCores > 1) {
@@ -177,15 +179,16 @@ Ptr LoggerRunMode_exchange(LoggerRunMode_Object *obj, Ptr full,
          *  Check if there is garbage data at the end of the just-filled
          *  UIA packet.
          */
-        if (obj->end + numWrite8Words - (UInt32 *)lastWritePtr > 0) {
+        if (obj->end + numWrite8Words - (UArg *)lastWritePtr > 0) {
             /*
              *  Overwrite the last event header containing the
-             *  size of the previous event with an 'invalid packet header'
-             *  to let the host know it should ignore this we
-             *  add a 32 bit Invalid UIA header with the length of the empty space.
+             *  size of the previous event with an 'invalid packet header'.
+             *  To let the host know it should ignore this, we
+             *  add a 32 bit Invalid UIA header with the length of the
+             *  empty space.
              */
-            UIAPacket_setInvalidHdr(lastWritePtr,
-                    ((UInt32)(obj->end + numWrite8Words) - (UInt32)lastWritePtr));
+            len = (UInt32)(obj->end + numWrite8Words - (UArg *)lastWritePtr);
+            UIAPacket_setInvalidHdr(lastWritePtr, len);
         }
 
         /*
@@ -230,7 +233,8 @@ Int LoggerRunMode_Module_startup(Int phase)
     LoggerRunMode_isUploadRequired();
 
     /* Set the maximum event size used to set the end pointer */
-    numWrite8Words = (LoggerRunMode_isTimestampEnabled) ? 12 : 10;
+    numWrite8Words = (LoggerRunMode_isTimestampEnabled) ?
+            NUM_WRITE8_WORDS_TS : NUM_WRITE8_WORDS;
 
     for (i = 0; i < LoggerRunMode_Object_count(); i++) {
         obj = LoggerRunMode_Object_get(NULL, i);
@@ -238,7 +242,7 @@ Int LoggerRunMode_Module_startup(Int phase)
          *  For single image executables that run on multiple cores,
          *  set buffer and QueueDescriptor hdr based on core number
          */
-        obj->buffer = (UInt32 *)(obj->packetArray + coreNum * (obj->bufSize));
+        obj->buffer = (UArg *)(obj->packetArray + coreNum * (obj->bufSize));
 
         obj->hdr = (Ptr)(obj->hdr + coreNum * sizeof(QueueDescriptor_Header));
 
@@ -260,7 +264,7 @@ Void LoggerRunMode_Instance_init(LoggerRunMode_Object *obj,
 {
     obj->bufSize = prms->bufSize;
 
-    obj->buffer = (UInt32 *)LoggerRunMode_prime(obj);
+    obj->buffer = (UArg *)LoggerRunMode_prime(obj);
     LoggerRunMode_reset(obj);
 }
 
@@ -369,11 +373,11 @@ IUIATransfer_Priority LoggerRunMode_getPriority(LoggerRunMode_Object *obj)
 Bool LoggerRunMode_isEmpty(LoggerRunMode_Object *obj)
 {
     QueueDescriptor_Header *pQDHdr;
-    UInt32 *readPtr;
+    UArg *readPtr;
     Bool result;
 
     pQDHdr = (QueueDescriptor_Header* )obj->hdr;
-    readPtr = (UInt32 *)((Char *)(pQDHdr->readPtr) + sizeof(UIAPacket_Hdr));
+    readPtr = (UArg *)((Char *)(pQDHdr->readPtr) + sizeof(UIAPacket_Hdr));
     result = (readPtr == obj->write) ? TRUE : FALSE;
 
     return (result);
@@ -410,16 +414,16 @@ Void LoggerRunMode_reset(LoggerRunMode_Object *obj)
     }
 #endif
 
-    Assert_isTrue(obj->hdr != NULL, NULL);
+//    Assert_isTrue(obj->hdr != NULL, NULL);
     pHdr = (QueueDescriptor_Header* )obj->hdr;
 
     obj->enabled = TRUE;
     obj->pktSequenceNum = 0;
     obj->eventSequenceNum = 0;
     obj->numBytesInPrevEvent = 0;
-    obj->buffer = (UInt32 *)(obj->packetArray + coreNum * (obj->bufSize));
-    obj->write = obj->buffer + HDR_OFFSET_IN_WORDS;
-    obj->end = obj->buffer + (obj->packetSize / sizeof(UInt32)) - numWrite8Words;
+    obj->buffer = (UArg *)(obj->packetArray + coreNum * (obj->bufSize));
+    obj->write = obj->buffer + HDR_OFFSET_IN_PTRS;
+    obj->end = obj->buffer + (obj->packetSize / sizeof(UArg)) - numWrite8Words;
 
     pHdr->readPtr = (Bits32*)obj->buffer;
     pHdr->writePtr = (Bits32*)obj->buffer;
@@ -489,8 +493,8 @@ Bool LoggerRunMode_getContents(LoggerRunMode_Object *obj, Ptr pMemBlock,
                     *cpSize = packetLength;
                     myRdPtr = (Ptr)((Char *)pPktHdr + obj->packetSize);
 
-                    if ((UInt32)myRdPtr >= ((UInt32)pQDHdr->queueStartAdrs +
-                                (UInt32)pQDHdr->queueSizeInMAUs)) {
+                    if ((Char *)myRdPtr >= ((Char *)pQDHdr->queueStartAdrs +
+                                pQDHdr->queueSizeInMAUs)) {
                         myRdPtr = (Ptr)pQDHdr->queueStartAdrs;
                     }
                     pQDHdr->readPtr = (Bits32 *)myRdPtr;
@@ -525,7 +529,7 @@ Bool LoggerRunMode_isUploadRequired()
     }
     deltaTime = (Int32)tstamp.lo -
             (Int32)LoggerRunMode_module->lastUploadTstamp;
-    if ((deltaTime < 0) || (deltaTime > freqHz.lo)) {
+    if ((deltaTime < 0) || (deltaTime > (Int32)freqHz.lo)) {
         LoggerRunMode_module->lastUploadTstamp = tstamp.lo;
         result = TRUE;
     }

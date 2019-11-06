@@ -3,7 +3,7 @@
 
 //******************************************************************************
 //
-//! \addtogroup LZ4_api
+//! \addtogroup lz4_api
 //! @{
 //
 //******************************************************************************
@@ -24,11 +24,11 @@ extern "C"
 
 //******************************************************************************
 //
-//! \brief Maximum size of a compressed file, one percent plus 27 bytes larger 
+//! \brief Maximum size of a compressed file, one percent plus 27 bytes larger
 //!        than uncompressed data.
 //
 //******************************************************************************
-#define LZ4_COMPRESS_MAX_SIZE(n)        ((size_t)((float)n * 1.01) + 27)
+#define LZ4_COMPRESS_MAX_SIZE(n)        ((size_t)((n * 101) / 100) + 27)
 
 //******************************************************************************
 //

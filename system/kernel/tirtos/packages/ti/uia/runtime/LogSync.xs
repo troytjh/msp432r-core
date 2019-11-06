@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2016, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,8 +53,6 @@ var isNonJtagLogger = false;
 var isStreamLogger = false;
 var isStreamLogger2 = false;
 
-var LoggerCircBuf = null;
-
 /* ======== isUsedByRta ========
  * called from the Rta.module$use(), so it is
  * ok to useModules in this function.
@@ -76,14 +74,6 @@ function module$use()
     Types = xdc.module('xdc.runtime.Types');
     Diags = xdc.module("xdc.runtime.Diags");
     Text = xdc.module('xdc.runtime.Text');
-
-    var LoggerCircBuf = xdc.module('ti.uia.runtime.LoggerCircBuf');
-    if (LoggerCircBuf.$used) {
-        LogSync.$logError("LogSync has detected that LoggerCircBuf is used in the " +
-                "system. LogSync no longer supports LoggerCircBuf. Use " +
-                          "ti.uia.loggers.LoggerRunMode in place of LoggerCircBuf",
-                LogSync);
-    }
 
     var UIASync = xdc.useModule('ti.uia.events.UIASync');
     var IUIATimestampProvider = xdc.useModule('ti.uia.runtime.IUIATimestampProvider');

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -38,10 +38,12 @@
 #define ti_sysbios_hal_Timer__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_hal_Timer___VERS 200
@@ -309,7 +311,7 @@ struct ti_sysbios_hal_Timer_Params {
 /* Struct */
 struct ti_sysbios_hal_Timer_Struct {
     const ti_sysbios_hal_Timer_Fxns__ *__fxns;
-    ti_sysbios_hal_Timer_TimerProxy_Handle __f0;
+    ti_sysbios_hal_Timer_TimerProxy_Handle f0;
     xdc_runtime_Types_CordAddr __name;
 };
 
@@ -325,21 +327,21 @@ struct ti_sysbios_hal_Timer_Fxns__ {
     xdc_UInt (*getNumTimers)(void);
     ti_sysbios_interfaces_ITimer_Status (*getStatus)(xdc_UInt id);
     xdc_Void (*startup)(void);
-    xdc_UInt32 (*getMaxTicks)(ti_sysbios_hal_Timer_Handle __inst);
-    xdc_Void (*setNextTick)(ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 ticks);
-    xdc_Void (*start)(ti_sysbios_hal_Timer_Handle __inst);
-    xdc_Void (*stop)(ti_sysbios_hal_Timer_Handle __inst);
-    xdc_Void (*setPeriod)(ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 period);
-    xdc_Bool (*setPeriodMicroSecs)(ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 microsecs);
-    xdc_UInt32 (*getPeriod)(ti_sysbios_hal_Timer_Handle __inst);
-    xdc_UInt32 (*getCount)(ti_sysbios_hal_Timer_Handle __inst);
-    xdc_Void (*getFreq)(ti_sysbios_hal_Timer_Handle __inst, xdc_runtime_Types_FreqHz* freq);
-    ti_sysbios_interfaces_ITimer_FuncPtr (*getFunc)(ti_sysbios_hal_Timer_Handle __inst, xdc_UArg* arg);
-    xdc_Void (*setFunc)(ti_sysbios_hal_Timer_Handle __inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
-    xdc_Void (*trigger)(ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 cycles);
-    xdc_UInt32 (*getExpiredCounts)(ti_sysbios_hal_Timer_Handle __inst);
-    xdc_UInt32 (*getExpiredTicks)(ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 tickPeriod);
-    xdc_UInt32 (*getCurrentTick)(ti_sysbios_hal_Timer_Handle __inst, xdc_Bool save);
+    xdc_UInt32 (*getMaxTicks)(ti_sysbios_hal_Timer_Handle inst);
+    xdc_Void (*setNextTick)(ti_sysbios_hal_Timer_Handle inst, xdc_UInt32 ticks);
+    xdc_Void (*start)(ti_sysbios_hal_Timer_Handle inst);
+    xdc_Void (*stop)(ti_sysbios_hal_Timer_Handle inst);
+    xdc_Void (*setPeriod)(ti_sysbios_hal_Timer_Handle inst, xdc_UInt32 period);
+    xdc_Bool (*setPeriodMicroSecs)(ti_sysbios_hal_Timer_Handle inst, xdc_UInt32 microsecs);
+    xdc_UInt32 (*getPeriod)(ti_sysbios_hal_Timer_Handle inst);
+    xdc_UInt32 (*getCount)(ti_sysbios_hal_Timer_Handle inst);
+    xdc_Void (*getFreq)(ti_sysbios_hal_Timer_Handle inst, xdc_runtime_Types_FreqHz* freq);
+    ti_sysbios_interfaces_ITimer_FuncPtr (*getFunc)(ti_sysbios_hal_Timer_Handle inst, xdc_UArg* arg);
+    xdc_Void (*setFunc)(ti_sysbios_hal_Timer_Handle inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
+    xdc_Void (*trigger)(ti_sysbios_hal_Timer_Handle inst, xdc_UInt32 cycles);
+    xdc_UInt32 (*getExpiredCounts)(ti_sysbios_hal_Timer_Handle inst);
+    xdc_UInt32 (*getExpiredTicks)(ti_sysbios_hal_Timer_Handle inst, xdc_UInt32 tickPeriod);
+    xdc_UInt32 (*getCurrentTick)(ti_sysbios_hal_Timer_Handle inst, xdc_Bool save);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_sysbios_hal_Timer_Module__FXNS__CR
@@ -364,19 +366,19 @@ __extern xdc_Int ti_sysbios_hal_Timer_Module_startup__F( xdc_Int state );
 
 /* Instance_init__E */
 xdc__CODESECT(ti_sysbios_hal_Timer_Instance_init__E, "ti_sysbios_hal_Timer_Instance_init")
-__extern xdc_Int ti_sysbios_hal_Timer_Instance_init__E(ti_sysbios_hal_Timer_Object *__obj, xdc_Int id, ti_sysbios_hal_Timer_FuncPtr tickFxn, const ti_sysbios_hal_Timer_Params *__prms, xdc_runtime_Error_Block *__eb);
+__extern xdc_Int ti_sysbios_hal_Timer_Instance_init__E(ti_sysbios_hal_Timer_Object *obj, xdc_Int id, ti_sysbios_hal_Timer_FuncPtr tickFxn, const ti_sysbios_hal_Timer_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* Instance_finalize__E */
 xdc__CODESECT(ti_sysbios_hal_Timer_Instance_finalize__E, "ti_sysbios_hal_Timer_Instance_finalize")
-__extern void ti_sysbios_hal_Timer_Instance_finalize__E(ti_sysbios_hal_Timer_Object *__obj, int __ec);
+__extern void ti_sysbios_hal_Timer_Instance_finalize__E(ti_sysbios_hal_Timer_Object *obj, int ec);
 
 /* create */
 xdc__CODESECT(ti_sysbios_hal_Timer_create, "ti_sysbios_hal_Timer_create")
-__extern ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_create( xdc_Int id, ti_sysbios_hal_Timer_FuncPtr tickFxn, const ti_sysbios_hal_Timer_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_create( xdc_Int id, ti_sysbios_hal_Timer_FuncPtr tickFxn, const ti_sysbios_hal_Timer_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* construct */
 xdc__CODESECT(ti_sysbios_hal_Timer_construct, "ti_sysbios_hal_Timer_construct")
-__extern void ti_sysbios_hal_Timer_construct( ti_sysbios_hal_Timer_Struct *__obj, xdc_Int id, ti_sysbios_hal_Timer_FuncPtr tickFxn, const ti_sysbios_hal_Timer_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern void ti_sysbios_hal_Timer_construct(ti_sysbios_hal_Timer_Struct *obj, xdc_Int id, ti_sysbios_hal_Timer_FuncPtr tickFxn, const ti_sysbios_hal_Timer_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* delete */
 xdc__CODESECT(ti_sysbios_hal_Timer_delete, "ti_sysbios_hal_Timer_delete")
@@ -388,125 +390,125 @@ __extern void ti_sysbios_hal_Timer_destruct(ti_sysbios_hal_Timer_Struct *obj);
 
 /* Handle__label__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Handle__label__S, "ti_sysbios_hal_Timer_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_sysbios_hal_Timer_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_sysbios_hal_Timer_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Module__startupDone__S, "ti_sysbios_hal_Timer_Module__startupDone__S")
-__extern xdc_Bool ti_sysbios_hal_Timer_Module__startupDone__S( void );
+__extern xdc_Bool ti_sysbios_hal_Timer_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Object__create__S, "ti_sysbios_hal_Timer_Object__create__S")
-__extern xdc_Ptr ti_sysbios_hal_Timer_Object__create__S( xdc_CPtr __aa, const xdc_UChar *__pa, xdc_SizeT __psz, xdc_runtime_Error_Block *__eb );
+__extern xdc_Ptr ti_sysbios_hal_Timer_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Object__delete__S, "ti_sysbios_hal_Timer_Object__delete__S")
-__extern xdc_Void ti_sysbios_hal_Timer_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_sysbios_hal_Timer_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Object__get__S, "ti_sysbios_hal_Timer_Object__get__S")
-__extern xdc_Ptr ti_sysbios_hal_Timer_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_sysbios_hal_Timer_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Object__first__S, "ti_sysbios_hal_Timer_Object__first__S")
-__extern xdc_Ptr ti_sysbios_hal_Timer_Object__first__S( void );
+__extern xdc_Ptr ti_sysbios_hal_Timer_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Object__next__S, "ti_sysbios_hal_Timer_Object__next__S")
-__extern xdc_Ptr ti_sysbios_hal_Timer_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_sysbios_hal_Timer_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_sysbios_hal_Timer_Params__init__S, "ti_sysbios_hal_Timer_Params__init__S")
-__extern xdc_Void ti_sysbios_hal_Timer_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_sysbios_hal_Timer_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* getNumTimers__E */
 #define ti_sysbios_hal_Timer_getNumTimers ti_sysbios_hal_Timer_getNumTimers__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getNumTimers__E, "ti_sysbios_hal_Timer_getNumTimers")
-__extern xdc_UInt ti_sysbios_hal_Timer_getNumTimers__E( void );
+__extern xdc_UInt ti_sysbios_hal_Timer_getNumTimers__E( void);
 
 /* getStatus__E */
 #define ti_sysbios_hal_Timer_getStatus ti_sysbios_hal_Timer_getStatus__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getStatus__E, "ti_sysbios_hal_Timer_getStatus")
-__extern ti_sysbios_interfaces_ITimer_Status ti_sysbios_hal_Timer_getStatus__E( xdc_UInt id );
+__extern ti_sysbios_interfaces_ITimer_Status ti_sysbios_hal_Timer_getStatus__E( xdc_UInt id);
 
 /* startup__E */
 #define ti_sysbios_hal_Timer_startup ti_sysbios_hal_Timer_startup__E
 xdc__CODESECT(ti_sysbios_hal_Timer_startup__E, "ti_sysbios_hal_Timer_startup")
-__extern xdc_Void ti_sysbios_hal_Timer_startup__E( void );
+__extern xdc_Void ti_sysbios_hal_Timer_startup__E( void);
 
 /* getMaxTicks__E */
 #define ti_sysbios_hal_Timer_getMaxTicks ti_sysbios_hal_Timer_getMaxTicks__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getMaxTicks__E, "ti_sysbios_hal_Timer_getMaxTicks")
-__extern xdc_UInt32 ti_sysbios_hal_Timer_getMaxTicks__E( ti_sysbios_hal_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_hal_Timer_getMaxTicks__E( ti_sysbios_hal_Timer_Handle instp);
 
 /* setNextTick__E */
 #define ti_sysbios_hal_Timer_setNextTick ti_sysbios_hal_Timer_setNextTick__E
 xdc__CODESECT(ti_sysbios_hal_Timer_setNextTick__E, "ti_sysbios_hal_Timer_setNextTick")
-__extern xdc_Void ti_sysbios_hal_Timer_setNextTick__E( ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 ticks );
+__extern xdc_Void ti_sysbios_hal_Timer_setNextTick__E( ti_sysbios_hal_Timer_Handle instp, xdc_UInt32 ticks);
 
 /* start__E */
 #define ti_sysbios_hal_Timer_start ti_sysbios_hal_Timer_start__E
 xdc__CODESECT(ti_sysbios_hal_Timer_start__E, "ti_sysbios_hal_Timer_start")
-__extern xdc_Void ti_sysbios_hal_Timer_start__E( ti_sysbios_hal_Timer_Handle __inst );
+__extern xdc_Void ti_sysbios_hal_Timer_start__E( ti_sysbios_hal_Timer_Handle instp);
 
 /* stop__E */
 #define ti_sysbios_hal_Timer_stop ti_sysbios_hal_Timer_stop__E
 xdc__CODESECT(ti_sysbios_hal_Timer_stop__E, "ti_sysbios_hal_Timer_stop")
-__extern xdc_Void ti_sysbios_hal_Timer_stop__E( ti_sysbios_hal_Timer_Handle __inst );
+__extern xdc_Void ti_sysbios_hal_Timer_stop__E( ti_sysbios_hal_Timer_Handle instp);
 
 /* setPeriod__E */
 #define ti_sysbios_hal_Timer_setPeriod ti_sysbios_hal_Timer_setPeriod__E
 xdc__CODESECT(ti_sysbios_hal_Timer_setPeriod__E, "ti_sysbios_hal_Timer_setPeriod")
-__extern xdc_Void ti_sysbios_hal_Timer_setPeriod__E( ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 period );
+__extern xdc_Void ti_sysbios_hal_Timer_setPeriod__E( ti_sysbios_hal_Timer_Handle instp, xdc_UInt32 period);
 
 /* setPeriodMicroSecs__E */
 #define ti_sysbios_hal_Timer_setPeriodMicroSecs ti_sysbios_hal_Timer_setPeriodMicroSecs__E
 xdc__CODESECT(ti_sysbios_hal_Timer_setPeriodMicroSecs__E, "ti_sysbios_hal_Timer_setPeriodMicroSecs")
-__extern xdc_Bool ti_sysbios_hal_Timer_setPeriodMicroSecs__E( ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 microsecs );
+__extern xdc_Bool ti_sysbios_hal_Timer_setPeriodMicroSecs__E( ti_sysbios_hal_Timer_Handle instp, xdc_UInt32 microsecs);
 
 /* getPeriod__E */
 #define ti_sysbios_hal_Timer_getPeriod ti_sysbios_hal_Timer_getPeriod__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getPeriod__E, "ti_sysbios_hal_Timer_getPeriod")
-__extern xdc_UInt32 ti_sysbios_hal_Timer_getPeriod__E( ti_sysbios_hal_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_hal_Timer_getPeriod__E( ti_sysbios_hal_Timer_Handle instp);
 
 /* getCount__E */
 #define ti_sysbios_hal_Timer_getCount ti_sysbios_hal_Timer_getCount__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getCount__E, "ti_sysbios_hal_Timer_getCount")
-__extern xdc_UInt32 ti_sysbios_hal_Timer_getCount__E( ti_sysbios_hal_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_hal_Timer_getCount__E( ti_sysbios_hal_Timer_Handle instp);
 
 /* getFreq__E */
 #define ti_sysbios_hal_Timer_getFreq ti_sysbios_hal_Timer_getFreq__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getFreq__E, "ti_sysbios_hal_Timer_getFreq")
-__extern xdc_Void ti_sysbios_hal_Timer_getFreq__E( ti_sysbios_hal_Timer_Handle __inst, xdc_runtime_Types_FreqHz *freq );
+__extern xdc_Void ti_sysbios_hal_Timer_getFreq__E( ti_sysbios_hal_Timer_Handle instp, xdc_runtime_Types_FreqHz *freq);
 
 /* getFunc__E */
 #define ti_sysbios_hal_Timer_getFunc ti_sysbios_hal_Timer_getFunc__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getFunc__E, "ti_sysbios_hal_Timer_getFunc")
-__extern ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_hal_Timer_getFunc__E( ti_sysbios_hal_Timer_Handle __inst, xdc_UArg *arg );
+__extern ti_sysbios_interfaces_ITimer_FuncPtr ti_sysbios_hal_Timer_getFunc__E( ti_sysbios_hal_Timer_Handle instp, xdc_UArg *arg);
 
 /* setFunc__E */
 #define ti_sysbios_hal_Timer_setFunc ti_sysbios_hal_Timer_setFunc__E
 xdc__CODESECT(ti_sysbios_hal_Timer_setFunc__E, "ti_sysbios_hal_Timer_setFunc")
-__extern xdc_Void ti_sysbios_hal_Timer_setFunc__E( ti_sysbios_hal_Timer_Handle __inst, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg );
+__extern xdc_Void ti_sysbios_hal_Timer_setFunc__E( ti_sysbios_hal_Timer_Handle instp, ti_sysbios_interfaces_ITimer_FuncPtr fxn, xdc_UArg arg);
 
 /* trigger__E */
 #define ti_sysbios_hal_Timer_trigger ti_sysbios_hal_Timer_trigger__E
 xdc__CODESECT(ti_sysbios_hal_Timer_trigger__E, "ti_sysbios_hal_Timer_trigger")
-__extern xdc_Void ti_sysbios_hal_Timer_trigger__E( ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 cycles );
+__extern xdc_Void ti_sysbios_hal_Timer_trigger__E( ti_sysbios_hal_Timer_Handle instp, xdc_UInt32 cycles);
 
 /* getExpiredCounts__E */
 #define ti_sysbios_hal_Timer_getExpiredCounts ti_sysbios_hal_Timer_getExpiredCounts__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getExpiredCounts__E, "ti_sysbios_hal_Timer_getExpiredCounts")
-__extern xdc_UInt32 ti_sysbios_hal_Timer_getExpiredCounts__E( ti_sysbios_hal_Timer_Handle __inst );
+__extern xdc_UInt32 ti_sysbios_hal_Timer_getExpiredCounts__E( ti_sysbios_hal_Timer_Handle instp);
 
 /* getExpiredTicks__E */
 #define ti_sysbios_hal_Timer_getExpiredTicks ti_sysbios_hal_Timer_getExpiredTicks__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getExpiredTicks__E, "ti_sysbios_hal_Timer_getExpiredTicks")
-__extern xdc_UInt32 ti_sysbios_hal_Timer_getExpiredTicks__E( ti_sysbios_hal_Timer_Handle __inst, xdc_UInt32 tickPeriod );
+__extern xdc_UInt32 ti_sysbios_hal_Timer_getExpiredTicks__E( ti_sysbios_hal_Timer_Handle instp, xdc_UInt32 tickPeriod);
 
 /* getCurrentTick__E */
 #define ti_sysbios_hal_Timer_getCurrentTick ti_sysbios_hal_Timer_getCurrentTick__E
 xdc__CODESECT(ti_sysbios_hal_Timer_getCurrentTick__E, "ti_sysbios_hal_Timer_getCurrentTick")
-__extern xdc_UInt32 ti_sysbios_hal_Timer_getCurrentTick__E( ti_sysbios_hal_Timer_Handle __inst, xdc_Bool save );
+__extern xdc_UInt32 ti_sysbios_hal_Timer_getCurrentTick__E( ti_sysbios_hal_Timer_Handle instp, xdc_Bool save);
 
 
 /*
@@ -538,7 +540,7 @@ static inline ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_Handle_downCast(t
 static inline ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_Handle_downCast(ti_sysbios_interfaces_ITimer_Handle i)
 {
     ti_sysbios_interfaces_ITimer_Handle i2 = (ti_sysbios_interfaces_ITimer_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_sysbios_hal_Timer_Module__FXNS__C ? (ti_sysbios_hal_Timer_Handle)i : (ti_sysbios_hal_Timer_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_sysbios_hal_Timer_Module__FXNS__C) ? (ti_sysbios_hal_Timer_Handle)i : (ti_sysbios_hal_Timer_Handle)NULL;
 }
 
 /* Handle_from_ti_sysbios_interfaces_ITimer */
@@ -567,23 +569,23 @@ static inline CT__ti_sysbios_hal_Timer_Module__id ti_sysbios_hal_Timer_Module_id
 
 /* Module_hasMask */
 static inline xdc_Bool ti_sysbios_hal_Timer_Module_hasMask(void);
-static inline xdc_Bool ti_sysbios_hal_Timer_Module_hasMask(void) 
+static inline xdc_Bool ti_sysbios_hal_Timer_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_sysbios_hal_Timer_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_sysbios_hal_Timer_Module__diagsMask__C != (CT__ti_sysbios_hal_Timer_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_sysbios_hal_Timer_Module_getMask(void);
-static inline xdc_Bits16 ti_sysbios_hal_Timer_Module_getMask( void ) 
+static inline xdc_Bits16 ti_sysbios_hal_Timer_Module_getMask(void)
 {
-    return ti_sysbios_hal_Timer_Module__diagsMask__C != NULL ? *ti_sysbios_hal_Timer_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_sysbios_hal_Timer_Module__diagsMask__C != (CT__ti_sysbios_hal_Timer_Module__diagsMask)NULL) ? *ti_sysbios_hal_Timer_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_sysbios_hal_Timer_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_sysbios_hal_Timer_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_sysbios_hal_Timer_Module__diagsMask__C != NULL) {
+    if (ti_sysbios_hal_Timer_Module__diagsMask__C != (CT__ti_sysbios_hal_Timer_Module__diagsMask)NULL) {
         *ti_sysbios_hal_Timer_Module__diagsMask__C = mask;
     }
 }
@@ -592,8 +594,8 @@ static inline xdc_Void ti_sysbios_hal_Timer_Module_setMask(xdc_Bits16 mask)
 static inline void ti_sysbios_hal_Timer_Params_init(ti_sysbios_hal_Timer_Params *prms);
 static inline void ti_sysbios_hal_Timer_Params_init( ti_sysbios_hal_Timer_Params *prms ) 
 {
-    if (prms) {
-        ti_sysbios_hal_Timer_Params__init__S(prms, 0, sizeof(ti_sysbios_hal_Timer_Params), sizeof(xdc_runtime_IInstance_Params));
+    if (prms != NULL) {
+        ti_sysbios_hal_Timer_Params__init__S(prms, NULL, sizeof(ti_sysbios_hal_Timer_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
 
@@ -601,7 +603,7 @@ static inline void ti_sysbios_hal_Timer_Params_init( ti_sysbios_hal_Timer_Params
 static inline void ti_sysbios_hal_Timer_Params_copy(ti_sysbios_hal_Timer_Params *dst, const ti_sysbios_hal_Timer_Params *src);
 static inline void ti_sysbios_hal_Timer_Params_copy(ti_sysbios_hal_Timer_Params *dst, const ti_sysbios_hal_Timer_Params *src) 
 {
-    if (dst) {
+    if (dst != NULL) {
         ti_sysbios_hal_Timer_Params__init__S(dst, (const void *)src, sizeof(ti_sysbios_hal_Timer_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
@@ -613,8 +615,8 @@ static inline void ti_sysbios_hal_Timer_Params_copy(ti_sysbios_hal_Timer_Params 
 #define ti_sysbios_hal_Timer_Object_sizeof() ti_sysbios_hal_Timer_Object__sizeof__C
 
 /* Object_get */
-static inline ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_Object_get(ti_sysbios_hal_Timer_Instance_State *oarr, int i);
-static inline ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_Object_get(ti_sysbios_hal_Timer_Instance_State *oarr, int i) 
+static inline ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_Object_get(ti_sysbios_hal_Timer_Object *oarr, int i);
+static inline ti_sysbios_hal_Timer_Handle ti_sysbios_hal_Timer_Object_get(ti_sysbios_hal_Timer_Object *oarr, int i) 
 {
     return (ti_sysbios_hal_Timer_Handle)ti_sysbios_hal_Timer_Object__get__S(oarr, i);
 }

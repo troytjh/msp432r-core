@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -93,13 +93,13 @@ extern const NVS_FxnTable NVSMSP432_fxnTable;
  *  place application content (e.g., code/data) in the flash regions.
  *
  *  For CCS and IAR tools, defining and reserving flash memory regions can
- *  be done entirely within the Board.c file. For GCC, additional content is
- *  required in the application's linker command file to achieve the same
- *  result.
+ *  be done entirely within the ti_drivers_config.c file. For GCC, additional
+ *  content is required in the application's linker command file to achieve
+ *  the same result.
  *
- *  The example below defines a char array, 'flashBuf' and uses compiler
- *  CCS and IAR compiler pragmas to place 'flashBuf' at a specific address
- *  within the flash memory.
+ *  The example below defines a char array 'flashBuf' and uses CCS and IAR
+ *  compiler pragmas to place 'flashBuf' at a specific address within the flash
+ *  memory.
  *
  *  For GCC, the 'flashBuf' array is placed into a named linker section.
  *  Corresponding linker commands are added to the application's linker
@@ -194,7 +194,8 @@ extern const NVS_FxnTable NVSMSP432_fxnTable;
  *  @endcode
  */
 
-typedef struct NVSMSP432_HWAttrs {
+typedef struct
+{
     void        *regionBase;        /*!< Base address of flash region */
     size_t      regionSize;         /*!< The size of the region in bytes */
 } NVSMSP432_HWAttrs;
@@ -204,7 +205,8 @@ typedef struct NVSMSP432_HWAttrs {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct NVSMSP432_Object {
+typedef struct
+{
     bool        opened;             /* Has this region been opened */
 } NVSMSP432_Object;
 

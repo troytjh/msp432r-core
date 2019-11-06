@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -34,10 +34,12 @@
 #define ti_sysbios_interfaces_IHwi__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_IHwi___VERS 200
@@ -63,18 +65,18 @@
  */
 
 /* FuncPtr */
-typedef xdc_Void (*ti_sysbios_interfaces_IHwi_FuncPtr)(xdc_UArg __arg1);
+typedef xdc_Void (*ti_sysbios_interfaces_IHwi_FuncPtr)(xdc_UArg arg1);
 
 /* Irp */
 typedef xdc_UArg ti_sysbios_interfaces_IHwi_Irp;
 
 /* HookSet */
 struct ti_sysbios_interfaces_IHwi_HookSet {
-    xdc_Void (*registerFxn)(xdc_Int __arg1);
-    xdc_Void (*createFxn)(ti_sysbios_interfaces_IHwi_Handle __arg1, xdc_runtime_Error_Block* __arg2);
-    xdc_Void (*beginFxn)(ti_sysbios_interfaces_IHwi_Handle __arg1);
-    xdc_Void (*endFxn)(ti_sysbios_interfaces_IHwi_Handle __arg1);
-    xdc_Void (*deleteFxn)(ti_sysbios_interfaces_IHwi_Handle __arg1);
+    xdc_Void (*registerFxn)(xdc_Int arg1);
+    xdc_Void (*createFxn)(ti_sysbios_interfaces_IHwi_Handle arg1, xdc_runtime_Error_Block* arg2);
+    xdc_Void (*beginFxn)(ti_sysbios_interfaces_IHwi_Handle arg1);
+    xdc_Void (*endFxn)(ti_sysbios_interfaces_IHwi_Handle arg1);
+    xdc_Void (*deleteFxn)(ti_sysbios_interfaces_IHwi_Handle arg1);
 };
 
 /* MaskingOption */
@@ -145,11 +147,11 @@ struct ti_sysbios_interfaces_IHwi_Fxns__ {
     xdc_UInt (*enableInterrupt)(xdc_UInt intNum);
     xdc_Void (*restoreInterrupt)(xdc_UInt intNum, xdc_UInt key);
     xdc_Void (*clearInterrupt)(xdc_UInt intNum);
-    ti_sysbios_interfaces_IHwi_FuncPtr (*getFunc)(void* __inst, xdc_UArg* arg);
-    xdc_Void (*setFunc)(void* __inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
-    xdc_Ptr (*getHookContext)(void* __inst, xdc_Int id);
-    xdc_Void (*setHookContext)(void* __inst, xdc_Int id, xdc_Ptr hookContext);
-    ti_sysbios_interfaces_IHwi_Irp (*getIrp)(void* __inst);
+    ti_sysbios_interfaces_IHwi_FuncPtr (*getFunc)(void* inst, xdc_UArg* arg);
+    xdc_Void (*setFunc)(void* inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
+    xdc_Ptr (*getHookContext)(void* inst, xdc_Int id);
+    xdc_Void (*setHookContext)(void* inst, xdc_Int id, xdc_Ptr hookContext);
+    ti_sysbios_interfaces_IHwi_Irp (*getIrp)(void* inst);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_sysbios_interfaces_IHwi_Module__BASE__CR
@@ -167,11 +169,11 @@ __extern const xdc_runtime_Types_Base ti_sysbios_interfaces_IHwi_Interface__BASE
 
 /* create */
 xdc__CODESECT(ti_sysbios_interfaces_IHwi_create, "ti_sysbios_interfaces_IHwi_create")
-__extern ti_sysbios_interfaces_IHwi_Handle ti_sysbios_interfaces_IHwi_create(ti_sysbios_interfaces_IHwi_Module __mod, xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_interfaces_IHwi_Params *__prms, xdc_runtime_Error_Block *__eb);
+__extern ti_sysbios_interfaces_IHwi_Handle ti_sysbios_interfaces_IHwi_create(ti_sysbios_interfaces_IHwi_Module mod, xdc_Int intNum, ti_sysbios_interfaces_IHwi_FuncPtr hwiFxn, const ti_sysbios_interfaces_IHwi_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* delete */
 xdc__CODESECT(ti_sysbios_interfaces_IHwi_delete, "ti_sysbios_interfaces_IHwi_delete")
-__extern xdc_Void ti_sysbios_interfaces_IHwi_delete(ti_sysbios_interfaces_IHwi_Handle *__inst);
+__extern xdc_Void ti_sysbios_interfaces_IHwi_delete(ti_sysbios_interfaces_IHwi_Handle *inst);
 
 /* Handle_to_Module */
 static inline ti_sysbios_interfaces_IHwi_Module ti_sysbios_interfaces_IHwi_Handle_to_Module(ti_sysbios_interfaces_IHwi_Handle inst);
@@ -195,129 +197,129 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_IHwi_Module_id(ti
 }
 
 /* getStackInfo */
-static inline xdc_Bool ti_sysbios_interfaces_IHwi_getStackInfo(ti_sysbios_interfaces_IHwi_Module __mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth);
-static inline xdc_Bool ti_sysbios_interfaces_IHwi_getStackInfo( ti_sysbios_interfaces_IHwi_Module __mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth )
+static inline xdc_Bool ti_sysbios_interfaces_IHwi_getStackInfo(ti_sysbios_interfaces_IHwi_Module mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth);
+static inline xdc_Bool ti_sysbios_interfaces_IHwi_getStackInfo( ti_sysbios_interfaces_IHwi_Module mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth )
 {
-    return __mod->getStackInfo(stkInfo, computeStackDepth);
+    return mod->getStackInfo(stkInfo, computeStackDepth);
 }
 
 /* getCoreStackInfo */
-static inline xdc_Bool ti_sysbios_interfaces_IHwi_getCoreStackInfo(ti_sysbios_interfaces_IHwi_Module __mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId);
-static inline xdc_Bool ti_sysbios_interfaces_IHwi_getCoreStackInfo( ti_sysbios_interfaces_IHwi_Module __mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId )
+static inline xdc_Bool ti_sysbios_interfaces_IHwi_getCoreStackInfo(ti_sysbios_interfaces_IHwi_Module mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId);
+static inline xdc_Bool ti_sysbios_interfaces_IHwi_getCoreStackInfo( ti_sysbios_interfaces_IHwi_Module mod, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId )
 {
-    return __mod->getCoreStackInfo(stkInfo, computeStackDepth, coreId);
+    return mod->getCoreStackInfo(stkInfo, computeStackDepth, coreId);
 }
 
 /* startup */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_startup(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_startup( ti_sysbios_interfaces_IHwi_Module __mod )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_startup(ti_sysbios_interfaces_IHwi_Module mod);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_startup( ti_sysbios_interfaces_IHwi_Module mod )
 {
-    __mod->startup();
+    mod->startup();
 }
 
 /* disable */
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_disable(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_disable( ti_sysbios_interfaces_IHwi_Module __mod )
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_disable(ti_sysbios_interfaces_IHwi_Module mod);
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_disable( ti_sysbios_interfaces_IHwi_Module mod )
 {
-    return __mod->disable();
+    return mod->disable();
 }
 
 /* enable */
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_enable(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_enable( ti_sysbios_interfaces_IHwi_Module __mod )
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_enable(ti_sysbios_interfaces_IHwi_Module mod);
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_enable( ti_sysbios_interfaces_IHwi_Module mod )
 {
-    return __mod->enable();
+    return mod->enable();
 }
 
 /* restore */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_restore(ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt key);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_restore( ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt key )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_restore(ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt key);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_restore( ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt key )
 {
-    __mod->restore(key);
+    mod->restore(key);
 }
 
 /* switchFromBootStack */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_switchFromBootStack(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_switchFromBootStack( ti_sysbios_interfaces_IHwi_Module __mod )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_switchFromBootStack(ti_sysbios_interfaces_IHwi_Module mod);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_switchFromBootStack( ti_sysbios_interfaces_IHwi_Module mod )
 {
-    __mod->switchFromBootStack();
+    mod->switchFromBootStack();
 }
 
 /* post */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_post(ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_post( ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_post(ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_post( ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum )
 {
-    __mod->post(intNum);
+    mod->post(intNum);
 }
 
 /* getTaskSP */
-static inline xdc_Char *ti_sysbios_interfaces_IHwi_getTaskSP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline xdc_Char *ti_sysbios_interfaces_IHwi_getTaskSP( ti_sysbios_interfaces_IHwi_Module __mod )
+static inline xdc_Char *ti_sysbios_interfaces_IHwi_getTaskSP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline xdc_Char *ti_sysbios_interfaces_IHwi_getTaskSP( ti_sysbios_interfaces_IHwi_Module mod )
 {
-    return __mod->getTaskSP();
+    return mod->getTaskSP();
 }
 
 /* disableInterrupt */
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_disableInterrupt(ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum);
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_disableInterrupt( ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum )
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_disableInterrupt(ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum);
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_disableInterrupt( ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum )
 {
-    return __mod->disableInterrupt(intNum);
+    return mod->disableInterrupt(intNum);
 }
 
 /* enableInterrupt */
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_enableInterrupt(ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum);
-static inline xdc_UInt ti_sysbios_interfaces_IHwi_enableInterrupt( ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum )
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_enableInterrupt(ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum);
+static inline xdc_UInt ti_sysbios_interfaces_IHwi_enableInterrupt( ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum )
 {
-    return __mod->enableInterrupt(intNum);
+    return mod->enableInterrupt(intNum);
 }
 
 /* restoreInterrupt */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_restoreInterrupt(ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum, xdc_UInt key);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_restoreInterrupt( ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum, xdc_UInt key )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_restoreInterrupt(ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum, xdc_UInt key);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_restoreInterrupt( ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum, xdc_UInt key )
 {
-    __mod->restoreInterrupt(intNum, key);
+    mod->restoreInterrupt(intNum, key);
 }
 
 /* clearInterrupt */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_clearInterrupt(ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_clearInterrupt( ti_sysbios_interfaces_IHwi_Module __mod, xdc_UInt intNum )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_clearInterrupt(ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_clearInterrupt( ti_sysbios_interfaces_IHwi_Module mod, xdc_UInt intNum )
 {
-    __mod->clearInterrupt(intNum);
+    mod->clearInterrupt(intNum);
 }
 
 /* getFunc */
-static inline ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_interfaces_IHwi_getFunc(ti_sysbios_interfaces_IHwi_Handle __inst, xdc_UArg *arg);
-static inline ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_interfaces_IHwi_getFunc( ti_sysbios_interfaces_IHwi_Handle __inst, xdc_UArg *arg )
+static inline ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_interfaces_IHwi_getFunc(ti_sysbios_interfaces_IHwi_Handle inst, xdc_UArg *arg);
+static inline ti_sysbios_interfaces_IHwi_FuncPtr ti_sysbios_interfaces_IHwi_getFunc( ti_sysbios_interfaces_IHwi_Handle inst, xdc_UArg *arg )
 {
-    return __inst->__fxns->getFunc((void*)__inst, arg);
+    return inst->__fxns->getFunc((void*)inst, arg);
 }
 
 /* setFunc */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_setFunc(ti_sysbios_interfaces_IHwi_Handle __inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_setFunc( ti_sysbios_interfaces_IHwi_Handle __inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_setFunc(ti_sysbios_interfaces_IHwi_Handle inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_setFunc( ti_sysbios_interfaces_IHwi_Handle inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg )
 {
-    __inst->__fxns->setFunc((void*)__inst, fxn, arg);
+    inst->__fxns->setFunc((void*)inst, fxn, arg);
 }
 
 /* getHookContext */
-static inline xdc_Ptr ti_sysbios_interfaces_IHwi_getHookContext(ti_sysbios_interfaces_IHwi_Handle __inst, xdc_Int id);
-static inline xdc_Ptr ti_sysbios_interfaces_IHwi_getHookContext( ti_sysbios_interfaces_IHwi_Handle __inst, xdc_Int id )
+static inline xdc_Ptr ti_sysbios_interfaces_IHwi_getHookContext(ti_sysbios_interfaces_IHwi_Handle inst, xdc_Int id);
+static inline xdc_Ptr ti_sysbios_interfaces_IHwi_getHookContext( ti_sysbios_interfaces_IHwi_Handle inst, xdc_Int id )
 {
-    return __inst->__fxns->getHookContext((void*)__inst, id);
+    return inst->__fxns->getHookContext((void*)inst, id);
 }
 
 /* setHookContext */
-static inline xdc_Void ti_sysbios_interfaces_IHwi_setHookContext(ti_sysbios_interfaces_IHwi_Handle __inst, xdc_Int id, xdc_Ptr hookContext);
-static inline xdc_Void ti_sysbios_interfaces_IHwi_setHookContext( ti_sysbios_interfaces_IHwi_Handle __inst, xdc_Int id, xdc_Ptr hookContext )
+static inline xdc_Void ti_sysbios_interfaces_IHwi_setHookContext(ti_sysbios_interfaces_IHwi_Handle inst, xdc_Int id, xdc_Ptr hookContext);
+static inline xdc_Void ti_sysbios_interfaces_IHwi_setHookContext( ti_sysbios_interfaces_IHwi_Handle inst, xdc_Int id, xdc_Ptr hookContext )
 {
-    __inst->__fxns->setHookContext((void*)__inst, id, hookContext);
+    inst->__fxns->setHookContext((void*)inst, id, hookContext);
 }
 
 /* getIrp */
-static inline ti_sysbios_interfaces_IHwi_Irp ti_sysbios_interfaces_IHwi_getIrp(ti_sysbios_interfaces_IHwi_Handle __inst);
-static inline ti_sysbios_interfaces_IHwi_Irp ti_sysbios_interfaces_IHwi_getIrp( ti_sysbios_interfaces_IHwi_Handle __inst )
+static inline ti_sysbios_interfaces_IHwi_Irp ti_sysbios_interfaces_IHwi_getIrp(ti_sysbios_interfaces_IHwi_Handle inst);
+static inline ti_sysbios_interfaces_IHwi_Irp ti_sysbios_interfaces_IHwi_getIrp( ti_sysbios_interfaces_IHwi_Handle inst )
 {
-    return __inst->__fxns->getIrp((void*)__inst);
+    return inst->__fxns->getIrp((void*)inst);
 }
 
 
@@ -334,146 +336,146 @@ static inline ti_sysbios_interfaces_IHwi_Irp ti_sysbios_interfaces_IHwi_getIrp( 
 
 /* getStackInfo_{FxnT,fxnP} */
 typedef xdc_Bool (*ti_sysbios_interfaces_IHwi_getStackInfo_FxnT)(ti_sysbios_interfaces_IHwi_StackInfo* stkInfo, xdc_Bool computeStackDepth);
-static inline ti_sysbios_interfaces_IHwi_getStackInfo_FxnT ti_sysbios_interfaces_IHwi_getStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_getStackInfo_FxnT ti_sysbios_interfaces_IHwi_getStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_getStackInfo_FxnT ti_sysbios_interfaces_IHwi_getStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_getStackInfo_FxnT ti_sysbios_interfaces_IHwi_getStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_getStackInfo_FxnT)__mod->getStackInfo;
+    return (ti_sysbios_interfaces_IHwi_getStackInfo_FxnT)mod->getStackInfo;
 }
 
 /* getCoreStackInfo_{FxnT,fxnP} */
 typedef xdc_Bool (*ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT)(ti_sysbios_interfaces_IHwi_StackInfo* stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId);
-static inline ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT ti_sysbios_interfaces_IHwi_getCoreStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT ti_sysbios_interfaces_IHwi_getCoreStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT ti_sysbios_interfaces_IHwi_getCoreStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT ti_sysbios_interfaces_IHwi_getCoreStackInfo_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT)__mod->getCoreStackInfo;
+    return (ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT)mod->getCoreStackInfo;
 }
 
 /* startup_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_IHwi_startup_FxnT)(void);
-static inline ti_sysbios_interfaces_IHwi_startup_FxnT ti_sysbios_interfaces_IHwi_startup_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_startup_FxnT ti_sysbios_interfaces_IHwi_startup_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_startup_FxnT ti_sysbios_interfaces_IHwi_startup_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_startup_FxnT ti_sysbios_interfaces_IHwi_startup_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_startup_FxnT)__mod->startup;
+    return (ti_sysbios_interfaces_IHwi_startup_FxnT)mod->startup;
 }
 
 /* disable_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_IHwi_disable_FxnT)(void);
-static inline ti_sysbios_interfaces_IHwi_disable_FxnT ti_sysbios_interfaces_IHwi_disable_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_disable_FxnT ti_sysbios_interfaces_IHwi_disable_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_disable_FxnT ti_sysbios_interfaces_IHwi_disable_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_disable_FxnT ti_sysbios_interfaces_IHwi_disable_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_disable_FxnT)__mod->disable;
+    return (ti_sysbios_interfaces_IHwi_disable_FxnT)mod->disable;
 }
 
 /* enable_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_IHwi_enable_FxnT)(void);
-static inline ti_sysbios_interfaces_IHwi_enable_FxnT ti_sysbios_interfaces_IHwi_enable_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_enable_FxnT ti_sysbios_interfaces_IHwi_enable_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_enable_FxnT ti_sysbios_interfaces_IHwi_enable_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_enable_FxnT ti_sysbios_interfaces_IHwi_enable_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_enable_FxnT)__mod->enable;
+    return (ti_sysbios_interfaces_IHwi_enable_FxnT)mod->enable;
 }
 
 /* restore_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_IHwi_restore_FxnT)(xdc_UInt key);
-static inline ti_sysbios_interfaces_IHwi_restore_FxnT ti_sysbios_interfaces_IHwi_restore_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_restore_FxnT ti_sysbios_interfaces_IHwi_restore_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_restore_FxnT ti_sysbios_interfaces_IHwi_restore_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_restore_FxnT ti_sysbios_interfaces_IHwi_restore_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_restore_FxnT)__mod->restore;
+    return (ti_sysbios_interfaces_IHwi_restore_FxnT)mod->restore;
 }
 
 /* switchFromBootStack_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_IHwi_switchFromBootStack_FxnT)(void);
-static inline ti_sysbios_interfaces_IHwi_switchFromBootStack_FxnT ti_sysbios_interfaces_IHwi_switchFromBootStack_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_switchFromBootStack_FxnT ti_sysbios_interfaces_IHwi_switchFromBootStack_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_switchFromBootStack_FxnT ti_sysbios_interfaces_IHwi_switchFromBootStack_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_switchFromBootStack_FxnT ti_sysbios_interfaces_IHwi_switchFromBootStack_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_switchFromBootStack_FxnT)__mod->switchFromBootStack;
+    return (ti_sysbios_interfaces_IHwi_switchFromBootStack_FxnT)mod->switchFromBootStack;
 }
 
 /* post_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_IHwi_post_FxnT)(xdc_UInt intNum);
-static inline ti_sysbios_interfaces_IHwi_post_FxnT ti_sysbios_interfaces_IHwi_post_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_post_FxnT ti_sysbios_interfaces_IHwi_post_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_post_FxnT ti_sysbios_interfaces_IHwi_post_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_post_FxnT ti_sysbios_interfaces_IHwi_post_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_post_FxnT)__mod->post;
+    return (ti_sysbios_interfaces_IHwi_post_FxnT)mod->post;
 }
 
 /* getTaskSP_{FxnT,fxnP} */
 typedef xdc_Char *(*ti_sysbios_interfaces_IHwi_getTaskSP_FxnT)(void);
-static inline ti_sysbios_interfaces_IHwi_getTaskSP_FxnT ti_sysbios_interfaces_IHwi_getTaskSP_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_getTaskSP_FxnT ti_sysbios_interfaces_IHwi_getTaskSP_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_getTaskSP_FxnT ti_sysbios_interfaces_IHwi_getTaskSP_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_getTaskSP_FxnT ti_sysbios_interfaces_IHwi_getTaskSP_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_getTaskSP_FxnT)__mod->getTaskSP;
+    return (ti_sysbios_interfaces_IHwi_getTaskSP_FxnT)mod->getTaskSP;
 }
 
 /* disableInterrupt_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_IHwi_disableInterrupt_FxnT)(xdc_UInt intNum);
-static inline ti_sysbios_interfaces_IHwi_disableInterrupt_FxnT ti_sysbios_interfaces_IHwi_disableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_disableInterrupt_FxnT ti_sysbios_interfaces_IHwi_disableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_disableInterrupt_FxnT ti_sysbios_interfaces_IHwi_disableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_disableInterrupt_FxnT ti_sysbios_interfaces_IHwi_disableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_disableInterrupt_FxnT)__mod->disableInterrupt;
+    return (ti_sysbios_interfaces_IHwi_disableInterrupt_FxnT)mod->disableInterrupt;
 }
 
 /* enableInterrupt_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_IHwi_enableInterrupt_FxnT)(xdc_UInt intNum);
-static inline ti_sysbios_interfaces_IHwi_enableInterrupt_FxnT ti_sysbios_interfaces_IHwi_enableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_enableInterrupt_FxnT ti_sysbios_interfaces_IHwi_enableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_enableInterrupt_FxnT ti_sysbios_interfaces_IHwi_enableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_enableInterrupt_FxnT ti_sysbios_interfaces_IHwi_enableInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_enableInterrupt_FxnT)__mod->enableInterrupt;
+    return (ti_sysbios_interfaces_IHwi_enableInterrupt_FxnT)mod->enableInterrupt;
 }
 
 /* restoreInterrupt_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_IHwi_restoreInterrupt_FxnT)(xdc_UInt intNum, xdc_UInt key);
-static inline ti_sysbios_interfaces_IHwi_restoreInterrupt_FxnT ti_sysbios_interfaces_IHwi_restoreInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_restoreInterrupt_FxnT ti_sysbios_interfaces_IHwi_restoreInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_restoreInterrupt_FxnT ti_sysbios_interfaces_IHwi_restoreInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_restoreInterrupt_FxnT ti_sysbios_interfaces_IHwi_restoreInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_restoreInterrupt_FxnT)__mod->restoreInterrupt;
+    return (ti_sysbios_interfaces_IHwi_restoreInterrupt_FxnT)mod->restoreInterrupt;
 }
 
 /* clearInterrupt_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_IHwi_clearInterrupt_FxnT)(xdc_UInt intNum);
-static inline ti_sysbios_interfaces_IHwi_clearInterrupt_FxnT ti_sysbios_interfaces_IHwi_clearInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod);
-static inline ti_sysbios_interfaces_IHwi_clearInterrupt_FxnT ti_sysbios_interfaces_IHwi_clearInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module __mod)
+static inline ti_sysbios_interfaces_IHwi_clearInterrupt_FxnT ti_sysbios_interfaces_IHwi_clearInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod);
+static inline ti_sysbios_interfaces_IHwi_clearInterrupt_FxnT ti_sysbios_interfaces_IHwi_clearInterrupt_fxnP(ti_sysbios_interfaces_IHwi_Module mod)
 {
-    return (ti_sysbios_interfaces_IHwi_clearInterrupt_FxnT)__mod->clearInterrupt;
+    return (ti_sysbios_interfaces_IHwi_clearInterrupt_FxnT)mod->clearInterrupt;
 }
 
 /* getFunc_{FxnT,fxnP} */
-typedef ti_sysbios_interfaces_IHwi_FuncPtr (*ti_sysbios_interfaces_IHwi_getFunc_FxnT)(xdc_Void *__inst, xdc_UArg* arg);
-static inline ti_sysbios_interfaces_IHwi_getFunc_FxnT ti_sysbios_interfaces_IHwi_getFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst);
-static inline ti_sysbios_interfaces_IHwi_getFunc_FxnT ti_sysbios_interfaces_IHwi_getFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst)
+typedef ti_sysbios_interfaces_IHwi_FuncPtr (*ti_sysbios_interfaces_IHwi_getFunc_FxnT)(xdc_Void *inst, xdc_UArg* arg);
+static inline ti_sysbios_interfaces_IHwi_getFunc_FxnT ti_sysbios_interfaces_IHwi_getFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle inst);
+static inline ti_sysbios_interfaces_IHwi_getFunc_FxnT ti_sysbios_interfaces_IHwi_getFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle inst)
 {
-    return (ti_sysbios_interfaces_IHwi_getFunc_FxnT)__inst->__fxns->getFunc;
+    return (ti_sysbios_interfaces_IHwi_getFunc_FxnT)inst->__fxns->getFunc;
 }
 
 /* setFunc_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_IHwi_setFunc_FxnT)(xdc_Void *__inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
-static inline ti_sysbios_interfaces_IHwi_setFunc_FxnT ti_sysbios_interfaces_IHwi_setFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst);
-static inline ti_sysbios_interfaces_IHwi_setFunc_FxnT ti_sysbios_interfaces_IHwi_setFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_IHwi_setFunc_FxnT)(xdc_Void *inst, ti_sysbios_interfaces_IHwi_FuncPtr fxn, xdc_UArg arg);
+static inline ti_sysbios_interfaces_IHwi_setFunc_FxnT ti_sysbios_interfaces_IHwi_setFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle inst);
+static inline ti_sysbios_interfaces_IHwi_setFunc_FxnT ti_sysbios_interfaces_IHwi_setFunc_fxnP(ti_sysbios_interfaces_IHwi_Handle inst)
 {
-    return (ti_sysbios_interfaces_IHwi_setFunc_FxnT)__inst->__fxns->setFunc;
+    return (ti_sysbios_interfaces_IHwi_setFunc_FxnT)inst->__fxns->setFunc;
 }
 
 /* getHookContext_{FxnT,fxnP} */
-typedef xdc_Ptr (*ti_sysbios_interfaces_IHwi_getHookContext_FxnT)(xdc_Void *__inst, xdc_Int id);
-static inline ti_sysbios_interfaces_IHwi_getHookContext_FxnT ti_sysbios_interfaces_IHwi_getHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst);
-static inline ti_sysbios_interfaces_IHwi_getHookContext_FxnT ti_sysbios_interfaces_IHwi_getHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst)
+typedef xdc_Ptr (*ti_sysbios_interfaces_IHwi_getHookContext_FxnT)(xdc_Void *inst, xdc_Int id);
+static inline ti_sysbios_interfaces_IHwi_getHookContext_FxnT ti_sysbios_interfaces_IHwi_getHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle inst);
+static inline ti_sysbios_interfaces_IHwi_getHookContext_FxnT ti_sysbios_interfaces_IHwi_getHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle inst)
 {
-    return (ti_sysbios_interfaces_IHwi_getHookContext_FxnT)__inst->__fxns->getHookContext;
+    return (ti_sysbios_interfaces_IHwi_getHookContext_FxnT)inst->__fxns->getHookContext;
 }
 
 /* setHookContext_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_IHwi_setHookContext_FxnT)(xdc_Void *__inst, xdc_Int id, xdc_Ptr hookContext);
-static inline ti_sysbios_interfaces_IHwi_setHookContext_FxnT ti_sysbios_interfaces_IHwi_setHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst);
-static inline ti_sysbios_interfaces_IHwi_setHookContext_FxnT ti_sysbios_interfaces_IHwi_setHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst)
+typedef xdc_Void (*ti_sysbios_interfaces_IHwi_setHookContext_FxnT)(xdc_Void *inst, xdc_Int id, xdc_Ptr hookContext);
+static inline ti_sysbios_interfaces_IHwi_setHookContext_FxnT ti_sysbios_interfaces_IHwi_setHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle inst);
+static inline ti_sysbios_interfaces_IHwi_setHookContext_FxnT ti_sysbios_interfaces_IHwi_setHookContext_fxnP(ti_sysbios_interfaces_IHwi_Handle inst)
 {
-    return (ti_sysbios_interfaces_IHwi_setHookContext_FxnT)__inst->__fxns->setHookContext;
+    return (ti_sysbios_interfaces_IHwi_setHookContext_FxnT)inst->__fxns->setHookContext;
 }
 
 /* getIrp_{FxnT,fxnP} */
-typedef ti_sysbios_interfaces_IHwi_Irp (*ti_sysbios_interfaces_IHwi_getIrp_FxnT)(xdc_Void *__inst);
-static inline ti_sysbios_interfaces_IHwi_getIrp_FxnT ti_sysbios_interfaces_IHwi_getIrp_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst);
-static inline ti_sysbios_interfaces_IHwi_getIrp_FxnT ti_sysbios_interfaces_IHwi_getIrp_fxnP(ti_sysbios_interfaces_IHwi_Handle __inst)
+typedef ti_sysbios_interfaces_IHwi_Irp (*ti_sysbios_interfaces_IHwi_getIrp_FxnT)(xdc_Void *inst);
+static inline ti_sysbios_interfaces_IHwi_getIrp_FxnT ti_sysbios_interfaces_IHwi_getIrp_fxnP(ti_sysbios_interfaces_IHwi_Handle inst);
+static inline ti_sysbios_interfaces_IHwi_getIrp_FxnT ti_sysbios_interfaces_IHwi_getIrp_fxnP(ti_sysbios_interfaces_IHwi_Handle inst)
 {
-    return (ti_sysbios_interfaces_IHwi_getIrp_FxnT)__inst->__fxns->getIrp;
+    return (ti_sysbios_interfaces_IHwi_getIrp_FxnT)inst->__fxns->getIrp;
 }
 
 

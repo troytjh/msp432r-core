@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,13 +34,13 @@
  * Generic definition of all disk APIs.  This should be shared amongst all media
  *
  */
-
-#include <stdio.h>
-#include <ffconf.h>
-#include <diskio.h>
+#include <stddef.h>
 #include <stdint.h>
 
-static diskio_fxns drive_fxn_table[_VOLUMES] = {
+#include "ffconf.h"
+#include "diskio.h"
+
+static diskio_fxns drive_fxn_table[FF_VOLUMES] = {
     {NULL, NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL, NULL},
@@ -61,7 +61,7 @@ DRESULT disk_register(
         DRESULT (*d_ioctl) (BYTE drive, BYTE cmd, void * buf))
 {
 
-    if (drive >= _VOLUMES) {
+    if (drive >= FF_VOLUMES) {
         return RES_PARERR;
     }
 
@@ -80,7 +80,7 @@ DRESULT disk_register(
 DRESULT disk_unregister(BYTE drive)
 {
 
-    if (drive >= _VOLUMES) {
+    if (drive >= FF_VOLUMES) {
         return RES_PARERR;
     }
 
@@ -93,75 +93,106 @@ DRESULT disk_unregister(BYTE drive)
     return RES_OK;
 }
 
-/*
- * ======== disk_initialize ========
- */
-DSTATUS disk_initialize(BYTE drive)
-{
-    if (drive_fxn_table[drive].d_init == NULL) {
-        return RES_PARERR;
-    }
-    else {
-        /* call registered init function */
-        return ( (*(drive_fxn_table[drive].d_init)) (drive) );
-    }
-}
 
-/*
- * ======== disk_status ========
- */
-DSTATUS disk_status(BYTE drive)
+
+/*-----------------------------------------------------------------------*/
+/* Get Drive Status                                                      */
+/*-----------------------------------------------------------------------*/
+
+DSTATUS disk_status (
+	BYTE pdrv		/* Physical drive nmuber to identify the drive */
+)
 {
-    if (drive_fxn_table[drive].d_status == NULL) {
+    if (drive_fxn_table[pdrv].d_status == NULL) {
         return RES_PARERR;
     }
     else {
         /* call registered status function */
-        return ( (*(drive_fxn_table[drive].d_status)) (drive) );
+        return ((*(drive_fxn_table[pdrv].d_status)) (pdrv));
     }
 }
 
-/*
- * ======== disk_read ========
- */
-DRESULT disk_read(BYTE drive, BYTE * buf, DWORD sector, UINT num)
+
+
+/*-----------------------------------------------------------------------*/
+/* Inidialize a Drive                                                    */
+/*-----------------------------------------------------------------------*/
+
+DSTATUS disk_initialize (
+	BYTE pdrv				/* Physical drive nmuber to identify the drive */
+)
 {
-    if (drive_fxn_table[drive].d_read == NULL) {
+    if (drive_fxn_table[pdrv].d_init == NULL) {
+        return RES_PARERR;
+    }
+    else {
+        /* call registered init function */
+        return ((*(drive_fxn_table[pdrv].d_init)) (pdrv));
+    }
+}
+
+
+
+/*-----------------------------------------------------------------------*/
+/* Read Sector(s)                                                        */
+/*-----------------------------------------------------------------------*/
+
+DRESULT disk_read (
+	BYTE pdrv,		/* Physical drive nmuber to identify the drive */
+	BYTE *buff,		/* Data buffer to store read data */
+	DWORD sector,	/* Start sector in LBA */
+	UINT count		/* Number of sectors to read */
+)
+{
+    if (drive_fxn_table[pdrv].d_read == NULL) {
         return RES_PARERR;
     }
     else {
         /* call registered read function */
-        return ( (*(drive_fxn_table[drive].d_read)) (drive, buf, sector, num) );
+        return ((*(drive_fxn_table[pdrv].d_read)) (pdrv, buff, sector, count));
     }
 }
 
-/*
- * ======== disk_write ========
- */
-#if     _READONLY == 0
-DRESULT disk_write(BYTE drive, const BYTE * buf, DWORD sector, UINT num)
+
+
+/*-----------------------------------------------------------------------*/
+/* Write Sector(s)                                                       */
+/*-----------------------------------------------------------------------*/
+
+DRESULT disk_write (
+	BYTE pdrv,			/* Physical drive nmuber to identify the drive */
+	const BYTE *buff,	/* Data to be written */
+	DWORD sector,		/* Start sector in LBA */
+	UINT count			/* Number of sectors to write */
+)
 {
-    if (drive_fxn_table[drive].d_write == NULL) {
+    if (drive_fxn_table[pdrv].d_write == NULL) {
         return RES_PARERR;
     }
     else {
         /* call registered write function */
-        return ( (*(drive_fxn_table[drive].d_write)) (drive, buf, sector, num) );
+        return ((*(drive_fxn_table[pdrv].d_write)) (pdrv, buff, sector, count));
     }
 }
-#endif
 
-/*
- * ======== disk_ioctl ========
- */
-DRESULT disk_ioctl(BYTE drive, BYTE cmd, void * buf)
+
+
+/*-----------------------------------------------------------------------*/
+/* Miscellaneous Functions                                               */
+/*-----------------------------------------------------------------------*/
+
+DRESULT disk_ioctl (
+	BYTE pdrv,		/* Physical drive nmuber (0..) */
+	BYTE cmd,		/* Control code */
+	void *buff		/* Buffer to send/receive control data */
+)
 {
-    if (drive_fxn_table[drive].d_ioctl == NULL) {
+    if (drive_fxn_table[pdrv].d_ioctl == NULL) {
         return RES_PARERR;
     }
     else {
         /* call registered write function */
-        return ( (*(drive_fxn_table[drive].d_ioctl)) (drive, cmd, buf) );
+        return ((*(drive_fxn_table[pdrv].d_ioctl)) (pdrv, cmd, buff));
     }
 }
 

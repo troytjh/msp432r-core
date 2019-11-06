@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,8 +68,14 @@
 #define LoggerStopMode_DUMMY_SEQ 0
 #define LoggerStopMode_PRIORITY 0
 
+#if defined(xdc_target__isaCompatible_v8A)
+/* 64-bit target */
+#define HDR_OFFSET_IN_WORDS 2        /* Size of the UIA header */
+#define BYTES_IN_EVENTWORD  8
+#else
 #define HDR_OFFSET_IN_WORDS 4        /* Size of the UIA header */
-#define BYTES_IN_EVENTWORD 4
+#define BYTES_IN_EVENTWORD  4
+#endif
 
 #define TIMESTAMP_WORDS ((LoggerStopMode_isTimestampEnabled) ? 2 : 0)
 
@@ -125,7 +131,7 @@ Int LoggerStopMode_Module_startup(Int phase)
 	 *  For single image executables that run on multiple cores,
 	 *  set buffer and QueueDescriptor hdr based on core number
 	 */
-        obj->buffer = (UInt32 *)(obj->packetArray + coreNum * (obj->bufSize));
+        obj->buffer = (UArg *)(obj->packetArray + coreNum * (obj->bufSize));
 
         obj->hdr = (Ptr)(obj->hdr + coreNum * sizeof(QueueDescriptor_Header));
 
@@ -148,7 +154,7 @@ Void LoggerStopMode_Instance_init(LoggerStopMode_Object *obj,
 {
     obj->bufSize = prms->bufSize;
 
-    obj->buffer = (UInt32 *)(obj->packetArray + DNUM * obj->bufSize);
+    obj->buffer = (UArg *)(obj->packetArray + DNUM * obj->bufSize);
     LoggerStopMode_initBuffer(obj, (Ptr)obj->buffer, (UInt16)DNUM);
 
     LoggerStopMode_reset(obj);
@@ -252,7 +258,7 @@ Void LoggerStopMode_reset(LoggerStopMode_Object *obj)
     obj->eventSequenceNum = 0;
     obj->numBytesInPrevEvent = 0;
 
-    obj->write = obj->buffer + HDR_OFFSET_IN_WORDS;
+    obj->write = (UArg *)((UArg *)obj->buffer + HDR_OFFSET_IN_WORDS);
 
     /*
      *  Mark the end of the buffer as the point where
@@ -261,7 +267,7 @@ Void LoggerStopMode_reset(LoggerStopMode_Object *obj)
      *  subtract one word for the dummy event header
      *  containing the size of the previous event.
      */
-    obj->end = obj->buffer + (obj->bufSize / sizeof(UInt32)) -
+    obj->end = obj->buffer + (obj->bufSize / sizeof(UArg)) -
         (WRITE8_WORDS + TIMESTAMP_WORDS) - 1;
 }
 

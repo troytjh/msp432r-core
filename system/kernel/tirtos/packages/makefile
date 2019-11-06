@@ -22,6 +22,7 @@ XDCARGS= \
     ti.targets.arm.elf.M4F=\"$(CCS_ARMCOMPILER)\" \
     gnu.targets.arm.M4F=\"$(GCC_ARMCOMPILER)\" \
     iar.targets.arm.M4F=\"$(IAR_ARMCOMPILER)\" \
+    TIPOSIX_REPO=\"$(CORESDK_INSTALL_DIR)/source\" \
     MSP432DRIVERLIB=$(CORESDK_INSTALL_DIR)
 
 #
@@ -36,24 +37,23 @@ XDCPATH=$(CORESDK_INSTALL_DIR)/source;$(CORESDK_INSTALL_DIR)/kernel/tirtos/packa
 XDCOPTIONS=
 export XDCOPTIONS
 
+j = 1
 #
 # Set XDC executable command
 # Note that XDCBUILDCFG points to the coresdk.bld file which uses
 # the arguments specified by XDCARGS
 #
-XDC = $(XDC_INSTALL_DIR)/xdc XDCBUILDCFG=$(CORESDK_INSTALL_DIR)/kernel/tirtos/packages/coresdk.bld
-
-TARGETS = */targets ti/targets/elf */targets/arm ti/targets/*/elf
+XDC = $(XDC_INSTALL_DIR)/xdc -j $(j) XDCBUILDCFG=$(CORESDK_INSTALL_DIR)/kernel/tirtos/packages/coresdk.bld
+XDCPKG = $(XDC_INSTALL_DIR)/bin/xdcpkg
 
 all:
 	@ echo building packages ...
-	@ $(XDC) XDCARGS="" .interfaces -P $(TARGETS)
+	@ $(XDC) XDCARGS="" .interfaces -PD $(shell $(XDCPKG) $(wildcard */targets))
 	@ $(XDC) XDCARGS="$(XDCARGS)" XDCPATH="$(XDCPATH)" .interfaces -Pr .
 	@ $(XDC) XDCARGS="$(XDCARGS)" XDCPATH="$(XDCPATH)" all -PR \
 	    ./gnu ./iar ./ti/catalog ./ti/dpl ./ti/platforms \
-	    ./ti/targets ./ti/tirtos ./ti/uia
+	    ./ti/targets ./ti/uia
 
 clean:
 	@ echo cleaning packages ...
 	@ $(XDC) XDCARGS="" XDCPATH="$(XDCPATH)" clean -PR .
-

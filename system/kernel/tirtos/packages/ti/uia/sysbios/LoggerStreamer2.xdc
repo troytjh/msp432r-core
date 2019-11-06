@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -770,10 +770,10 @@ internal:
         UArg        context;
         Bool        primeStatus;   /* Has the Log been primed? */
         UInt32      bufSize;       /* Size of the buffer */
-        UInt32      *buffer;       /* Ptr to buffer */
-        UInt32      *write;        /* Ptr to write location */
-        UInt32      *end;
-        SizeT       maxEventSizeInBits32; /* Max event size in 32 bit words */
+        UArg       *buffer;        /* Ptr to buffer */
+        UArg       *write;         /* Ptr to write location */
+        UArg       *end;
+        SizeT       maxEventSizeUArg; /* Max event size in UArgs */
         SizeT       maxEventSize;  /* Max event size in target MAUs */
 
         /*

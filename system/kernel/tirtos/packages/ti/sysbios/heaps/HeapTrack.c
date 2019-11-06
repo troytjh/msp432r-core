@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -98,8 +98,8 @@ Void *HeapTrack_alloc(HeapTrack_Object *obj, SizeT size, SizeT align,
 
     trackQueue = HeapTrack_Instance_State_trackQueue(obj);
 
-    /* Scribble must be word aligned, calculate remainder to add in */
-    rem = size % sizeof(UInt32) ? sizeof(UInt32) - (size % sizeof(UInt32)) : 0;
+    /* Scribble must be UArg aligned, calculate remainder to add in */
+    rem = size % sizeof(UArg) ? sizeof(UArg) - (size % sizeof(UArg)) : 0;
 
     /* Add in the Tracker structure and remainder */
     buf = Memory_alloc(obj->internalHeap,
@@ -123,7 +123,7 @@ Void *HeapTrack_alloc(HeapTrack_Object *obj, SizeT size, SizeT align,
 
     /* Fill in the tracker structure at the end of the buffer */
     tracker             = (HeapTrack_Tracker *)((Char *)buf + size + rem);
-    tracker->scribble   = (UInt32)HeapTrack_STARTSCRIBBLE;
+    tracker->scribble   = HeapTrack_STARTSCRIBBLE;
     tracker->taskHandle = Task_self();
     tracker->size       = size;
     tracker->tick       = Clock_getTicks();
@@ -144,7 +144,7 @@ Void HeapTrack_free(HeapTrack_Object *obj, Ptr buf, SizeT size)
     UInt key;
 
     /* Scribble was word aligned, reverse our logic */
-    rem = size % sizeof(UInt32) ? sizeof(UInt32) - (size % sizeof(UInt32)) : 0;
+    rem = size % sizeof(UArg) ? sizeof(UArg) - (size % sizeof(UArg)) : 0;
 
     /* Get the tracker structure */
     tracker = (HeapTrack_Tracker *)((Char *)buf + size + rem);
@@ -157,6 +157,8 @@ Void HeapTrack_free(HeapTrack_Object *obj, Ptr buf, SizeT size)
     Assert_isTrue(tracker->scribble == HeapTrack_STARTSCRIBBLE,
                                                       HeapTrack_A_bufOverflow);
 
+    key = Hwi_disable();
+
     /* Remove it from the linked list */
     Queue_remove(&(tracker->queElem));
 
@@ -167,7 +169,6 @@ Void HeapTrack_free(HeapTrack_Object *obj, Ptr buf, SizeT size)
     tracker->scribble = HeapTrack_NOSCRIBBLE;
 
     /* Update size */
-    key = Hwi_disable();
     obj->size -= (size + rem + sizeof(HeapTrack_Tracker));
     obj->sizeWithoutTracker -= (size + rem);
     Hwi_restore(key);
@@ -261,8 +262,7 @@ Void HeapTrack_printHeap(HeapTrack_Object *obj)
      */
     while (elem != (Queue_Elem *)(trackQueue)) {
         /* The start of the struct is up above the scribble */
-        tracker = (HeapTrack_Tracker *)((Char *)elem -
-                                              sizeof(HeapTrack_STARTSCRIBBLE));
+        tracker = (HeapTrack_Tracker *)((Char *)elem - sizeof(UArg));
         continueFlag = HeapTrack_printTrack(tracker, obj);
         if (continueFlag == FALSE) {
             break;
@@ -300,9 +300,14 @@ Void HeapTrack_printTask(Task_Handle task)
         /* Loop until we get back to the Queue Object*/
         while (elem != (Queue_Elem *)(trackQueue)) {
 
-            /* The start of the struct is up above the scribble */
-            tracker = (HeapTrack_Tracker *)((Char *)elem -
-                                              sizeof(HeapTrack_STARTSCRIBBLE));
+            /*
+             *  The start of the struct is up above the scribble.  Subtract
+             *  sizeof(UArg) from the Queue_Elem address to get the start of
+             *  the structure, since scribble is a UArg.  Do not use
+             *  sizeof(HeapTrack_STARTSCRIBBLE), since xdctools generates
+             *  a #define for this, which on 64-bit targets has a size of 4.
+             */
+            tracker = (HeapTrack_Tracker *)((Char *)elem - sizeof(UArg));
 
             if (tracker->taskHandle == task) {
                 continueFlag = HeapTrack_printTrack(tracker, obj);
@@ -329,9 +334,14 @@ Void HeapTrack_printTask(Task_Handle task)
         /* Loop until we get back to the Queue Object */
         while (elem != (Queue_Elem *)(trackQueue)) {
 
-            /* The start of the struct is up above the scribble */
-            tracker = (HeapTrack_Tracker *)((Char *)elem -
-                                              sizeof(HeapTrack_STARTSCRIBBLE));
+            /*
+             *  The start of the struct is up above the scribble.  Subtract
+             *  sizeof(UArg) from the Queue_Elem address to get the start of
+             *  the structure, since scribble is a UArg.  Do not use
+             *  sizeof(HeapTrack_STARTSCRIBBLE), since xdctools generates
+             *  a #define for this, which on 64-bit targets has a size of 4.
+             */
+            tracker = (HeapTrack_Tracker *)((Char *)elem - sizeof(UArg));
 
             if (tracker->taskHandle == task) {
                 continueFlag = HeapTrack_printTrack(tracker, obj);

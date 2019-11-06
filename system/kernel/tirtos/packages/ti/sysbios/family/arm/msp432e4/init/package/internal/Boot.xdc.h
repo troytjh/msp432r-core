@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 #ifndef ti_sysbios_family_arm_msp432e4_init_Boot__INTERNAL__
@@ -21,22 +21,12 @@
 #define xdc_FILE__ xdc_FILE
 #endif
 
-/* sysCtlClockSet */
-#undef ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockSet
-#define ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockSet ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockSet__E
-
 /* sysCtlClockFreqSet */
 #undef ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockFreqSet
 #define ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockFreqSet ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockFreqSet__E
 
-/* sysCtlClockSetI */
-#define Boot_sysCtlClockSetI ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockSetI__I
-
 /* sysCtlClockFreqSetI */
 #define Boot_sysCtlClockFreqSetI ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlClockFreqSetI__I
-
-/* sysCtlDelayI */
-#define Boot_sysCtlDelayI ti_sysbios_family_arm_msp432e4_init_Boot_sysCtlDelayI__I
 
 /* init */
 #define Boot_init ti_sysbios_family_arm_msp432e4_init_Boot_init__I

@@ -1,6 +1,6 @@
 %%{
 /*
- * Copyright (c) 2013-2017, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,62 +31,84 @@
  */
 
     var LoggerRunMode = xdc.module("ti.uia.loggers.LoggerRunMode");
-    var bits8InTS = (LoggerRunMode.isTimestampEnabled) ? 8 : 0;
 
-    var hdrOffsetInWords = 4;
-    var bytesInWord = 4;
+    var bytesInPtr = Program.build.target.stdTypes.t_Ptr.size;
+
+    // Number of UArg's in UIAPacket header
+    var hdrOffsetInWords = 16 / bytesInPtr;
 
     var isJTAG = (LoggerRunMode.transportType == LoggerRunMode.TransportType_JTAG) ? true : false;
 
-    if (isJTAG) {
-        var eventType = (LoggerRunMode.isTimestampEnabled) ?
-            "ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWith64bTimestamp" :
-            "ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp";
+    var eventType = "ti_uia_runtime_";
+    var snapshotEventType = "ti_uia_runtime_";
 
-        var snapshotEventType = (LoggerRunMode.isTimestampEnabled) ?
-            "ti_uia_runtime_EventHdr_HdrType_SnapshotEventWithPrevLenAnd64bTimestamp" :
-            "ti_uia_runtime_EventHdr_HdrType_SnapshotEventWithPrevLen";
+    if (isJTAG) {
+        /* JTAG run mode  */
+        eventType = (LoggerRunMode.isTimestampEnabled) ?
+                eventType + "EventHdr_HdrType_EventWithPrevLenWith64bTimestamp" :
+                eventType + "EventHdr_HdrType_EventWithPrevLenWithNoTimestamp";
+
+        snapshotEventType = (LoggerRunMode.isTimestampEnabled) ?
+            snapshotEventType + "EventHdr_HdrType_SnapshotEventWithPrevLenAnd64bTimestamp" :
+            snapshotEventType + "EventHdr_HdrType_SnapshotEventWithPrevLen";
     }
     else {
-        var eventType = (LoggerRunMode.isTimestampEnabled) ?
-            "ti_uia_runtime_EventHdr_HdrType_EventWithTimestamp" :
-            "ti_uia_runtime_EventHdr_HdrType_Event";
+        /* Non-JTAG, eg, Ethernet transport */
+        eventType = (LoggerRunMode.isTimestampEnabled) ?
+                eventType + "EventHdr_HdrType_EventWithTimestamp" :
+                eventType + "EventHdr_HdrType_Event";
 
-        var snapshotEventType = (LoggerRunMode.isTimestampEnabled) ?
-            "ti_uia_runtime_EventHdr_HdrType_EventWithSnapshotIdAndTimestamp" :
-            "ti_uia_runtime_EventHdr_HdrType_EventWithSnapshotId";
+        snapshotEventType = (LoggerRunMode.isTimestampEnabled) ?
+                snapshotEventType + "EventHdr_HdrType_EventWithSnapshotIdAndTimestamp" :
+                snapshotEventType + "EventHdr_HdrType_EventWithSnapshotId";
+    }
+
+    var bytesInEventWord;
+    var eventHdrUArgs;
+
+    if (bytesInPtr == 8) {
+        /* 64-bit target */
+        bytesInEventWord = 8;
+        eventHdrUArgs = (LoggerRunMode.isTimestampEnabled) ? 2 : 1;
+    }
+    else {
+        /* 32-bit target */
+        bytesInEventWord = 4;
+        eventHdrUArgs = (LoggerRunMode.isTimestampEnabled) ? 4 : 2;
     }
 
     // Size in words
-    var write0EventSize = (LoggerRunMode.isTimestampEnabled) ? 4 : 2;
-    var write1EventSize = (LoggerRunMode.isTimestampEnabled) ? 5 : 3;
-    var write2EventSize = (LoggerRunMode.isTimestampEnabled) ? 6 : 4;
-    var write4EventSize = (LoggerRunMode.isTimestampEnabled) ? 8 : 6;
-    var write8EventSize = (LoggerRunMode.isTimestampEnabled) ? 12 : 10;
+    var write0EventSize = eventHdrUArgs;
+    var write1EventSize = write0EventSize + 1;
+    var write2EventSize = write0EventSize + 2;
+    var write4EventSize = write0EventSize + 4;
+    var write8EventSize = write0EventSize + 8;
 
-    var write0EventSizeInBytes = write0EventSize * bytesInWord;
-    var write1EventSizeInBytes = write1EventSize * bytesInWord;
-    var write2EventSizeInBytes = write2EventSize * bytesInWord;
-    var write4EventSizeInBytes = write4EventSize * bytesInWord;
-    var write8EventSizeInBytes = write8EventSize * bytesInWord;
+    var write0EventSizeInBytes = write0EventSize * bytesInPtr;
+    var write1EventSizeInBytes = write1EventSize * bytesInPtr;
+    var write2EventSizeInBytes = write2EventSize * bytesInPtr;
+    var write4EventSizeInBytes = write4EventSize * bytesInPtr;
+    var write8EventSizeInBytes = write8EventSize * bytesInPtr;
 
-    var numInstances = LoggerRunMode.getNumInstances();
-
-    // Bits8 in Timestamp + Bits8 in writeMemory + Bits8 in event header,
-    // converted to bits32
-    var headerSizeBits32 = (bits8InTS + 24 + 8) / 4;
+    //  The event header for a snapshot event contains 4 32-bit words
+    //  (timestamp enabled) or 2 32-bit words (timestamp not enabled), plus
+    //  6 UArgs.
+    //  plus a timestamp (if enabled):
+    //     word0 - Mask containing event type and length (32-bit)
+    //     word1 - Timestamp low                         (32-bit)
+    //     word2 - Timestamp high                        (32-bit)
+    //     word3 - Mask of Event ID and Module ID        (32-bit)
+    //     word4 - Filename pointer                      (UArg)
+    //     word5 - line number                           (UArg)
+    //     word6 - snapshot Id                           (UArg)
+    //     word7 - data address                          (UArg)
+    //     word8 - data length                           (UArg)
+    //     word9 - format pointer                        (UArg)
+    //
+    // For a 64-bit target, word0 - word3 are treated as 32-bit words.
+    var headerSizeUArgs = eventHdrUArgs + 6;
 
     var LoggerRunMode_module = "ti_uia_loggers_LoggerRunMode_Module__state__V";
-
-    function bits32ToMau(bits32)
-    {
-        return ("((" + bits32 + ") * sizeof(Bits32))");
-    }
-
-    function bits32ToBits8(bits32)
-    {
-        return ("((" + bits32 + ") * 4)");
-    }
 %%}
 %/*
 % *  ======== LoggerRunMode.xdt ========
@@ -120,7 +142,6 @@
 %if (LoggerRunMode.isTimestampEnabled) {
 static inline UInt32 *ti_uia_loggers_LoggerRunMode_fillInTimestamp(UInt32 *writePtr)
 {
-
 #ifndef xdc_target__isaCompatible_64P
     xdc_runtime_Types_Timestamp64 tstamp;
     xdc_runtime_Timestamp_get64(&tstamp);
@@ -133,276 +154,6 @@ static inline UInt32 *ti_uia_loggers_LoggerRunMode_fillInTimestamp(UInt32 *write
     return (writePtr);
 }
 %}
-
-
-/*
- *  ======== LoggerRunMode_writeStart ========
- */
-inline Ptr ti_uia_loggers_LoggerRunMode_writeStart__I(
-        ti_uia_loggers_LoggerRunMode_Object *obj,
-        xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, UInt16 numBytes)
-{
-    UInt32 *writePtr = obj->write;
-
-% if (LoggerRunMode.supportLoggerDisable == true) {
-    if (!obj->enabled) {
-        return (NULL);
-    }
-%}
-
-% if (LoggerRunMode.filterByLevel == true) {
-    if (ti_uia_loggers_LoggerRunMode_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
-        return (NULL);
-    }
-%}
-
-% if (isJTAG) {
-    /*
-     *  Use events with previous event length in header to allow events
-     *  to be read from partially written packets
-     */
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            numBytes,
-            obj->numBytesInPrevEvent,
-            obj->eventSequenceNum,
-            `eventType`);
-% }
-% else {
-    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
-            numBytes,
-            obj->eventSequenceNum,
-            `eventType`);
-% }    
-    obj->numBytesInPrevEvent = numBytes;
-
-% if (LoggerRunMode.isTimestampEnabled) {
-    writePtr = ti_uia_loggers_LoggerRunMode_fillInTimestamp(writePtr);
-%}
-    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
-
-    return ((Ptr)writePtr);
-}
-
-/*
- *  ======== LoggerRunMode_writeFinish ========
- */
-static inline Void ti_uia_loggers_LoggerRunMode_writeFinish(
-        ti_uia_loggers_LoggerRunMode_Object *obj, UInt32 *writePtr)
-{
-    if (writePtr >= obj->end) {
-        /* Set UIA packet length and sequence number */
-        ti_uia_runtime_UIAPacket_setEventLengthFast((ti_uia_runtime_UIAPacket_Hdr *)obj->buffer,
-                ((UInt32)writePtr - (UInt32)obj->buffer));
-
-        /* Send filled buffer to exchange function */
-        obj->buffer = (UInt32*)ti_uia_loggers_LoggerRunMode_exchange(obj, (Ptr)obj->buffer,
-                (Ptr)writePtr);
-
-        /* Update ptrs to new buffer */
-        obj->write = obj->buffer + `hdrOffsetInWords`;
-        obj->end = obj->buffer + (obj->packetSize / sizeof(UInt32)) - `write8EventSize`;
-        obj->pktSequenceNum++;
-        ti_uia_runtime_UIAPacket_setSequenceCounts(
-                (ti_uia_runtime_UIAPacket_Hdr*)obj->buffer,
-                obj->pktSequenceNum,
-                obj->eventSequenceNum);
-    }
-    else {
-        obj->write = writePtr;
-    }
-
-    ((ti_uia_runtime_QueueDescriptor_Header *)obj->hdr)->partialPacketWritePtr =
-        (Bits32 *)obj->write;
-}
-
-
-/*
- *  ======== ti_uia_loggers_LoggerRunMode_write0__E =========
- */
-Void ti_uia_loggers_LoggerRunMode_write0__E(
-                                    ti_uia_loggers_LoggerRunMode_Object *obj,
-                                    xdc_runtime_Log_Event evt,
-                                    xdc_runtime_Types_ModuleId mid)
-{
-    UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr;
-
-    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid, `write0EventSizeInBytes`);
-
-% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
-    if (writePtr == NULL) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-    obj->eventSequenceNum++;
-% if (isJTAG) {
-    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            0,
-            `write0EventSizeInBytes`,
-            obj->eventSequenceNum,
-            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
-%}
-    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
-
-    ti_sysbios_hal_Hwi_restore(key);
-}
-
-/*
- *  ======== ti_uia_loggers_LoggerRunMode_write1__E =========
- */
-Void ti_uia_loggers_LoggerRunMode_write1__E(
-                                    ti_uia_loggers_LoggerRunMode_Object *obj,
-                                    xdc_runtime_Log_Event evt,
-                                    xdc_runtime_Types_ModuleId mid, IArg a1)
-{
-    UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr;
-
-    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid, `write1EventSizeInBytes`);
-
-% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
-    if (writePtr == NULL) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-    *writePtr++ = a1;
-
-    obj->eventSequenceNum++;
-% if (isJTAG) {
-    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            0,
-            `write1EventSizeInBytes`,
-            obj->eventSequenceNum,
-            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
-%}
-    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
-
-    ti_sysbios_hal_Hwi_restore(key);
-}
-
-/*
- *  ======== ti_uia_loggers_LoggerRunMode_write2__E =========
- */
-Void ti_uia_loggers_LoggerRunMode_write2__E(
-                                    ti_uia_loggers_LoggerRunMode_Object *obj,
-                                    xdc_runtime_Log_Event evt,
-                                    xdc_runtime_Types_ModuleId mid,
-                                    IArg a1, IArg a2)
-{
-    UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr;
-
-    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid, `write2EventSizeInBytes`);
-
-% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
-    if (writePtr == NULL) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-    *writePtr++ = a1;
-    *writePtr++ = a2;
-
-    obj->eventSequenceNum++;
-% if (isJTAG) {
-    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            0,
-            `write2EventSizeInBytes`,
-            obj->eventSequenceNum,
-            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
-%}
-    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
-
-    ti_sysbios_hal_Hwi_restore(key);
-}
-
-/*
- *  ======== ti_uia_loggers_LoggerRunMode_write4__E =========
- */
-Void ti_uia_loggers_LoggerRunMode_write4__E(
-                                    ti_uia_loggers_LoggerRunMode_Object *obj,
-                                    xdc_runtime_Log_Event evt,
-                                    xdc_runtime_Types_ModuleId mid,
-                                    IArg a1, IArg a2, IArg a3, IArg a4)
-{
-    UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr;
-
-    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid, `write4EventSizeInBytes`);
-
-% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
-    if (writePtr == NULL) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-    *writePtr++ = a1;
-    *writePtr++ = a2;
-    *writePtr++ = a3;
-    *writePtr++ = a4;
-
-    obj->eventSequenceNum++;
-% if (isJTAG) {
-    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            0,
-            `write4EventSizeInBytes`,
-            obj->eventSequenceNum,
-            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
-%}
-    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
-
-    ti_sysbios_hal_Hwi_restore(key);
-}
-
-/*
- *  ======== ti_uia_loggers_LoggerRunMode_write8__E =========
- */
-Void ti_uia_loggers_LoggerRunMode_write8__E(
-                                    ti_uia_loggers_LoggerRunMode_Object *obj,
-                                    xdc_runtime_Log_Event evt,
-                                    xdc_runtime_Types_ModuleId mid,
-                                    IArg a1, IArg a2, IArg a3, IArg a4,
-                                    IArg a5, IArg a6, IArg a7, IArg a8)
-{
-    UInt key = ti_sysbios_hal_Hwi_disable();
-    UInt32 *writePtr;
-
-    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid, `write8EventSizeInBytes`);
-
-% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
-    if (writePtr == NULL) {
-        ti_sysbios_hal_Hwi_restore(key);
-        return;
-    }
-%}
-
-    *writePtr++ = a1;
-    *writePtr++ = a2;
-    *writePtr++ = a3;
-    *writePtr++ = a4;
-    *writePtr++ = a5;
-    *writePtr++ = a6;
-    *writePtr++ = a7;
-    *writePtr++ = a8;
-
-    obj->eventSequenceNum++;
-% if (isJTAG) {
-    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-            0,
-            `write8EventSizeInBytes`,
-            obj->eventSequenceNum,
-            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
-%}
-    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
-
-    ti_sysbios_hal_Hwi_restore(key);
-}
 
 /*
  *  ======== ti_uia_loggers_LoggerRunMode_filterOutEvent ========
@@ -448,6 +199,278 @@ Bool ti_uia_loggers_LoggerRunMode_filterOutEvent__I(xdc_runtime_Diags_Mask mask)
 %else {
     return (FALSE);
 %}
+}
+
+/*
+ *  ======== LoggerRunMode_writeStart ========
+ */
+inline UArg *ti_uia_loggers_LoggerRunMode_writeStart__I(
+        ti_uia_loggers_LoggerRunMode_Object *obj,
+        xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, UInt16 numBytes)
+{
+    UInt32 *writePtr = (UInt32 *)obj->write;
+
+% if (LoggerRunMode.supportLoggerDisable == true) {
+    if (!obj->enabled) {
+        return (NULL);
+    }
+%}
+
+% if (LoggerRunMode.filterByLevel == true) {
+    if (ti_uia_loggers_LoggerRunMode_filterOutEvent__I(xdc_runtime_Log_getMask(evt))) {
+        return (NULL);
+    }
+%}
+
+% if (isJTAG) {
+    /*
+     *  Use events with previous event length in header to allow events
+     *  to be read from partially written packets
+     */
+    *writePtr++ = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+            numBytes,
+            obj->numBytesInPrevEvent,
+            obj->eventSequenceNum,
+            `eventType`);
+% }
+% else {
+    *writePtr++ = ti_uia_runtime_EventHdr_genEventHdrWord1(
+            numBytes,
+            obj->eventSequenceNum,
+            `eventType`);
+% }
+    obj->numBytesInPrevEvent = numBytes;
+
+% if (LoggerRunMode.isTimestampEnabled) {
+    writePtr = ti_uia_loggers_LoggerRunMode_fillInTimestamp(writePtr);
+%}
+    *writePtr++ = xdc_runtime_Types_makeEvent(xdc_runtime_Log_getEventId(evt), mid);
+
+    return ((UArg *)writePtr);
+}
+
+/*
+ *  ======== LoggerRunMode_writeFinish ========
+ */
+static inline Void ti_uia_loggers_LoggerRunMode_writeFinish(
+        ti_uia_loggers_LoggerRunMode_Object *obj, UArg *writePtr)
+{
+    if (writePtr >= obj->end) {
+        /* Set UIA packet length and sequence number */
+        ti_uia_runtime_UIAPacket_setEventLengthFast(
+                (ti_uia_runtime_UIAPacket_Hdr *)obj->buffer,
+                (writePtr - obj->buffer) * `bytesInPtr`);
+
+        /* Send filled buffer to exchange function */
+        obj->buffer = (UArg *)ti_uia_loggers_LoggerRunMode_exchange(obj,
+                (Ptr)obj->buffer, (Ptr)writePtr);
+
+        /* Update ptrs to new buffer */
+        obj->write = obj->buffer + `hdrOffsetInWords`;
+        obj->end = obj->buffer + (obj->packetSize / sizeof(UArg)) - `write8EventSize`;
+        obj->pktSequenceNum++;
+        ti_uia_runtime_UIAPacket_setSequenceCounts(
+                (ti_uia_runtime_UIAPacket_Hdr *)obj->buffer,
+                obj->pktSequenceNum,
+                obj->eventSequenceNum);
+    }
+    else {
+        obj->write = writePtr;
+    }
+
+    ((ti_uia_runtime_QueueDescriptor_Header *)obj->hdr)->partialPacketWritePtr =
+        (xdc_Bits32 *)obj->write;
+}
+
+/*
+ *  ======== ti_uia_loggers_LoggerRunMode_write0__E =========
+ */
+Void ti_uia_loggers_LoggerRunMode_write0__E(
+                                    ti_uia_loggers_LoggerRunMode_Object *obj,
+                                    xdc_runtime_Log_Event evt,
+                                    xdc_runtime_Types_ModuleId mid)
+{
+    UInt key = ti_sysbios_hal_Hwi_disable();
+    UArg *writePtr;
+
+    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid,
+            `write0EventSizeInBytes`);
+
+% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
+    if (writePtr == NULL) {
+        ti_sysbios_hal_Hwi_restore(key);
+        return;
+    }
+%}
+
+    obj->eventSequenceNum++;
+% if (isJTAG) {
+    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+            0,
+            `write0EventSizeInBytes`,
+            obj->eventSequenceNum,
+            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
+%}
+    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
+
+    ti_sysbios_hal_Hwi_restore(key);
+}
+
+/*
+ *  ======== ti_uia_loggers_LoggerRunMode_write1__E =========
+ */
+Void ti_uia_loggers_LoggerRunMode_write1__E(
+                                    ti_uia_loggers_LoggerRunMode_Object *obj,
+                                    xdc_runtime_Log_Event evt,
+                                    xdc_runtime_Types_ModuleId mid, IArg a1)
+{
+    UInt key = ti_sysbios_hal_Hwi_disable();
+    UArg *writePtr;
+
+    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid,
+            `write1EventSizeInBytes`);
+
+% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
+    if (writePtr == NULL) {
+        ti_sysbios_hal_Hwi_restore(key);
+        return;
+    }
+%}
+
+    *writePtr++ = (UArg)a1;
+
+    obj->eventSequenceNum++;
+% if (isJTAG) {
+    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+            0,
+            `write1EventSizeInBytes`,
+            obj->eventSequenceNum,
+            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
+%}
+    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
+
+    ti_sysbios_hal_Hwi_restore(key);
+}
+
+/*
+ *  ======== ti_uia_loggers_LoggerRunMode_write2__E =========
+ */
+Void ti_uia_loggers_LoggerRunMode_write2__E(
+                                    ti_uia_loggers_LoggerRunMode_Object *obj,
+                                    xdc_runtime_Log_Event evt,
+                                    xdc_runtime_Types_ModuleId mid,
+                                    IArg a1, IArg a2)
+{
+    UInt key = ti_sysbios_hal_Hwi_disable();
+    UArg *writePtr;
+
+    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid,
+            `write2EventSizeInBytes`);
+
+% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
+    if (writePtr == NULL) {
+        ti_sysbios_hal_Hwi_restore(key);
+        return;
+    }
+%}
+
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
+
+    obj->eventSequenceNum++;
+% if (isJTAG) {
+    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+            0,
+            `write2EventSizeInBytes`,
+            obj->eventSequenceNum,
+            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
+%}
+    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
+
+    ti_sysbios_hal_Hwi_restore(key);
+}
+
+/*
+ *  ======== ti_uia_loggers_LoggerRunMode_write4__E =========
+ */
+Void ti_uia_loggers_LoggerRunMode_write4__E(
+                                    ti_uia_loggers_LoggerRunMode_Object *obj,
+                                    xdc_runtime_Log_Event evt,
+                                    xdc_runtime_Types_ModuleId mid,
+                                    IArg a1, IArg a2, IArg a3, IArg a4)
+{
+    UInt key = ti_sysbios_hal_Hwi_disable();
+    UArg *writePtr;
+
+    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid, `write4EventSizeInBytes`);
+
+% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
+    if (writePtr == NULL) {
+        ti_sysbios_hal_Hwi_restore(key);
+        return;
+    }
+%}
+
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
+    *writePtr++ = (UArg)a3;
+    *writePtr++ = (UArg)a4;
+
+    obj->eventSequenceNum++;
+% if (isJTAG) {
+    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+            0,
+            `write4EventSizeInBytes`,
+            obj->eventSequenceNum,
+            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
+%}
+    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
+
+    ti_sysbios_hal_Hwi_restore(key);
+}
+
+/*
+ *  ======== ti_uia_loggers_LoggerRunMode_write8__E =========
+ */
+Void ti_uia_loggers_LoggerRunMode_write8__E(
+        ti_uia_loggers_LoggerRunMode_Object *obj,
+        xdc_runtime_Log_Event evt,
+        xdc_runtime_Types_ModuleId mid,
+        IArg a1, IArg a2, IArg a3, IArg a4,
+        IArg a5, IArg a6, IArg a7, IArg a8)
+{
+    UInt key = ti_sysbios_hal_Hwi_disable();
+    UArg *writePtr;
+
+    writePtr = ti_uia_loggers_LoggerRunMode_writeStart__I(obj, evt, mid, `write8EventSizeInBytes`);
+
+% if (LoggerRunMode.supportLoggerDisable || LoggerRunMode.filterByLevel) {
+    if (writePtr == NULL) {
+        ti_sysbios_hal_Hwi_restore(key);
+        return;
+    }
+%}
+
+    *writePtr++ = (UArg)a1;
+    *writePtr++ = (UArg)a2;
+    *writePtr++ = (UArg)a3;
+    *writePtr++ = (UArg)a4;
+    *writePtr++ = (UArg)a5;
+    *writePtr++ = (UArg)a6;
+    *writePtr++ = (UArg)a7;
+    *writePtr++ = (UArg)a8;
+
+    obj->eventSequenceNum++;
+% if (isJTAG) {
+    *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+            0,
+            `write8EventSizeInBytes`,
+            obj->eventSequenceNum,
+            ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
+%}
+    ti_uia_loggers_LoggerRunMode_writeFinish(obj, writePtr);
+
+    ti_sysbios_hal_Hwi_restore(key);
 }
 
 /*
@@ -553,7 +576,6 @@ xdc_runtime_Diags_Mask ti_uia_loggers_LoggerRunMode_getFilterLevel__E (ti_uia_lo
 %}
 }
 
-
 /*  ======== writeMemoryRange =========
  *  logs a range of consecutive memory values.
  *
@@ -567,15 +589,15 @@ Void ti_uia_loggers_LoggerRunMode_writeMemoryRange__E(ti_uia_loggers_LoggerRunMo
                 IArg startAdrs, UInt32 lengthInMAUs)
 {
     Int i;
-    SizeT eventSizeBits32;
-    SizeT dataSizeBits32;
+    SizeT eventSizeUArgs;
+    SizeT dataSizeUArgs;
     Ptr pAdrs = iargToPtr(startAdrs);
-    SizeT headerSizeBits32;
-    SizeT lenAdjustedBits32;
+    SizeT headerSizeUArgs;
+    SizeT lenAdjustedUArgs;
     Int numRecords;
     UInt key;
-    UInt32 *writePtr = obj->write;
-
+    UArg *writePtr = obj->write;
+    UInt32 *evtHdr = (UInt32 *)obj->write;
 
 % if (LoggerRunMode.supportLoggerDisable == true) {
     if (!obj->enabled) {
@@ -583,36 +605,35 @@ Void ti_uia_loggers_LoggerRunMode_writeMemoryRange__E(ti_uia_loggers_LoggerRunMo
     }
 %}
 % if (LoggerRunMode.filterByLevel == true) {
-    if (ti_uia_loggers_LoggerRunMode_filterOutEvent__E(xdc_runtime_Log_getMask(evt))) {
+    if (ti_uia_loggers_LoggerRunMode_filterOutEvent__I(xdc_runtime_Log_getMask(evt))) {
         return;
     }
 %}
-    if (obj->maxEventSizeInBits32 == 0) {
+    if (obj->maxEventSizeUArgs == 0) {
         return;
     }
 
-    /* Size of header in 32 bit words */
-    headerSizeBits32 = `headerSizeBits32`;
+    /* Size of header in UArgs */
+    headerSizeUArgs = `headerSizeUArgs`;
 
-    /* Round up to word boundary */
-    lenAdjustedBits32 = (lengthInMAUs + sizeof(Bits32) - 1) / sizeof(Bits32);
+    /* Round up to word (UArg) boundary */
+    lenAdjustedUArgs = (lengthInMAUs + sizeof(UArg) - 1) / sizeof(UArg);
 
-    numRecords = (lenAdjustedBits32 / (obj->maxEventSizeInBits32 - headerSizeBits32)) + 1;
+    numRecords = (lenAdjustedUArgs / (obj->maxEventSizeUArgs - headerSizeUArgs)) + 1;
 
     for (i = 0; i < numRecords; i++) {
-
-        if ((headerSizeBits32 + lenAdjustedBits32) > obj->maxEventSizeInBits32) {
-            dataSizeBits32 = obj->maxEventSizeInBits32 - headerSizeBits32;
-            lenAdjustedBits32 -= dataSizeBits32;
+        if ((headerSizeUArgs + lenAdjustedUArgs) > obj->maxEventSizeUArgs) {
+            dataSizeUArgs = obj->maxEventSizeUArgs - headerSizeUArgs;
+            lenAdjustedUArgs -= dataSizeUArgs;
         }
         else {
-            dataSizeBits32 = lenAdjustedBits32;
+            dataSizeUArgs = lenAdjustedUArgs;
         }
-        eventSizeBits32 = dataSizeBits32 + headerSizeBits32;
+        eventSizeUArgs = dataSizeUArgs + headerSizeUArgs;
 
         key = ti_sysbios_hal_Hwi_disable();
 
-        if ((writePtr + eventSizeBits32) >= obj->end) {
+        if ((writePtr + eventSizeUArgs) >= obj->end) {
             ti_uia_loggers_LoggerRunMode_flush(obj);
             writePtr = obj->write;
             xdc_runtime_Assert_isTrue(writePtr != NULL, NULL);
@@ -620,32 +641,34 @@ Void ti_uia_loggers_LoggerRunMode_writeMemoryRange__E(ti_uia_loggers_LoggerRunMo
 
         /* Fill In Snapshot Event Hdr */
 % if (isJTAG) {
-        *(writePtr++) = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
-                `bits32ToBits8("eventSizeBits32")`,
+        *(evtHdr++) = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
+                eventSizeUArgs * `bytesInPtr`,
                 obj->numBytesInPrevEvent,
                 obj->eventSequenceNum,
                 `snapshotEventType`);
 % } else {
-        *(writePtr++) = ti_uia_runtime_EventHdr_genEventHdrWord1(
-                `bits32ToBits8("eventSizeBits32")`,
+        *(evtHdr++) = ti_uia_runtime_EventHdr_genEventHdrWord1(
+                eventSizeUArgs * `bytesInPtr`,
                 obj->eventSequenceNum,
                 `snapshotEventType`);
 %}
 
 % if (LoggerRunMode.isTimestampEnabled == true) {
-        writePtr = ti_uia_loggers_LoggerRunMode_fillInTimestamp(writePtr);
+        evtHdr = ti_uia_loggers_LoggerRunMode_fillInTimestamp(evtHdr);
 % }
 
-        *(writePtr++) = ((evt) & 0xffff0000) | mid;
+
+        *(evtHdr++) = ((evt) & 0xffff0000) | mid;
+        writePtr = (UArg *)evtHdr;
         *(writePtr++) = fileName;
         *(writePtr++) = lineNum;
         *(writePtr++) = snapshotId;
-        *(writePtr++) = (Bits32)pAdrs;
-        *(writePtr++) = (((`bits32ToMau("dataSizeBits32")` & 0x0FFFF)<<16) | (lengthInMAUs & 0x0FFFF));
+        *(writePtr++) = (UArg)pAdrs;
+        *(writePtr++) = ((((dataSizeUArgs * sizeof(UArg)) & 0x0FFFF)<<16) | (lengthInMAUs & 0x0FFFF));
         *(writePtr++) = fmt;
 
-        memcpy((Ptr)writePtr, pAdrs, `bits32ToMau("dataSizeBits32")`);
-        writePtr = (Ptr)((Bits32)writePtr + `bits32ToMau("dataSizeBits32")`);
+        memcpy((Ptr)writePtr, pAdrs, dataSizeUArgs * sizeof(UArg));
+        writePtr = writePtr + dataSizeUArgs;
 
         /*
          *  Update serial number even if the buffer is full or disabled.
@@ -656,7 +679,7 @@ Void ti_uia_loggers_LoggerRunMode_writeMemoryRange__E(ti_uia_loggers_LoggerRunMo
         obj->eventSequenceNum++;
 
 % if (isJTAG) {
-        obj->numBytesInPrevEvent = `bits32ToBits8("eventSizeBits32")`;
+        obj->numBytesInPrevEvent = eventSizeUArgs * `bytesInPtr`;
         *writePtr = ti_uia_runtime_EventHdr_genEventWithPrevLenHdrWord1(
                 0,
                 obj->numBytesInPrevEvent,
@@ -664,8 +687,10 @@ Void ti_uia_loggers_LoggerRunMode_writeMemoryRange__E(ti_uia_loggers_LoggerRunMo
                 ti_uia_runtime_EventHdr_HdrType_EventWithPrevLenWithNoTimestamp);
 % }
         obj->write = writePtr;
-        ((ti_uia_runtime_QueueDescriptor_Header *)obj->hdr)->partialPacketWritePtr = (xdc_Bits32 *)writePtr;
-        pAdrs = (Ptr)((Bits32)pAdrs + `bits32ToMau("dataSizeBits32")`);
+
+        ((ti_uia_runtime_QueueDescriptor_Header *)obj->hdr)->partialPacketWritePtr =
+                (xdc_Bits32 *)writePtr;
+        pAdrs = (Ptr)((UArg *)pAdrs + dataSizeUArgs);
         ti_sysbios_hal_Hwi_restore(key);
     }
     obj->write = writePtr;

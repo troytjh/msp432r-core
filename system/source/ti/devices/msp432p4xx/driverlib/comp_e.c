@@ -266,9 +266,9 @@ void COMP_E_setInterruptEdgeDirection(uint32_t comparator,
 
     // Set the edge direction that will trigger an interrupt
     if (COMP_E_RISINGEDGE == edgeDirection)
-        BITBAND_PERI(COMP_E_CMSIS(comparator)->CTL1, COMP_E_CTL1_IES_OFS) = 1;
-    else if (COMP_E_FALLINGEDGE == edgeDirection)
         BITBAND_PERI(COMP_E_CMSIS(comparator)->CTL1, COMP_E_CTL1_IES_OFS) = 0;
+    else if (COMP_E_FALLINGEDGE == edgeDirection)
+        BITBAND_PERI(COMP_E_CMSIS(comparator)->CTL1, COMP_E_CTL1_IES_OFS) = 1;
 }
 
 void COMP_E_toggleInterruptEdgeDirection(uint32_t comparator)

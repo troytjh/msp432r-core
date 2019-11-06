@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -674,7 +674,7 @@
  *  endianness of the payload.
  */
 #define ti_uia_runtime_UIAPacket_setInvalidHdr(pPktHdr, eventLength)     \
-    *((Bits32 *)(pPktHdr)) = (Bits32)ti_uia_runtime_UIAPacket_swizzle(eventLength)
+    *((UInt32 *)(pPktHdr)) = (UInt32)ti_uia_runtime_UIAPacket_swizzle(eventLength)
 
 /*
  */

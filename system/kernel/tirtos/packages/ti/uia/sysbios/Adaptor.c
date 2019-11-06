@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2016, Texas Instruments Incorporated
+ * Copyright (c) 2013-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -87,7 +87,7 @@ Int Adaptor_Module_startup(Int phase)
         for (i = 0; i < ServiceMgr_numIncomingCtrlPacketBufs +
              ServiceMgr_numOutgoingCtrlPacketBufs; i++) {
             Queue_put(Adaptor_module->freeMsgQ, elem);
-            elem = (Queue_Elem *)((UInt)elem + ServiceMgr_maxCtrlPacketSize +
+            elem = (Queue_Elem *)((Char *)elem + ServiceMgr_maxCtrlPacketSize +
                                   sizeof(Queue_Elem));
         }
     }
@@ -96,7 +96,7 @@ Int Adaptor_Module_startup(Int phase)
     elem = (Queue_Elem *)Adaptor_eventBuf;
     for (i = 0; i < ServiceMgr_numEventPacketBufs; i++) {
         Queue_put(Adaptor_module->freeEventQ, elem);
-        elem = (Queue_Elem *)((UInt)elem + ServiceMgr_maxEventPacketSize +
+        elem = (Queue_Elem *)((Char *)elem + ServiceMgr_maxEventPacketSize +
                               sizeof(Queue_Elem));
     }
 
@@ -129,7 +129,7 @@ Void Adaptor_freePacket(UIAPacket_Hdr *packet)
     Queue_Elem *elem;
     UIAPacket_HdrType type = UIAPacket_getHdrType(packet);
 
-    elem = (Queue_Elem *)((UInt)packet - sizeof(Queue_Elem));
+    elem = (Queue_Elem *)((Char *)packet - sizeof(Queue_Elem));
 
     /* Determine the type of header to place on the correct queue */
     if (type == UIAPacket_HdrType_EventPkt) {
@@ -232,7 +232,7 @@ Void Adaptor_rxTaskFxn(UArg arg, UArg unused)
             (UIAPacket_getHdrType(packet) == UIAPacket_HdrType_Msg)) {
 
             /* The Queue elem is just above the packet */
-            entry = (Adaptor_Entry *)((UInt)packet - sizeof(Queue_Elem));
+            entry = (Adaptor_Entry *)((Char *)packet - sizeof(Queue_Elem));
 
             Queue_put(Adaptor_module->incomingQ, (Queue_Elem *)entry);
             Event_post(Adaptor_module->event, Event_Id_01);
@@ -271,13 +271,13 @@ Bool Adaptor_sendPacket(UIAPacket_Hdr *packet)
      *  If the call is being made in the context of the transferAgent,
      *  just call the Adaptor directly.
      */
-    if ((Adaptor_module->transferAgentHandle == Task_self())) {
+    if (Adaptor_module->transferAgentHandle == Task_self()) {
         status = Adaptor_sendToHost(packet);
     }
     else {
 
         /* Not in the transfer agent's context. Put it on the outgoing queue */
-        entry = (Adaptor_Entry *)((UInt)packet - sizeof(Queue_Elem));
+        entry = (Adaptor_Entry *)((Char *)packet - sizeof(Queue_Elem));
 
         Queue_put(Adaptor_module->outgoingQ, (Queue_Elem *)entry);
         Event_post(Adaptor_module->event, Event_Id_03);
@@ -304,7 +304,7 @@ Void Adaptor_setPeriod(Int id, UInt32 periodInMs)
     if (periodInMs == 0) {
         adjPeriod = periodInMs;
     }
-    else if (periodInMs < ServiceMgr_periodInMs) {
+    else if (periodInMs < (UInt32)ServiceMgr_periodInMs) {
         adjPeriod = ServiceMgr_periodInMs;
     }
     else {
@@ -402,7 +402,7 @@ Void Adaptor_transferAgentTaskFxn(UArg arg, UArg unused)
  */
 Void Adaptor_giveEnergy()
 {
-    UInt id;
+    Int id;
     UInt key;
 
     for (id = 0; id < ServiceMgr_getNumServices(); id++) {
@@ -488,7 +488,7 @@ Void Adaptor_sendToService(Adaptor_Entry *entry)
  */
 Void Adaptor_runScheduledServices(Void)
 {
-    UInt id;
+    Int id;
     UInt key;
     UInt32 currentTime;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,32 +45,6 @@
  *
  *  Refer to @ref UART.h for a complete description of APIs and example of use.
  *
- *  # Stack requirements #
- *  The UARTMSP432 driver is a (ring) buffered driver, and stores data it may
- *  have already received in a user-supplied background buffer.
- *  @sa ::UARTMSP432_HWAttrsV1
- *
- *  While permitted, it is STRONGLY suggested to avoid implementations where
- *  UART_read() is called within its own callback function (when in
- *  UART_MODE_CALLBACK).  Doing so, will require additional (task and system)
- *  stack for each nested UART_read() call.
- *
- *  Tool chain | Number of bytes per nested UART_read call
- *  ---------- | ------------------------------------------------
- *  GNU        |  96 bytes + callback function stack requirements
- *  IAR        |  40 bytes + callback function stack requirements
- *  TI         |  80 bytes + callback function stack requirements
- *
- *  It is important to note a potential worst case scenario:
- *     - A full ring buffer of size, say 32 bytes
- *     - The callback function calls UART_read() with a size of 1 (byte)
- *     - No other variables are allocated in the callback function
- *     - No other function calls are made in the callback function
- *
- *  As a result, you need an additional task and system stack of:
- *  32 bytes  * (80 bytes for TI + 0 bytes by the callback function) = 2.5kB
- *
- *
  *  # Device Specific Pin Mode Macros #
  *  This header file contains port/pin macros for pin configuration. These
  *  macros are used to select the pins used for UART TX and RX in the
@@ -111,10 +85,6 @@
 #ifndef ti_drivers_uart_UARTMSP432__include
 #define ti_drivers_uart_UARTMSP432__include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -128,6 +98,10 @@ extern "C" {
 #include <ti/drivers/utils/RingBuf.h>
 
 #include <ti/devices/msp432p4xx/inc/msp.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define UARTMSP432_P1_2_UCA0RXD  0x00000112  /* Primary, port 1, pin 2 */
 #define UARTMSP432_P1_3_UCA0TXD  0x00000113  /* Primary, port 1, pin 3 */
@@ -359,6 +333,20 @@ extern "C" {
 extern const UART_FxnTable UARTMSP432_fxnTable;
 
 /*!
+ *  @brief      The definition of an optional callback function used by the UART
+ *              driver to notify the application when a receive error (FIFO overrun,
+ *              parity error, etc) occurs.
+ *
+ *  @param      UART_Handle             UART_Handle
+ *
+ *  @param      error                   The current value of the receive
+ *                                      status register.  Please refer to the
+ *                                      device data sheet to interpret this
+ *                                      value.
+ */
+typedef void (*UARTMSP432_ErrorCallback) (UART_Handle handle,  uint32_t error);
+
+/*!
  *  @brief Complement set of read functions to be used by the UART ISR and
  *         UARTMSP432_read(). Internal use only.
  *
@@ -379,7 +367,7 @@ extern const UART_FxnTable UARTMSP432_fxnTable;
  *
  *  readIsrFxn:     The required ISR counterpart to readTaskFxn
  */
-typedef struct UARTMSP432_FxnSet {
+typedef struct {
     bool (*readIsrFxn)  (UART_Handle handle);
     int  (*readTaskFxn) (UART_Handle handle);
 } UARTMSP432_FxnSet;
@@ -414,14 +402,14 @@ typedef struct UARTMSP432_FxnSet {
  *  };
  *  @endcode
  */
-typedef struct UARTMSP432_BaudrateConfig {
-    uint32_t  outputBaudrate; /*! Search criteria: desired baudrate */
-    uint32_t  inputClockFreq; /*! Search criteria: given this input clock frequency */
+typedef struct {
+    uint32_t  outputBaudrate; /*!< Search criteria: desired baudrate */
+    uint32_t  inputClockFreq; /*!< Search criteria: given this input clock frequency */
 
-    uint16_t  prescalar;      /*! Clock prescalar */
-    uint8_t   hwRegUCBRFx;    /*! UCBRFx lookup entry */
-    uint8_t   hwRegUCBRSx;    /*! UCBRSx lookup entry */
-    uint8_t   oversampling;   /*! Oversampling mode (1: True; 0: False) */
+    uint16_t  prescalar;      /*!< Clock prescalar */
+    uint8_t   hwRegUCBRFx;    /*!< UCBRFx lookup entry */
+    uint8_t   hwRegUCBRSx;    /*!< UCBRSx lookup entry */
+    uint8_t   oversampling;   /*!< Oversampling mode (1: True; 0: False) */
 } UARTMSP432_BaudrateConfig;
 
 /*!
@@ -458,6 +446,7 @@ typedef struct UARTMSP432_BaudrateConfig {
  *          .baudrateLUT = uartMSP432Baudrates,
  *          .ringBufPtr  = uartMSP432RingBuffer[0],
  *          .ringBufSize = sizeof(uartMSP432RingBuffer[0]),
+ *          .errorFxn = NULL
  *      },
  *      {
  *          .baseAddr = EUSCI_A2_BASE,
@@ -470,11 +459,12 @@ typedef struct UARTMSP432_BaudrateConfig {
  *          .baudrateLUT = uartMSP432Baudrates
  *          .ringBufPtr  = uartMSP432RingBuffer[1],
  *          .ringBufSize = sizeof(uartMSP432RingBuffer[1]),
+ *          .errorFxn = NULL
  *      }
  *  };
  *  @endcode
  */
-typedef struct UARTMSP432_HWAttrsV1 {
+typedef struct {
     /*! UART Peripheral's base address */
     unsigned int    baseAddr;
     /*! UART Peripheral's interrupt vector */
@@ -483,11 +473,11 @@ typedef struct UARTMSP432_HWAttrsV1 {
     unsigned int    intPriority;
     /*! UART Clock source */
     uint8_t         clockSource;
-    /*!< UART Bit order */
+    /*! UART Bit order */
     uint32_t        bitOrder;
-    /*!< Number of UARTMSP432_BaudrateConfig entries */
+    /*! Number of UARTMSP432_BaudrateConfig entries */
     uint8_t         numBaudrateEntries;
-    /*!< Pointer to a table of possible UARTMSP432_BaudrateConfig entries */
+    /*! Pointer to a table of possible UARTMSP432_BaudrateConfig entries */
     UARTMSP432_BaudrateConfig const *baudrateLUT;
     /*! Pointer to a application ring buffer */
     unsigned char  *ringBufPtr;
@@ -496,6 +486,8 @@ typedef struct UARTMSP432_HWAttrsV1 {
 
     uint16_t        rxPin;
     uint16_t        txPin;
+    /*! Application error function to be called on receive errors */
+    UARTMSP432_ErrorCallback errorFxn;
 } UARTMSP432_HWAttrsV1;
 
 /*!
@@ -503,7 +495,7 @@ typedef struct UARTMSP432_HWAttrsV1 {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct UARTMSP432_Object {
+typedef struct {
     /* UART state variable */
     struct {
         bool             opened:1;         /* Has the obj been opened */
@@ -533,6 +525,10 @@ typedef struct UARTMSP432_Object {
         bool             rxEnabled:1;
         /* Flag to keep the state of the write Power constraints */
         bool             txEnabled:1;
+
+        /* Flags to prevent recursion in read callback mode */
+        bool             inReadCallback:1;
+        volatile bool    readCallbackPending:1;
     } state;
 
     HwiP_Handle          hwiHandle;        /* Hwi handle for interrupts */
@@ -540,6 +536,7 @@ typedef struct UARTMSP432_Object {
     uint32_t             baudRate;         /* Baud rate for UART */
     UART_STOP            stopBits;         /* Stop bits for UART */
     UART_PAR             parityType;       /* Parity bit type for UART */
+    UART_LEN             dataLength;       /* 7 or 8-bit data supported */
 
     /* UART read variables */
     RingBuf_Object       ringBuffer;       /* local circular buffer object */

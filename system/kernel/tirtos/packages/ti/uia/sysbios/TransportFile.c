@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -93,7 +93,7 @@ Ptr TransportFile_start(UIAPacket_HdrType hdrType)
     }
     if (TransportFile_useDefaultFileName == TRUE) {
         sprintf(TransportFile_fileName, "%s%d.bin", DEFAULTFILE,
-            DNUM);
+            (Int)DNUM);
     }
 
     System_printf("Filename = %s\n", TransportFile_fileName);
@@ -127,7 +127,8 @@ SizeT TransportFile_send(Ptr handle, UIAPacket_Hdr **packet)
         eventSize = UIAPacket_getEventLength(*packet);
         writeSize = fwrite(*packet, 4, 4, handle);
         writeSize *= 4;
-        writeSize += fwrite((Char *)((UInt)*packet + 16), 1, eventSize - 16, handle);
+        writeSize += fwrite((Char *)((Char *)*packet + 16), 1, eventSize - 16,
+                handle);
         if (writeSize != eventSize) {
             successFlag = FALSE;
         }

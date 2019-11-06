@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -33,10 +33,12 @@
 #define ti_sysbios_interfaces_ITimestamp__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_ITimestamp___VERS 200
@@ -108,26 +110,26 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_ITimestamp_Module
 
 /* get32_{FxnT,fxnP} */
 typedef xdc_Bits32 (*ti_sysbios_interfaces_ITimestamp_get32_FxnT)(void);
-static inline ti_sysbios_interfaces_ITimestamp_get32_FxnT ti_sysbios_interfaces_ITimestamp_get32_fxnP(ti_sysbios_interfaces_ITimestamp_Module __mod);
-static inline ti_sysbios_interfaces_ITimestamp_get32_FxnT ti_sysbios_interfaces_ITimestamp_get32_fxnP(ti_sysbios_interfaces_ITimestamp_Module __mod)
+static inline ti_sysbios_interfaces_ITimestamp_get32_FxnT ti_sysbios_interfaces_ITimestamp_get32_fxnP(ti_sysbios_interfaces_ITimestamp_Module mod);
+static inline ti_sysbios_interfaces_ITimestamp_get32_FxnT ti_sysbios_interfaces_ITimestamp_get32_fxnP(ti_sysbios_interfaces_ITimestamp_Module mod)
 {
-    return (ti_sysbios_interfaces_ITimestamp_get32_FxnT)__mod->get32;
+    return (ti_sysbios_interfaces_ITimestamp_get32_FxnT)mod->get32;
 }
 
 /* get64_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_ITimestamp_get64_FxnT)(xdc_runtime_Types_Timestamp64* result);
-static inline ti_sysbios_interfaces_ITimestamp_get64_FxnT ti_sysbios_interfaces_ITimestamp_get64_fxnP(ti_sysbios_interfaces_ITimestamp_Module __mod);
-static inline ti_sysbios_interfaces_ITimestamp_get64_FxnT ti_sysbios_interfaces_ITimestamp_get64_fxnP(ti_sysbios_interfaces_ITimestamp_Module __mod)
+static inline ti_sysbios_interfaces_ITimestamp_get64_FxnT ti_sysbios_interfaces_ITimestamp_get64_fxnP(ti_sysbios_interfaces_ITimestamp_Module mod);
+static inline ti_sysbios_interfaces_ITimestamp_get64_FxnT ti_sysbios_interfaces_ITimestamp_get64_fxnP(ti_sysbios_interfaces_ITimestamp_Module mod)
 {
-    return (ti_sysbios_interfaces_ITimestamp_get64_FxnT)__mod->get64;
+    return (ti_sysbios_interfaces_ITimestamp_get64_FxnT)mod->get64;
 }
 
 /* getFreq_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_ITimestamp_getFreq_FxnT)(xdc_runtime_Types_FreqHz* freq);
-static inline ti_sysbios_interfaces_ITimestamp_getFreq_FxnT ti_sysbios_interfaces_ITimestamp_getFreq_fxnP(ti_sysbios_interfaces_ITimestamp_Module __mod);
-static inline ti_sysbios_interfaces_ITimestamp_getFreq_FxnT ti_sysbios_interfaces_ITimestamp_getFreq_fxnP(ti_sysbios_interfaces_ITimestamp_Module __mod)
+static inline ti_sysbios_interfaces_ITimestamp_getFreq_FxnT ti_sysbios_interfaces_ITimestamp_getFreq_fxnP(ti_sysbios_interfaces_ITimestamp_Module mod);
+static inline ti_sysbios_interfaces_ITimestamp_getFreq_FxnT ti_sysbios_interfaces_ITimestamp_getFreq_fxnP(ti_sysbios_interfaces_ITimestamp_Module mod)
 {
-    return (ti_sysbios_interfaces_ITimestamp_getFreq_FxnT)__mod->getFreq;
+    return (ti_sysbios_interfaces_ITimestamp_getFreq_FxnT)mod->getFreq;
 }
 
 
@@ -150,12 +152,12 @@ static inline ti_sysbios_interfaces_ITimestamp_Module ti_sysbios_interfaces_ITim
 static inline ti_sysbios_interfaces_ITimestamp_Module ti_sysbios_interfaces_ITimestamp_Module_downCast(xdc_runtime_ITimestampProvider_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_sysbios_interfaces_ITimestamp_Interface__BASE__C) {
             return (ti_sysbios_interfaces_ITimestamp_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ITimestampProvider */
@@ -176,12 +178,12 @@ static inline ti_sysbios_interfaces_ITimestamp_Module ti_sysbios_interfaces_ITim
 static inline ti_sysbios_interfaces_ITimestamp_Module ti_sysbios_interfaces_ITimestamp_Module_downCast2(xdc_runtime_ITimestampClient_Module m)
 {
     const xdc_runtime_Types_Base* b;
-    for (b = m->__base; b; b = b->base) {
+    for (b = m->__base; b != NULL; b = b->base) {
         if (b == &ti_sysbios_interfaces_ITimestamp_Interface__BASE__C) {
             return (ti_sysbios_interfaces_ITimestamp_Module)m;
         }
     }
-    return 0;
+    return NULL;
 }
 
 /* Module_from_xdc_runtime_ITimestampClient */

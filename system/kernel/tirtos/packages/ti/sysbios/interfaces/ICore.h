@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -32,10 +32,12 @@
 #define ti_sysbios_interfaces_ICore__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_sysbios_interfaces_ICore___VERS 200
@@ -98,52 +100,52 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_ICore_Module_id(t
 }
 
 /* getId */
-static inline xdc_UInt ti_sysbios_interfaces_ICore_getId(ti_sysbios_interfaces_ICore_Module __mod);
-static inline xdc_UInt ti_sysbios_interfaces_ICore_getId( ti_sysbios_interfaces_ICore_Module __mod )
+static inline xdc_UInt ti_sysbios_interfaces_ICore_getId(ti_sysbios_interfaces_ICore_Module mod);
+static inline xdc_UInt ti_sysbios_interfaces_ICore_getId( ti_sysbios_interfaces_ICore_Module mod )
 {
-    return __mod->getId();
+    return mod->getId();
 }
 
 /* interruptCore */
-static inline xdc_Void ti_sysbios_interfaces_ICore_interruptCore(ti_sysbios_interfaces_ICore_Module __mod, xdc_UInt coreId);
-static inline xdc_Void ti_sysbios_interfaces_ICore_interruptCore( ti_sysbios_interfaces_ICore_Module __mod, xdc_UInt coreId )
+static inline xdc_Void ti_sysbios_interfaces_ICore_interruptCore(ti_sysbios_interfaces_ICore_Module mod, xdc_UInt coreId);
+static inline xdc_Void ti_sysbios_interfaces_ICore_interruptCore( ti_sysbios_interfaces_ICore_Module mod, xdc_UInt coreId )
 {
-    __mod->interruptCore(coreId);
+    mod->interruptCore(coreId);
 }
 
 /* lock */
-static inline xdc_IArg ti_sysbios_interfaces_ICore_lock(ti_sysbios_interfaces_ICore_Module __mod);
-static inline xdc_IArg ti_sysbios_interfaces_ICore_lock( ti_sysbios_interfaces_ICore_Module __mod )
+static inline xdc_IArg ti_sysbios_interfaces_ICore_lock(ti_sysbios_interfaces_ICore_Module mod);
+static inline xdc_IArg ti_sysbios_interfaces_ICore_lock( ti_sysbios_interfaces_ICore_Module mod )
 {
-    return __mod->lock();
+    return mod->lock();
 }
 
 /* unlock */
-static inline xdc_Void ti_sysbios_interfaces_ICore_unlock(ti_sysbios_interfaces_ICore_Module __mod);
-static inline xdc_Void ti_sysbios_interfaces_ICore_unlock( ti_sysbios_interfaces_ICore_Module __mod )
+static inline xdc_Void ti_sysbios_interfaces_ICore_unlock(ti_sysbios_interfaces_ICore_Module mod);
+static inline xdc_Void ti_sysbios_interfaces_ICore_unlock( ti_sysbios_interfaces_ICore_Module mod )
 {
-    __mod->unlock();
+    mod->unlock();
 }
 
 /* hwiDisable */
-static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiDisable(ti_sysbios_interfaces_ICore_Module __mod);
-static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiDisable( ti_sysbios_interfaces_ICore_Module __mod )
+static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiDisable(ti_sysbios_interfaces_ICore_Module mod);
+static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiDisable( ti_sysbios_interfaces_ICore_Module mod )
 {
-    return __mod->hwiDisable();
+    return mod->hwiDisable();
 }
 
 /* hwiEnable */
-static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiEnable(ti_sysbios_interfaces_ICore_Module __mod);
-static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiEnable( ti_sysbios_interfaces_ICore_Module __mod )
+static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiEnable(ti_sysbios_interfaces_ICore_Module mod);
+static inline xdc_UInt ti_sysbios_interfaces_ICore_hwiEnable( ti_sysbios_interfaces_ICore_Module mod )
 {
-    return __mod->hwiEnable();
+    return mod->hwiEnable();
 }
 
 /* hwiRestore */
-static inline xdc_Void ti_sysbios_interfaces_ICore_hwiRestore(ti_sysbios_interfaces_ICore_Module __mod, xdc_UInt key);
-static inline xdc_Void ti_sysbios_interfaces_ICore_hwiRestore( ti_sysbios_interfaces_ICore_Module __mod, xdc_UInt key )
+static inline xdc_Void ti_sysbios_interfaces_ICore_hwiRestore(ti_sysbios_interfaces_ICore_Module mod, xdc_UInt key);
+static inline xdc_Void ti_sysbios_interfaces_ICore_hwiRestore( ti_sysbios_interfaces_ICore_Module mod, xdc_UInt key )
 {
-    __mod->hwiRestore(key);
+    mod->hwiRestore(key);
 }
 
 
@@ -160,58 +162,58 @@ static inline xdc_Void ti_sysbios_interfaces_ICore_hwiRestore( ti_sysbios_interf
 
 /* getId_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_ICore_getId_FxnT)(void);
-static inline ti_sysbios_interfaces_ICore_getId_FxnT ti_sysbios_interfaces_ICore_getId_fxnP(ti_sysbios_interfaces_ICore_Module __mod);
-static inline ti_sysbios_interfaces_ICore_getId_FxnT ti_sysbios_interfaces_ICore_getId_fxnP(ti_sysbios_interfaces_ICore_Module __mod)
+static inline ti_sysbios_interfaces_ICore_getId_FxnT ti_sysbios_interfaces_ICore_getId_fxnP(ti_sysbios_interfaces_ICore_Module mod);
+static inline ti_sysbios_interfaces_ICore_getId_FxnT ti_sysbios_interfaces_ICore_getId_fxnP(ti_sysbios_interfaces_ICore_Module mod)
 {
-    return (ti_sysbios_interfaces_ICore_getId_FxnT)__mod->getId;
+    return (ti_sysbios_interfaces_ICore_getId_FxnT)mod->getId;
 }
 
 /* interruptCore_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_ICore_interruptCore_FxnT)(xdc_UInt coreId);
-static inline ti_sysbios_interfaces_ICore_interruptCore_FxnT ti_sysbios_interfaces_ICore_interruptCore_fxnP(ti_sysbios_interfaces_ICore_Module __mod);
-static inline ti_sysbios_interfaces_ICore_interruptCore_FxnT ti_sysbios_interfaces_ICore_interruptCore_fxnP(ti_sysbios_interfaces_ICore_Module __mod)
+static inline ti_sysbios_interfaces_ICore_interruptCore_FxnT ti_sysbios_interfaces_ICore_interruptCore_fxnP(ti_sysbios_interfaces_ICore_Module mod);
+static inline ti_sysbios_interfaces_ICore_interruptCore_FxnT ti_sysbios_interfaces_ICore_interruptCore_fxnP(ti_sysbios_interfaces_ICore_Module mod)
 {
-    return (ti_sysbios_interfaces_ICore_interruptCore_FxnT)__mod->interruptCore;
+    return (ti_sysbios_interfaces_ICore_interruptCore_FxnT)mod->interruptCore;
 }
 
 /* lock_{FxnT,fxnP} */
 typedef xdc_IArg (*ti_sysbios_interfaces_ICore_lock_FxnT)(void);
-static inline ti_sysbios_interfaces_ICore_lock_FxnT ti_sysbios_interfaces_ICore_lock_fxnP(ti_sysbios_interfaces_ICore_Module __mod);
-static inline ti_sysbios_interfaces_ICore_lock_FxnT ti_sysbios_interfaces_ICore_lock_fxnP(ti_sysbios_interfaces_ICore_Module __mod)
+static inline ti_sysbios_interfaces_ICore_lock_FxnT ti_sysbios_interfaces_ICore_lock_fxnP(ti_sysbios_interfaces_ICore_Module mod);
+static inline ti_sysbios_interfaces_ICore_lock_FxnT ti_sysbios_interfaces_ICore_lock_fxnP(ti_sysbios_interfaces_ICore_Module mod)
 {
-    return (ti_sysbios_interfaces_ICore_lock_FxnT)__mod->lock;
+    return (ti_sysbios_interfaces_ICore_lock_FxnT)mod->lock;
 }
 
 /* unlock_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_ICore_unlock_FxnT)(void);
-static inline ti_sysbios_interfaces_ICore_unlock_FxnT ti_sysbios_interfaces_ICore_unlock_fxnP(ti_sysbios_interfaces_ICore_Module __mod);
-static inline ti_sysbios_interfaces_ICore_unlock_FxnT ti_sysbios_interfaces_ICore_unlock_fxnP(ti_sysbios_interfaces_ICore_Module __mod)
+static inline ti_sysbios_interfaces_ICore_unlock_FxnT ti_sysbios_interfaces_ICore_unlock_fxnP(ti_sysbios_interfaces_ICore_Module mod);
+static inline ti_sysbios_interfaces_ICore_unlock_FxnT ti_sysbios_interfaces_ICore_unlock_fxnP(ti_sysbios_interfaces_ICore_Module mod)
 {
-    return (ti_sysbios_interfaces_ICore_unlock_FxnT)__mod->unlock;
+    return (ti_sysbios_interfaces_ICore_unlock_FxnT)mod->unlock;
 }
 
 /* hwiDisable_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_ICore_hwiDisable_FxnT)(void);
-static inline ti_sysbios_interfaces_ICore_hwiDisable_FxnT ti_sysbios_interfaces_ICore_hwiDisable_fxnP(ti_sysbios_interfaces_ICore_Module __mod);
-static inline ti_sysbios_interfaces_ICore_hwiDisable_FxnT ti_sysbios_interfaces_ICore_hwiDisable_fxnP(ti_sysbios_interfaces_ICore_Module __mod)
+static inline ti_sysbios_interfaces_ICore_hwiDisable_FxnT ti_sysbios_interfaces_ICore_hwiDisable_fxnP(ti_sysbios_interfaces_ICore_Module mod);
+static inline ti_sysbios_interfaces_ICore_hwiDisable_FxnT ti_sysbios_interfaces_ICore_hwiDisable_fxnP(ti_sysbios_interfaces_ICore_Module mod)
 {
-    return (ti_sysbios_interfaces_ICore_hwiDisable_FxnT)__mod->hwiDisable;
+    return (ti_sysbios_interfaces_ICore_hwiDisable_FxnT)mod->hwiDisable;
 }
 
 /* hwiEnable_{FxnT,fxnP} */
 typedef xdc_UInt (*ti_sysbios_interfaces_ICore_hwiEnable_FxnT)(void);
-static inline ti_sysbios_interfaces_ICore_hwiEnable_FxnT ti_sysbios_interfaces_ICore_hwiEnable_fxnP(ti_sysbios_interfaces_ICore_Module __mod);
-static inline ti_sysbios_interfaces_ICore_hwiEnable_FxnT ti_sysbios_interfaces_ICore_hwiEnable_fxnP(ti_sysbios_interfaces_ICore_Module __mod)
+static inline ti_sysbios_interfaces_ICore_hwiEnable_FxnT ti_sysbios_interfaces_ICore_hwiEnable_fxnP(ti_sysbios_interfaces_ICore_Module mod);
+static inline ti_sysbios_interfaces_ICore_hwiEnable_FxnT ti_sysbios_interfaces_ICore_hwiEnable_fxnP(ti_sysbios_interfaces_ICore_Module mod)
 {
-    return (ti_sysbios_interfaces_ICore_hwiEnable_FxnT)__mod->hwiEnable;
+    return (ti_sysbios_interfaces_ICore_hwiEnable_FxnT)mod->hwiEnable;
 }
 
 /* hwiRestore_{FxnT,fxnP} */
 typedef xdc_Void (*ti_sysbios_interfaces_ICore_hwiRestore_FxnT)(xdc_UInt key);
-static inline ti_sysbios_interfaces_ICore_hwiRestore_FxnT ti_sysbios_interfaces_ICore_hwiRestore_fxnP(ti_sysbios_interfaces_ICore_Module __mod);
-static inline ti_sysbios_interfaces_ICore_hwiRestore_FxnT ti_sysbios_interfaces_ICore_hwiRestore_fxnP(ti_sysbios_interfaces_ICore_Module __mod)
+static inline ti_sysbios_interfaces_ICore_hwiRestore_FxnT ti_sysbios_interfaces_ICore_hwiRestore_fxnP(ti_sysbios_interfaces_ICore_Module mod);
+static inline ti_sysbios_interfaces_ICore_hwiRestore_FxnT ti_sysbios_interfaces_ICore_hwiRestore_fxnP(ti_sysbios_interfaces_ICore_Module mod)
 {
-    return (ti_sysbios_interfaces_ICore_hwiRestore_FxnT)__mod->hwiRestore;
+    return (ti_sysbios_interfaces_ICore_hwiRestore_FxnT)mod->hwiRestore;
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,12 +66,12 @@
  *  ### MPS432 Capture Driver Configuration #
  *
  *  In order to use the Capture APIs, the application is required
- *  to define 4 configuration items in the application Board.c file:
+ *  to define 4 configuration items in the application ti_drivers_config.c file:
  *
  *  1.  An array of CaptureMSP432_Object elements, which will be used by
  *  by the driver to maintain instance state.
  *  Below is an example CaptureMSP432_Object array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *    #include <ti/drivers/Capture.h>
  *    #include <ti/drivers/capture/CaptureMSP432.h>
@@ -83,7 +83,7 @@
  *  pin will be used by the corresponding capture instance
  *  (see @ref capturePortIdentifiersMSP432).
  *  Below is an example CaptureMSP432_HWAttrs array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *  const CaptureMSP432_HWAttrs captureMSP432HWAttrs[2] = {
  *      {
@@ -108,7 +108,7 @@
  *  table, the device specific capture object instance, and the device specific
  *  Hardware Attributes to be used for each capture channel.
  *  Below is an example @ref Capture_Config array appropriate for the MSP432
- *  Launchpad board:
+ *  LaunchPad board:
  *  @code
  *    const Capture_Config Capture_config[2] = {
  *      {
@@ -151,15 +151,18 @@
  *    - After Capture_stop(): Conditions are equal as for after Capture_open.
  *    - After Capture_close(): The underlying GPTimer is turned off, and the
  *      clocks to the timer and pin are disabled.
+ *
+ *  # Capture Modes #
+ *  This device implementation only works with the following  modes for
+ *  #Capture_Mode :
+ *    - #Capture_RISING_EDGE
+ *    - #Capture_FALLING_EDGE
+ *    - #Capture_ANY_EDGE
+ *  All other modes will fail.
  ******************************************************************************
  */
 #ifndef ti_drivers_capture_CaptureMSP432__include
 #define ti_drivers_capture_CaptureMSP432__include
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -170,6 +173,11 @@ extern "C"
 
 #include <ti/devices/DeviceFamily.h>
 #include <ti/devices/msp432p4xx/driverlib/interrupt.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 /*! \cond */
 /*
@@ -748,21 +756,21 @@ extern const Capture_FxnTable CaptureMSP432_captureFxnTable;
  *  };
  *  @endcode
  */
-typedef struct CaptureMSP432_HWAttrs_ {
-    /*!< Specifies the base address of the Timer_A peripheral. */
+typedef struct {
+    /*! Specifies the base address of the Timer_A peripheral. */
     uint32_t timerBaseAddress;
 
-    /*!< Specifies the clock source for the Timer_A peripheral. */
+    /*! Specifies the clock source for the Timer_A peripheral. */
     uint32_t clockSource;
 
-    /*!< Specifies the divider applied to the clockSource. */
+    /*! Specifies the divider applied to the clockSource. */
     uint32_t clockDivider;
 
-    /*!< Predefined capture port and pin. The Timer_A peripheral used by
-     * this define should match that of timerBaseAddress. */
+    /*! Predefined capture port and pin. The Timer_A peripheral used by
+     *  this define should match that of timerBaseAddress. */
     uint32_t capturePort;
 
-    /*!< The interrupt priority. */
+    /*! The interrupt priority. */
     uint32_t intPriority;
 } CaptureMSP432_HWAttrs;
 
@@ -771,7 +779,7 @@ typedef struct CaptureMSP432_HWAttrs_ {
  *
  *  The application must not access any member variables of this structure!
  */
-typedef struct CaptureMSP432_Object_ {
+typedef struct {
     HwiP_Handle           hwiHandle;
     Capture_CallBackFxn   callBack;
     Capture_PeriodUnits   periodUnits;

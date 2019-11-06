@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Texas Instruments Incorporated
+ * Copyright (c) 2015-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,8 @@ ClockP_Handle ClockP_construct(ClockP_Struct *handle, ClockP_Fxn clockFxn,
     else {
         Clock_Params_init(&clockParams);
         clockParams.arg = params->arg;
+        clockParams.startFlag = params->startFlag;
+        clockParams.period = params->period;
         Clock_construct((Clock_Struct *)handle, (Clock_FuncPtr)clockFxn,
                 timeout, &clockParams);
     }
@@ -95,6 +97,8 @@ ClockP_Handle ClockP_create(ClockP_Fxn clockFxn, uint32_t timeout,
     else {
         Clock_Params_init(&clockParams);
         clockParams.arg = params->arg;
+        clockParams.startFlag = params->startFlag;
+        clockParams.period = params->period;
         handle = Clock_create((Clock_FuncPtr)clockFxn, timeout, &clockParams,
                 Error_IGNORE);
     }
@@ -169,6 +173,8 @@ bool ClockP_isActive(ClockP_Handle handle)
 void ClockP_Params_init(ClockP_Params *params)
 {
     params->arg = 0;
+    params->startFlag = false;
+    params->period = 0;
 }
 
 /*

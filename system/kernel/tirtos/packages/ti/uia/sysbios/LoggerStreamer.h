@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_uia_sysbios_LoggerStreamer__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_sysbios_LoggerStreamer___VERS 200
@@ -87,10 +89,10 @@ enum ti_uia_sysbios_LoggerStreamer_TransportType {
 typedef enum ti_uia_sysbios_LoggerStreamer_TransportType ti_uia_sysbios_LoggerStreamer_TransportType;
 
 /* ExchangeFxnType */
-typedef xdc_Ptr (*ti_uia_sysbios_LoggerStreamer_ExchangeFxnType)(xdc_Ptr __arg1);
+typedef xdc_Ptr (*ti_uia_sysbios_LoggerStreamer_ExchangeFxnType)(xdc_Ptr arg1);
 
 /* PrimeFxnType */
-typedef xdc_Ptr (*ti_uia_sysbios_LoggerStreamer_PrimeFxnType)(xdc_Void);
+typedef xdc_Ptr (*ti_uia_sysbios_LoggerStreamer_PrimeFxnType)(xdc_Void );
 
 /* TransferType_RELIABLE */
 #define ti_uia_sysbios_LoggerStreamer_TransferType_RELIABLE ti_uia_runtime_IUIATransfer_TransferType_RELIABLE
@@ -522,24 +524,24 @@ struct ti_uia_sysbios_LoggerStreamer_Struct {
 struct ti_uia_sysbios_LoggerStreamer_Fxns__ {
     const xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2* __sysp;
-    xdc_Bool (*enable)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    xdc_Bool (*disable)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    xdc_Void (*write0)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
-    xdc_Void (*write1)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
-    xdc_Void (*write2)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
-    xdc_Void (*write4)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
-    xdc_Void (*write8)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
-    xdc_Void (*setFilterLevel)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
-    xdc_runtime_Diags_Mask (*getFilterLevel)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Diags_EventLevel level);
-    ti_uia_runtime_IUIATransfer_TransferType (*getTransferType)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    xdc_Bool (*getContents)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT* cpSize);
-    xdc_Bool (*isEmpty)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    xdc_SizeT (*getMaxLength)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    xdc_UInt16 (*getInstanceId)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    ti_uia_runtime_IUIATransfer_Priority (*getPriority)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    xdc_Void (*setPriority)(ti_uia_sysbios_LoggerStreamer_Handle __inst, ti_uia_runtime_IUIATransfer_Priority priority);
-    xdc_Void (*reset)(ti_uia_sysbios_LoggerStreamer_Handle __inst);
-    xdc_Void (*writeMemoryRange)(ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
+    xdc_Bool (*enable)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    xdc_Bool (*disable)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    xdc_Void (*write0)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
+    xdc_Void (*write1)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
+    xdc_Void (*write2)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
+    xdc_Void (*write4)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
+    xdc_Void (*write8)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
+    xdc_Void (*setFilterLevel)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
+    xdc_runtime_Diags_Mask (*getFilterLevel)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Diags_EventLevel level);
+    ti_uia_runtime_IUIATransfer_TransferType (*getTransferType)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    xdc_Bool (*getContents)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT* cpSize);
+    xdc_Bool (*isEmpty)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    xdc_SizeT (*getMaxLength)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    xdc_UInt16 (*getInstanceId)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    ti_uia_runtime_IUIATransfer_Priority (*getPriority)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    xdc_Void (*setPriority)(ti_uia_sysbios_LoggerStreamer_Handle inst, ti_uia_runtime_IUIATransfer_Priority priority);
+    xdc_Void (*reset)(ti_uia_sysbios_LoggerStreamer_Handle inst);
+    xdc_Void (*writeMemoryRange)(ti_uia_sysbios_LoggerStreamer_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_uia_sysbios_LoggerStreamer_Module__FXNS__CR
@@ -564,15 +566,15 @@ __extern xdc_Int ti_uia_sysbios_LoggerStreamer_Module_startup__F( xdc_Int state 
 
 /* Instance_init__E */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Instance_init__E, "ti_uia_sysbios_LoggerStreamer_Instance_init")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_Instance_init__E(ti_uia_sysbios_LoggerStreamer_Object *__obj, const ti_uia_sysbios_LoggerStreamer_Params *__prms);
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_Instance_init__E(ti_uia_sysbios_LoggerStreamer_Object *obj, const ti_uia_sysbios_LoggerStreamer_Params *prms);
 
 /* create */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_create, "ti_uia_sysbios_LoggerStreamer_create")
-__extern ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_create( const ti_uia_sysbios_LoggerStreamer_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_create( const ti_uia_sysbios_LoggerStreamer_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* construct */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_construct, "ti_uia_sysbios_LoggerStreamer_construct")
-__extern void ti_uia_sysbios_LoggerStreamer_construct( ti_uia_sysbios_LoggerStreamer_Struct *__obj, const ti_uia_sysbios_LoggerStreamer_Params *__prms );
+__extern void ti_uia_sysbios_LoggerStreamer_construct(ti_uia_sysbios_LoggerStreamer_Struct *obj, const ti_uia_sysbios_LoggerStreamer_Params *prms);
 
 /* delete */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_delete, "ti_uia_sysbios_LoggerStreamer_delete")
@@ -584,150 +586,150 @@ __extern void ti_uia_sysbios_LoggerStreamer_destruct(ti_uia_sysbios_LoggerStream
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Handle__label__S, "ti_uia_sysbios_LoggerStreamer_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_sysbios_LoggerStreamer_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_sysbios_LoggerStreamer_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Module__startupDone__S, "ti_uia_sysbios_LoggerStreamer_Module__startupDone__S")
-__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Object__create__S, "ti_uia_sysbios_LoggerStreamer_Object__create__S")
-__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__create__S( xdc_CPtr __aa, const xdc_UChar *__pa, xdc_SizeT __psz, xdc_runtime_Error_Block *__eb );
+__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Object__delete__S, "ti_uia_sysbios_LoggerStreamer_Object__delete__S")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Object__get__S, "ti_uia_sysbios_LoggerStreamer_Object__get__S")
-__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Object__first__S, "ti_uia_sysbios_LoggerStreamer_Object__first__S")
-__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__first__S( void );
+__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Object__next__S, "ti_uia_sysbios_LoggerStreamer_Object__next__S")
-__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_sysbios_LoggerStreamer_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_Params__init__S, "ti_uia_sysbios_LoggerStreamer_Params__init__S")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* enable__E */
 #define ti_uia_sysbios_LoggerStreamer_enable ti_uia_sysbios_LoggerStreamer_enable__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_enable__E, "ti_uia_sysbios_LoggerStreamer_enable")
-__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_enable__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_enable__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* disable__E */
 #define ti_uia_sysbios_LoggerStreamer_disable ti_uia_sysbios_LoggerStreamer_disable__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_disable__E, "ti_uia_sysbios_LoggerStreamer_disable")
-__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_disable__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_disable__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* getTransferType__E */
 #define ti_uia_sysbios_LoggerStreamer_getTransferType ti_uia_sysbios_LoggerStreamer_getTransferType__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_getTransferType__E, "ti_uia_sysbios_LoggerStreamer_getTransferType")
-__extern ti_uia_runtime_IUIATransfer_TransferType ti_uia_sysbios_LoggerStreamer_getTransferType__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern ti_uia_runtime_IUIATransfer_TransferType ti_uia_sysbios_LoggerStreamer_getTransferType__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* getContents__E */
 #define ti_uia_sysbios_LoggerStreamer_getContents ti_uia_sysbios_LoggerStreamer_getContents__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_getContents__E, "ti_uia_sysbios_LoggerStreamer_getContents")
-__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_getContents__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize );
+__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_getContents__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize);
 
 /* isEmpty__E */
 #define ti_uia_sysbios_LoggerStreamer_isEmpty ti_uia_sysbios_LoggerStreamer_isEmpty__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_isEmpty__E, "ti_uia_sysbios_LoggerStreamer_isEmpty")
-__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_isEmpty__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_isEmpty__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* getMaxLength__E */
 #define ti_uia_sysbios_LoggerStreamer_getMaxLength ti_uia_sysbios_LoggerStreamer_getMaxLength__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_getMaxLength__E, "ti_uia_sysbios_LoggerStreamer_getMaxLength")
-__extern xdc_SizeT ti_uia_sysbios_LoggerStreamer_getMaxLength__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern xdc_SizeT ti_uia_sysbios_LoggerStreamer_getMaxLength__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* getInstanceId__E */
 #define ti_uia_sysbios_LoggerStreamer_getInstanceId ti_uia_sysbios_LoggerStreamer_getInstanceId__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_getInstanceId__E, "ti_uia_sysbios_LoggerStreamer_getInstanceId")
-__extern xdc_UInt16 ti_uia_sysbios_LoggerStreamer_getInstanceId__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern xdc_UInt16 ti_uia_sysbios_LoggerStreamer_getInstanceId__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* getPriority__E */
 #define ti_uia_sysbios_LoggerStreamer_getPriority ti_uia_sysbios_LoggerStreamer_getPriority__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_getPriority__E, "ti_uia_sysbios_LoggerStreamer_getPriority")
-__extern ti_uia_runtime_IUIATransfer_Priority ti_uia_sysbios_LoggerStreamer_getPriority__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern ti_uia_runtime_IUIATransfer_Priority ti_uia_sysbios_LoggerStreamer_getPriority__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* setPriority__E */
 #define ti_uia_sysbios_LoggerStreamer_setPriority ti_uia_sysbios_LoggerStreamer_setPriority__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_setPriority__E, "ti_uia_sysbios_LoggerStreamer_setPriority")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_setPriority__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, ti_uia_runtime_IUIATransfer_Priority priority );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_setPriority__E( ti_uia_sysbios_LoggerStreamer_Handle instp, ti_uia_runtime_IUIATransfer_Priority priority);
 
 /* reset__E */
 #define ti_uia_sysbios_LoggerStreamer_reset ti_uia_sysbios_LoggerStreamer_reset__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_reset__E, "ti_uia_sysbios_LoggerStreamer_reset")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_reset__E( ti_uia_sysbios_LoggerStreamer_Handle __inst );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_reset__E( ti_uia_sysbios_LoggerStreamer_Handle instp);
 
 /* writeMemoryRange__E */
 #define ti_uia_sysbios_LoggerStreamer_writeMemoryRange ti_uia_sysbios_LoggerStreamer_writeMemoryRange__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_writeMemoryRange__E, "ti_uia_sysbios_LoggerStreamer_writeMemoryRange")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_writeMemoryRange__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_writeMemoryRange__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_UInt32 snapshotId, xdc_IArg fileName, xdc_IArg LineNum, xdc_IArg fmt, xdc_IArg startAdrs, xdc_UInt32 lengthInMAUs);
 
 /* flush__E */
 #define ti_uia_sysbios_LoggerStreamer_flush ti_uia_sysbios_LoggerStreamer_flush__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_flush__E, "ti_uia_sysbios_LoggerStreamer_flush")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_flush__E( void );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_flush__E( void);
 
 /* prime__E */
 #define ti_uia_sysbios_LoggerStreamer_prime ti_uia_sysbios_LoggerStreamer_prime__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_prime__E, "ti_uia_sysbios_LoggerStreamer_prime")
-__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_prime__E( xdc_Ptr buffer );
+__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_prime__E( xdc_Ptr buffer);
 
 /* setModuleIdToRouteToStatusLogger__E */
 #define ti_uia_sysbios_LoggerStreamer_setModuleIdToRouteToStatusLogger ti_uia_sysbios_LoggerStreamer_setModuleIdToRouteToStatusLogger__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_setModuleIdToRouteToStatusLogger__E, "ti_uia_sysbios_LoggerStreamer_setModuleIdToRouteToStatusLogger")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_setModuleIdToRouteToStatusLogger__E( xdc_runtime_Types_ModuleId mid );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_setModuleIdToRouteToStatusLogger__E( xdc_runtime_Types_ModuleId mid);
 
 /* validatePacket__E */
 #define ti_uia_sysbios_LoggerStreamer_validatePacket ti_uia_sysbios_LoggerStreamer_validatePacket__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_validatePacket__E, "ti_uia_sysbios_LoggerStreamer_validatePacket")
-__extern xdc_Char *ti_uia_sysbios_LoggerStreamer_validatePacket__E( xdc_UInt32 *writePtr, xdc_UInt32 numBytesInPacket );
+__extern xdc_Char *ti_uia_sysbios_LoggerStreamer_validatePacket__E( xdc_UInt32 *writePtr, xdc_UInt32 numBytesInPacket);
 
 /* write0__E */
 #define ti_uia_sysbios_LoggerStreamer_write0 ti_uia_sysbios_LoggerStreamer_write0__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_write0__E, "ti_uia_sysbios_LoggerStreamer_write0")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write0__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write0__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
 
 /* write1__E */
 #define ti_uia_sysbios_LoggerStreamer_write1 ti_uia_sysbios_LoggerStreamer_write1__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_write1__E, "ti_uia_sysbios_LoggerStreamer_write1")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write1__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1 );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write1__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
 
 /* write2__E */
 #define ti_uia_sysbios_LoggerStreamer_write2 ti_uia_sysbios_LoggerStreamer_write2__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_write2__E, "ti_uia_sysbios_LoggerStreamer_write2")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write2__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2 );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write2__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
 
 /* write4__E */
 #define ti_uia_sysbios_LoggerStreamer_write4 ti_uia_sysbios_LoggerStreamer_write4__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_write4__E, "ti_uia_sysbios_LoggerStreamer_write4")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write4__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4 );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write4__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
 
 /* write8__E */
 #define ti_uia_sysbios_LoggerStreamer_write8 ti_uia_sysbios_LoggerStreamer_write8__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_write8__E, "ti_uia_sysbios_LoggerStreamer_write8")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write8__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8 );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_write8__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
 
 /* setFilterLevel__E */
 #define ti_uia_sysbios_LoggerStreamer_setFilterLevel ti_uia_sysbios_LoggerStreamer_setFilterLevel__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_setFilterLevel__E, "ti_uia_sysbios_LoggerStreamer_setFilterLevel")
-__extern xdc_Void ti_uia_sysbios_LoggerStreamer_setFilterLevel__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel );
+__extern xdc_Void ti_uia_sysbios_LoggerStreamer_setFilterLevel__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Diags_Mask mask, xdc_runtime_Diags_EventLevel filterLevel);
 
 /* getFilterLevel__E */
 #define ti_uia_sysbios_LoggerStreamer_getFilterLevel ti_uia_sysbios_LoggerStreamer_getFilterLevel__E
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_getFilterLevel__E, "ti_uia_sysbios_LoggerStreamer_getFilterLevel")
-__extern xdc_runtime_Diags_Mask ti_uia_sysbios_LoggerStreamer_getFilterLevel__E( ti_uia_sysbios_LoggerStreamer_Handle __inst, xdc_runtime_Diags_EventLevel level );
+__extern xdc_runtime_Diags_Mask ti_uia_sysbios_LoggerStreamer_getFilterLevel__E( ti_uia_sysbios_LoggerStreamer_Handle instp, xdc_runtime_Diags_EventLevel level);
 
 /* filterOutEvent__I */
 #define ti_uia_sysbios_LoggerStreamer_filterOutEvent ti_uia_sysbios_LoggerStreamer_filterOutEvent__I
 xdc__CODESECT(ti_uia_sysbios_LoggerStreamer_filterOutEvent__I, "ti_uia_sysbios_LoggerStreamer_filterOutEvent")
-__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_filterOutEvent__I( xdc_runtime_Diags_Mask mask );
+__extern xdc_Bool ti_uia_sysbios_LoggerStreamer_filterOutEvent__I( xdc_runtime_Diags_Mask mask);
 
 
 /*
@@ -759,7 +761,7 @@ static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer
 static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Handle_downCast(ti_uia_runtime_ILoggerSnapshot_Handle i)
 {
     ti_uia_runtime_ILoggerSnapshot_Handle i2 = (ti_uia_runtime_ILoggerSnapshot_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C) ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)NULL;
 }
 
 /* Handle_from_ti_uia_runtime_ILoggerSnapshot */
@@ -790,7 +792,7 @@ static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer
 static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Handle_downCast2(ti_uia_runtime_IUIATransfer_Handle i)
 {
     ti_uia_runtime_IUIATransfer_Handle i2 = (ti_uia_runtime_IUIATransfer_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C) ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)NULL;
 }
 
 /* Handle_from_ti_uia_runtime_IUIATransfer */
@@ -821,7 +823,7 @@ static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer
 static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Handle_downCast3(xdc_runtime_IFilterLogger_Handle i)
 {
     xdc_runtime_IFilterLogger_Handle i2 = (xdc_runtime_IFilterLogger_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C) ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)NULL;
 }
 
 /* Handle_from_xdc_runtime_IFilterLogger */
@@ -852,7 +854,7 @@ static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer
 static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Handle_downCast4(xdc_runtime_ILogger_Handle i)
 {
     xdc_runtime_ILogger_Handle i2 = (xdc_runtime_ILogger_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_uia_sysbios_LoggerStreamer_Module__FXNS__C) ? (ti_uia_sysbios_LoggerStreamer_Handle)i : (ti_uia_sysbios_LoggerStreamer_Handle)NULL;
 }
 
 /* Handle_from_xdc_runtime_ILogger */
@@ -881,23 +883,23 @@ static inline CT__ti_uia_sysbios_LoggerStreamer_Module__id ti_uia_sysbios_Logger
 
 /* Module_hasMask */
 static inline xdc_Bool ti_uia_sysbios_LoggerStreamer_Module_hasMask(void);
-static inline xdc_Bool ti_uia_sysbios_LoggerStreamer_Module_hasMask(void) 
+static inline xdc_Bool ti_uia_sysbios_LoggerStreamer_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C != (CT__ti_uia_sysbios_LoggerStreamer_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_uia_sysbios_LoggerStreamer_Module_getMask(void);
-static inline xdc_Bits16 ti_uia_sysbios_LoggerStreamer_Module_getMask( void ) 
+static inline xdc_Bits16 ti_uia_sysbios_LoggerStreamer_Module_getMask(void)
 {
-    return ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C != NULL ? *ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C != (CT__ti_uia_sysbios_LoggerStreamer_Module__diagsMask)NULL) ? *ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_uia_sysbios_LoggerStreamer_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_uia_sysbios_LoggerStreamer_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C != NULL) {
+    if (ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C != (CT__ti_uia_sysbios_LoggerStreamer_Module__diagsMask)NULL) {
         *ti_uia_sysbios_LoggerStreamer_Module__diagsMask__C = mask;
     }
 }
@@ -906,8 +908,8 @@ static inline xdc_Void ti_uia_sysbios_LoggerStreamer_Module_setMask(xdc_Bits16 m
 static inline void ti_uia_sysbios_LoggerStreamer_Params_init(ti_uia_sysbios_LoggerStreamer_Params *prms);
 static inline void ti_uia_sysbios_LoggerStreamer_Params_init( ti_uia_sysbios_LoggerStreamer_Params *prms ) 
 {
-    if (prms) {
-        ti_uia_sysbios_LoggerStreamer_Params__init__S(prms, 0, sizeof(ti_uia_sysbios_LoggerStreamer_Params), sizeof(xdc_runtime_IInstance_Params));
+    if (prms != NULL) {
+        ti_uia_sysbios_LoggerStreamer_Params__init__S(prms, NULL, sizeof(ti_uia_sysbios_LoggerStreamer_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
 
@@ -915,7 +917,7 @@ static inline void ti_uia_sysbios_LoggerStreamer_Params_init( ti_uia_sysbios_Log
 static inline void ti_uia_sysbios_LoggerStreamer_Params_copy(ti_uia_sysbios_LoggerStreamer_Params *dst, const ti_uia_sysbios_LoggerStreamer_Params *src);
 static inline void ti_uia_sysbios_LoggerStreamer_Params_copy(ti_uia_sysbios_LoggerStreamer_Params *dst, const ti_uia_sysbios_LoggerStreamer_Params *src) 
 {
-    if (dst) {
+    if (dst != NULL) {
         ti_uia_sysbios_LoggerStreamer_Params__init__S(dst, (const void *)src, sizeof(ti_uia_sysbios_LoggerStreamer_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
@@ -927,8 +929,8 @@ static inline void ti_uia_sysbios_LoggerStreamer_Params_copy(ti_uia_sysbios_Logg
 #define ti_uia_sysbios_LoggerStreamer_Object_sizeof() ti_uia_sysbios_LoggerStreamer_Object__sizeof__C
 
 /* Object_get */
-static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Object_get(ti_uia_sysbios_LoggerStreamer_Instance_State *oarr, int i);
-static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Object_get(ti_uia_sysbios_LoggerStreamer_Instance_State *oarr, int i) 
+static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Object_get(ti_uia_sysbios_LoggerStreamer_Object *oarr, int i);
+static inline ti_uia_sysbios_LoggerStreamer_Handle ti_uia_sysbios_LoggerStreamer_Object_get(ti_uia_sysbios_LoggerStreamer_Object *oarr, int i) 
 {
     return (ti_uia_sysbios_LoggerStreamer_Handle)ti_uia_sysbios_LoggerStreamer_Object__get__S(oarr, i);
 }

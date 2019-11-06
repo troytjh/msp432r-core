@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017, Texas Instruments Incorporated
+ * Copyright (c) 2014-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,7 @@
 var Boot = null;
 var Program = null;
 var Build = null;
+var BIOS = null;
 
 /*
  *  ======== module$meta$init ========
@@ -72,7 +73,7 @@ function module$use()
 
     /* if Boot.configureClocks not written, set default based on device ID */
     if (!Boot.$written("configureClocks")) {
-        if (Program.platformName.match(/MSP432P401/)) {
+        if (Program.cpu.deviceName.match(/MSP432P401/)) {
             Boot.configureClocks = true;
         }
         else {
@@ -81,7 +82,7 @@ function module$use()
     }
     /* else, if was written, check that selection is valid */
     else {
-        if ((!Program.platformName.match(/MSP432P401/)) &&
+        if ((!Program.cpu.deviceName.match(/MSP432P401/)) &&
             (Boot.configureClocks == true)) {
             Boot.$logError(
               "Boot.configureClocks is only supported on MSP432P401x devices",
@@ -110,15 +111,15 @@ function module$use()
 
     var devFamily = "";
 
-    if (Program.platformName.match(/MSP432P401/)) {
+    if (Program.cpu.deviceName.match(/MSP432P401/)) {
         devFamily = "-DDeviceFamily_MSP432P401x";
     }
-    else if (Program.platformName.match(/MSP432P411/)) {
+    else if (Program.cpu.deviceName.match(/MSP432P411/)) {
         devFamily = "-DDeviceFamily_MSP432P4x1xI";
     }
     else {
         Boot.$logWarning("Unknown device: " + Program.cpu.deviceName
-            + ". Assuming MSP432P401P compatible.", Boot);
+            + ". Assuming MSP432P401R compatible.", Boot);
         devFamily = "-DDeviceFamily_MSP432P401x";
     }
 
@@ -179,14 +180,36 @@ function registerFreqListener(listener)
 /*
  *  ======== updateFrequency ========
  *  Update all of the listeners whenever the clock configuration changes
- *  (assuming configureClocks is true).
  */
 function updateFrequency(field, val)
 {
-    Boot.computedCpuFrequency = getFrequency();;
+    if (Boot.configureClocks == true) {
+        Boot.computedCpuFrequency = getFrequency();;
 
-    /* Notify each of the listeners of the new frequency value. */
-    for each (var listener in listeners) {
-        listener.fireFrequencyUpdate(Boot.computedCpuFrequency);
+        /* Notify each of the listeners of the new frequency value. */
+        for each (var listener in listeners) {
+            listener.fireFrequencyUpdate(Boot.computedCpuFrequency);
+        }
+    }
+}
+
+/*
+ *  ======== module$validate ========
+ */
+function module$validate()
+{
+    BIOS = xdc.module('ti.sysbios.BIOS');
+
+    /* check for mismatch between BIOS.cpuFreq and that set by Boot */
+    if (Boot.configureClocks &&
+           (BIOS.cpuFreq.$written("lo") || BIOS.cpuFreq.$written("hi")) &&
+           (BIOS.cpuFreq.lo != getFrequency())) {
+
+        BIOS.$logWarning("BIOS.cpuFreq is set to a value different " +
+            "than that being established by " +
+            "ti.sysbios.family.arm.msp432.init.Boot. " +
+            "Verify that the BIOS and Boot module settings are " +
+            "correct in your application configuration file.",
+                         BIOS, "cpuFreq");
     }
 }

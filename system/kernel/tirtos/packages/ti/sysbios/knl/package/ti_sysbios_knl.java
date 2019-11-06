@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_knl
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -3050,14 +3050,14 @@ public class ti_sysbios_knl
             sb.append("pkg.packageRepository = xdc.om['ti.sysbios.knl$$stat$root'];\n");
         sb.append("}\n");
         sb.append("pkg.build.libraries = [\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.knl.aem4f',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.knl.am4fg',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.knl.arm4f',\n");
+            sb.append("'lib/debug/ti.sysbios.knl.aem4f',\n");
+            sb.append("'lib/debug/ti.sysbios.knl.am4fg',\n");
+            sb.append("'lib/debug/ti.sysbios.knl.arm4f',\n");
         sb.append("];\n");
         sb.append("pkg.build.libDesc = [\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.knl.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.knl.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.knl.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.knl.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.knl.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
+            sb.append("['lib/debug/ti.sysbios.knl.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
         sb.append("];\n");
         Global.eval(sb.toString());
     }
@@ -3195,10 +3195,10 @@ public class ti_sysbios_knl
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray("A_clockDisabled", "A_badThreadType"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./Clock.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.sysbios.knl.Clock.Object", "ti.sysbios.knl"));
@@ -4175,11 +4175,11 @@ public class ti_sysbios_knl
         vo.bind("$$errorDescCfgs", Global.newArray("E_stackOverflow", "E_spOutOfBounds", "E_deleteNotAllowed", "E_moduleStateCheckFailed", "E_objectCheckFailed"));
         vo.bind("$$assertDescCfgs", Global.newArray("A_badThreadType", "A_badTaskState", "A_noPendElem", "A_taskDisabled", "A_badPriority", "A_badTimeout", "A_badAffinity", "A_sleepTaskDisabled", "A_invalidCoreId"));
         Value.Map atmap = (Value.Map)vo.getv("$attr");
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
+        atmap.setElem("", true);
         atmap.setElem("", "./Task.xdt");
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
-        atmap.setElem("", true);
         atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("Object", om.findStrict("ti.sysbios.knl.Task.Object", "ti.sysbios.knl"));

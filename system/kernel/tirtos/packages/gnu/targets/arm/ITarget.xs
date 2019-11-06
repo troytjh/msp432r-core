@@ -1,7 +1,53 @@
 /*
- *  Copyright 2017 by Texas Instruments Incorporated.
+ *  Copyright 2019 by Texas Instruments Incorporated.
  *
  */
+
+/*
+ * Copyright (c) 2017-2018 Texas Instruments Incorporated - http://www.ti.com
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the
+ *   distribution.
+ *
+ *   Neither the name of Texas Instruments Incorporated nor the names of
+ *   its contributors may be used to endorse or promote products derived
+ *   from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ *  ======== module$meta$init ========
+ */
+function module$meta$init()
+{
+    /*  Expand 'packageBase' here because Utils.expandString() works
+     *  only on properties of the module, not properties of the package.
+     */
+    var pkgBase = this.$package.packageBase;
+    this.includeOpts = this.includeOpts.replace(/\$\(packageBase\)/g, pkgBase);
+    this.lnkOpts.suffix =
+            this.lnkOpts.suffix.replace(/\$\(packageBase\)/g, pkgBase);
+}
 
 /*
  *  ======== initVers ========
@@ -250,9 +296,21 @@ function initVers()
     target.$seal("BINVERS");
 
     target.$private.vers = true;
+
+    /*
+     * Special case for a customer that wants to use gcc-arm-none-eabi-4_7_2012q4.
+     * We need to get the target's custom library off the compile and link lines.
+     * We also remove the 'nano.specs' file so the these old complier users get the
+     * traditional newlib library (as they were using previously).
+     */
+    if (target.name == "A15F" && target.GCCVERS.match(/^4.7/)) {
+        target.includeOpts = target.includeOpts.replace(/\S+install-native\S+/g, "");
+        target.lnkOpts.suffix = target.lnkOpts.suffix.replace(/\S+install-native\S+/g, "");
+        target.lnkOpts.suffix = target.lnkOpts.suffix.replace(/--specs=nano.specs/, "");
+    }
 }
 /*
- *  @(#) gnu.targets.arm; 1, 0, 0,1; 7-27-2017 11:46:58; /db/ztree/library/trees/xdctargets/xdctargets-o04/src/ xlibrary
+ *  @(#) gnu.targets.arm; 1, 0, 0,0; 8-9-2019 17:14:52; /db/ztree/library/trees/xdctargets/xdctargets-v00/src/ xlibrary
 
  */
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2013-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,18 @@
 
 #include <package/internal/LoggerStreamer2.xdc.h>
 
-#define HDR_OFFSET_IN_WORDS 4        /* Size of the UIA header */
+#if xdc_target__sizeof_Ptr == 8
+#define HDR_OFFSET_IN_PTRS   2  /* Size of the UIA header in Ptrs */
+#define BYTES_IN_EVENTWORD   8  /* Number of bytes in UArg */
+#define NUM_WRITE8_WORDS     9  /* 8 UArg + 2 32-bit event header (no TS) */
+#define NUM_WRITE8_WORDS_TS 10  /* 8 UArgs + 4 32-bit event header (with TS) */
+#else
+#define HDR_OFFSET_IN_PTRS   4  /* Size of the UIA header in Ptrs */
+#define BYTES_IN_EVENTWORD   4  /* Number of bytes in UArg */
+#define NUM_WRITE8_WORDS    10  /* 8 UArgs + 4 32-bit event headet (no TS) */
+#define NUM_WRITE8_WORDS_TS 12  /* 8 UArgs + 4 32-bit event headet (with TS) */
+#endif
+
 #define BYTES_IN_WORD 4
 #define MAU_TO_BITS32(mau)          ((mau) / sizeof(Bits32))
 
@@ -88,10 +99,10 @@ Void LoggerStreamer2_flush(LoggerStreamer2_Object *obj)
     key = Hwi_disable();
 
     /* If there is data in the buffer */
-    if (obj->write > obj->buffer + HDR_OFFSET_IN_WORDS) {
+    if (obj->write > obj->buffer + HDR_OFFSET_IN_PTRS) {
         /* Set UIA packet length and sequence number */
         UIAPacket_setEventLength((UIAPacket_Hdr*)obj->buffer,
-                (Bits32)((obj->write - obj->buffer) * BYTES_IN_WORD));
+                (Bits32)((obj->write - obj->buffer) * BYTES_IN_EVENTWORD));
         UIAPacket_setSequenceCount((UIAPacket_Hdr*)obj->buffer,
                 LoggerStreamer2_uiaPacketSequence);
 
@@ -101,7 +112,7 @@ Void LoggerStreamer2_flush(LoggerStreamer2_Object *obj)
          *  add a 32 bit Invalid UIA header with the length of the empty space.
          */
         UIAPacket_setInvalidHdr(obj->write,
-                (obj->end + numWrite8Words - obj->write) * BYTES_IN_WORD);
+                (obj->end + numWrite8Words - obj->write) * BYTES_IN_EVENTWORD);
 
         /* Set the module write ptr to NULL to prevent log calls in exchange */
         if (LoggerStreamer2_testForNullWrPtr) {
@@ -109,12 +120,12 @@ Void LoggerStreamer2_flush(LoggerStreamer2_Object *obj)
         }
 
         /* Send filled buffer to exchange function */
-        obj->buffer = (UInt32 *)obj->exchangeFxn(obj, (Ptr)obj->buffer);
+        obj->buffer = (UArg *)obj->exchangeFxn(obj, (Ptr)obj->buffer);
 
         /* Update ptrs to new buffer */
-        obj->write = obj->buffer + HDR_OFFSET_IN_WORDS;
-        obj->end = obj->buffer + (obj->bufSize / sizeof(UInt32)) -
-            numWrite8Words;
+        obj->write = obj->buffer + HDR_OFFSET_IN_PTRS;
+        obj->end = obj->buffer + (obj->bufSize / sizeof(UArg)) -
+                numWrite8Words;
         LoggerStreamer2_uiaPacketSequence++;
     }
 
@@ -123,17 +134,16 @@ Void LoggerStreamer2_flush(LoggerStreamer2_Object *obj)
 
 /*
  *  ======== LoggerStreamer2_prime =========
- *  TODO: Where is this used?  Not called in test (examples/single/logger.c)
  */
 Bool LoggerStreamer2_prime(LoggerStreamer2_Object *obj, Ptr buffer)
 {
     if (obj->primeStatus == FALSE) {
-        obj->buffer = (UInt32*)buffer;
+        obj->buffer = (UArg *)buffer;
 
-        obj->write = (UInt32*)buffer + HDR_OFFSET_IN_WORDS;
+        obj->write = (UArg *)buffer + HDR_OFFSET_IN_PTRS;
 
         /* Subtract max number of words that can be written to mark the end */
-        obj->end = (UInt32*)buffer + (obj->bufSize / sizeof(UInt32)) -
+        obj->end = (UArg *)buffer + (obj->bufSize / sizeof(UArg)) -
                 numWrite8Words;
         obj->primeStatus = TRUE;
         return (TRUE);
@@ -150,7 +160,8 @@ Int LoggerStreamer2_Module_startup(Int phase)
     Int i;
 
     /* Set the maximum event size used to set the end pointer */
-    numWrite8Words = (LoggerStreamer2_isTimestampEnabled) ? 12 : 10;
+    numWrite8Words = (LoggerStreamer2_isTimestampEnabled) ?
+            NUM_WRITE8_WORDS_TS : NUM_WRITE8_WORDS;
 
     for (i = 0; i < LoggerStreamer2_Object_count(); i++) {
         obj = LoggerStreamer2_Object_get(NULL, i);
@@ -180,7 +191,7 @@ Void LoggerStreamer2_Instance_init(LoggerStreamer2_Object *obj,
     obj->instanceId = prms->instanceId;
 
     if (obj->primeFxn != NULL) {
-        obj->buffer = (UInt32 *)obj->primeFxn(obj);
+        obj->buffer = (UArg *)obj->primeFxn(obj);
         Assert_isTrue((obj->buffer != NULL), LoggerStreamer2_A_invalidBuffer);
         LoggerStreamer2_reset(obj);
     }
@@ -303,8 +314,8 @@ Void LoggerStreamer2_reset(LoggerStreamer2_Object *obj)
 
     Assert_isTrue((obj->buffer != NULL), LoggerStreamer2_A_invalidBuffer);
 
-    obj->write = obj->buffer + HDR_OFFSET_IN_WORDS;
-    obj->end = obj->buffer + (obj->bufSize / sizeof(UInt32)) - numWrite8Words;
+    obj->write = obj->buffer + HDR_OFFSET_IN_PTRS;
+    obj->end = obj->buffer + (obj->bufSize / sizeof(UArg)) - numWrite8Words;
 }
 
 /*
@@ -353,7 +364,7 @@ Bool LoggerStreamer2_isEmpty(LoggerStreamer2_Object *obj)
 {
     Bool result;
 
-    result = (obj->write == (obj->buffer + HDR_OFFSET_IN_WORDS)) ?
+    result = (obj->write == (obj->buffer + HDR_OFFSET_IN_PTRS)) ?
         TRUE : FALSE;
 
     return (result);

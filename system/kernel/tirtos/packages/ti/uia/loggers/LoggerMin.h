@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 
 /*
@@ -37,10 +37,12 @@
 #define ti_uia_loggers_LoggerMin__top__
 #endif
 
+#ifndef __extern
 #ifdef __cplusplus
 #define __extern extern "C"
 #else
 #define __extern extern
+#endif
 #endif
 
 #define ti_uia_loggers_LoggerMin___VERS 200
@@ -84,9 +86,9 @@ typedef enum ti_uia_loggers_LoggerMin_TimestampSize ti_uia_loggers_LoggerMin_Tim
 
 /* Module_State */
 typedef xdc_Char __T1_ti_uia_loggers_LoggerMin_Module_State__packetBuffer;
-typedef xdc_Char *__ARRAY1_ti_uia_loggers_LoggerMin_Module_State__packetBuffer;
-typedef const xdc_Char *__CARRAY1_ti_uia_loggers_LoggerMin_Module_State__packetBuffer;
-typedef __ARRAY1_ti_uia_loggers_LoggerMin_Module_State__packetBuffer __TA_ti_uia_loggers_LoggerMin_Module_State__packetBuffer;
+typedef xdc_Char *ARRAY1_ti_uia_loggers_LoggerMin_Module_State__packetBuffer;
+typedef const xdc_Char *CARRAY1_ti_uia_loggers_LoggerMin_Module_State__packetBuffer;
+typedef ARRAY1_ti_uia_loggers_LoggerMin_Module_State__packetBuffer __TA_ti_uia_loggers_LoggerMin_Module_State__packetBuffer;
 
 
 /*
@@ -358,13 +360,13 @@ struct ti_uia_loggers_LoggerMin_Struct {
 struct ti_uia_loggers_LoggerMin_Fxns__ {
     const xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2* __sysp;
-    xdc_Bool (*enable)(ti_uia_loggers_LoggerMin_Handle __inst);
-    xdc_Bool (*disable)(ti_uia_loggers_LoggerMin_Handle __inst);
-    xdc_Void (*write0)(ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
-    xdc_Void (*write1)(ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
-    xdc_Void (*write2)(ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
-    xdc_Void (*write4)(ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
-    xdc_Void (*write8)(ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
+    xdc_Bool (*enable)(ti_uia_loggers_LoggerMin_Handle inst);
+    xdc_Bool (*disable)(ti_uia_loggers_LoggerMin_Handle inst);
+    xdc_Void (*write0)(ti_uia_loggers_LoggerMin_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
+    xdc_Void (*write1)(ti_uia_loggers_LoggerMin_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
+    xdc_Void (*write2)(ti_uia_loggers_LoggerMin_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
+    xdc_Void (*write4)(ti_uia_loggers_LoggerMin_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
+    xdc_Void (*write8)(ti_uia_loggers_LoggerMin_Handle inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
     xdc_runtime_Types_SysFxns2 __sfxns;
 };
 #ifndef ti_uia_loggers_LoggerMin_Module__FXNS__CR
@@ -389,15 +391,15 @@ __extern xdc_Int ti_uia_loggers_LoggerMin_Module_startup__F( xdc_Int state );
 
 /* Instance_init__E */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Instance_init__E, "ti_uia_loggers_LoggerMin_Instance_init")
-__extern xdc_Void ti_uia_loggers_LoggerMin_Instance_init__E(ti_uia_loggers_LoggerMin_Object *__obj, const ti_uia_loggers_LoggerMin_Params *__prms);
+__extern xdc_Void ti_uia_loggers_LoggerMin_Instance_init__E(ti_uia_loggers_LoggerMin_Object *obj, const ti_uia_loggers_LoggerMin_Params *prms);
 
 /* create */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_create, "ti_uia_loggers_LoggerMin_create")
-__extern ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_create( const ti_uia_loggers_LoggerMin_Params *__prms, xdc_runtime_Error_Block *__eb );
+__extern ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_create( const ti_uia_loggers_LoggerMin_Params *prms, xdc_runtime_Error_Block *eb);
 
 /* construct */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_construct, "ti_uia_loggers_LoggerMin_construct")
-__extern void ti_uia_loggers_LoggerMin_construct( ti_uia_loggers_LoggerMin_Struct *__obj, const ti_uia_loggers_LoggerMin_Params *__prms );
+__extern void ti_uia_loggers_LoggerMin_construct(ti_uia_loggers_LoggerMin_Struct *obj, const ti_uia_loggers_LoggerMin_Params *prms);
 
 /* delete */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_delete, "ti_uia_loggers_LoggerMin_delete")
@@ -409,95 +411,95 @@ __extern void ti_uia_loggers_LoggerMin_destruct(ti_uia_loggers_LoggerMin_Struct 
 
 /* Handle__label__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Handle__label__S, "ti_uia_loggers_LoggerMin_Handle__label__S")
-__extern xdc_runtime_Types_Label *ti_uia_loggers_LoggerMin_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab );
+__extern xdc_runtime_Types_Label *ti_uia_loggers_LoggerMin_Handle__label__S( xdc_Ptr obj, xdc_runtime_Types_Label *lab);
 
 /* Module__startupDone__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Module__startupDone__S, "ti_uia_loggers_LoggerMin_Module__startupDone__S")
-__extern xdc_Bool ti_uia_loggers_LoggerMin_Module__startupDone__S( void );
+__extern xdc_Bool ti_uia_loggers_LoggerMin_Module__startupDone__S( void);
 
 /* Object__create__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Object__create__S, "ti_uia_loggers_LoggerMin_Object__create__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__create__S( xdc_CPtr __aa, const xdc_UChar *__pa, xdc_SizeT __psz, xdc_runtime_Error_Block *__eb );
+__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__create__S( xdc_CPtr aa, const xdc_UChar *pa, xdc_SizeT psz, xdc_runtime_Error_Block *eb);
 
 /* Object__delete__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Object__delete__S, "ti_uia_loggers_LoggerMin_Object__delete__S")
-__extern xdc_Void ti_uia_loggers_LoggerMin_Object__delete__S( xdc_Ptr instp );
+__extern xdc_Void ti_uia_loggers_LoggerMin_Object__delete__S( xdc_Ptr instp);
 
 /* Object__get__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Object__get__S, "ti_uia_loggers_LoggerMin_Object__get__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__get__S( xdc_Ptr oarr, xdc_Int i );
+__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__get__S( xdc_Ptr oarr, xdc_Int i);
 
 /* Object__first__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Object__first__S, "ti_uia_loggers_LoggerMin_Object__first__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__first__S( void );
+__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__first__S( void);
 
 /* Object__next__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Object__next__S, "ti_uia_loggers_LoggerMin_Object__next__S")
-__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__next__S( xdc_Ptr obj );
+__extern xdc_Ptr ti_uia_loggers_LoggerMin_Object__next__S( xdc_Ptr obj);
 
 /* Params__init__S */
 xdc__CODESECT(ti_uia_loggers_LoggerMin_Params__init__S, "ti_uia_loggers_LoggerMin_Params__init__S")
-__extern xdc_Void ti_uia_loggers_LoggerMin_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz );
+__extern xdc_Void ti_uia_loggers_LoggerMin_Params__init__S( xdc_Ptr dst, const xdc_Void *src, xdc_SizeT psz, xdc_SizeT isz);
 
 /* flush__E */
 #define ti_uia_loggers_LoggerMin_flush ti_uia_loggers_LoggerMin_flush__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_flush__E, "ti_uia_loggers_LoggerMin_flush")
-__extern xdc_Void ti_uia_loggers_LoggerMin_flush__E( void );
+__extern xdc_Void ti_uia_loggers_LoggerMin_flush__E( void);
 
 /* write__E */
 #define ti_uia_loggers_LoggerMin_write ti_uia_loggers_LoggerMin_write__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_write__E, "ti_uia_loggers_LoggerMin_write")
-__extern xdc_Void ti_uia_loggers_LoggerMin_write__E( xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg numBytes, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8 );
+__extern xdc_Void ti_uia_loggers_LoggerMin_write__E( xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg numBytes, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
 
 /* write0__E */
 #define ti_uia_loggers_LoggerMin_write0 ti_uia_loggers_LoggerMin_write0__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_write0__E, "ti_uia_loggers_LoggerMin_write0")
-__extern xdc_Void ti_uia_loggers_LoggerMin_write0__E( ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid );
+__extern xdc_Void ti_uia_loggers_LoggerMin_write0__E( ti_uia_loggers_LoggerMin_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid);
 
 /* write1__E */
 #define ti_uia_loggers_LoggerMin_write1 ti_uia_loggers_LoggerMin_write1__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_write1__E, "ti_uia_loggers_LoggerMin_write1")
-__extern xdc_Void ti_uia_loggers_LoggerMin_write1__E( ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1 );
+__extern xdc_Void ti_uia_loggers_LoggerMin_write1__E( ti_uia_loggers_LoggerMin_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1);
 
 /* write2__E */
 #define ti_uia_loggers_LoggerMin_write2 ti_uia_loggers_LoggerMin_write2__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_write2__E, "ti_uia_loggers_LoggerMin_write2")
-__extern xdc_Void ti_uia_loggers_LoggerMin_write2__E( ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2 );
+__extern xdc_Void ti_uia_loggers_LoggerMin_write2__E( ti_uia_loggers_LoggerMin_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2);
 
 /* write4__E */
 #define ti_uia_loggers_LoggerMin_write4 ti_uia_loggers_LoggerMin_write4__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_write4__E, "ti_uia_loggers_LoggerMin_write4")
-__extern xdc_Void ti_uia_loggers_LoggerMin_write4__E( ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4 );
+__extern xdc_Void ti_uia_loggers_LoggerMin_write4__E( ti_uia_loggers_LoggerMin_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4);
 
 /* write8__E */
 #define ti_uia_loggers_LoggerMin_write8 ti_uia_loggers_LoggerMin_write8__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_write8__E, "ti_uia_loggers_LoggerMin_write8")
-__extern xdc_Void ti_uia_loggers_LoggerMin_write8__E( ti_uia_loggers_LoggerMin_Handle __inst, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8 );
+__extern xdc_Void ti_uia_loggers_LoggerMin_write8__E( ti_uia_loggers_LoggerMin_Handle instp, xdc_runtime_Log_Event evt, xdc_runtime_Types_ModuleId mid, xdc_IArg a1, xdc_IArg a2, xdc_IArg a3, xdc_IArg a4, xdc_IArg a5, xdc_IArg a6, xdc_IArg a7, xdc_IArg a8);
 
 /* enable__E */
 #define ti_uia_loggers_LoggerMin_enable ti_uia_loggers_LoggerMin_enable__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_enable__E, "ti_uia_loggers_LoggerMin_enable")
-__extern xdc_Bool ti_uia_loggers_LoggerMin_enable__E( ti_uia_loggers_LoggerMin_Handle __inst );
+__extern xdc_Bool ti_uia_loggers_LoggerMin_enable__E( ti_uia_loggers_LoggerMin_Handle instp);
 
 /* disable__E */
 #define ti_uia_loggers_LoggerMin_disable ti_uia_loggers_LoggerMin_disable__E
 xdc__CODESECT(ti_uia_loggers_LoggerMin_disable__E, "ti_uia_loggers_LoggerMin_disable")
-__extern xdc_Bool ti_uia_loggers_LoggerMin_disable__E( ti_uia_loggers_LoggerMin_Handle __inst );
+__extern xdc_Bool ti_uia_loggers_LoggerMin_disable__E( ti_uia_loggers_LoggerMin_Handle instp);
 
 /* getContents__I */
 #define ti_uia_loggers_LoggerMin_getContents ti_uia_loggers_LoggerMin_getContents__I
 xdc__CODESECT(ti_uia_loggers_LoggerMin_getContents__I, "ti_uia_loggers_LoggerMin_getContents")
-__extern xdc_Bool ti_uia_loggers_LoggerMin_getContents__I( ti_uia_loggers_LoggerMin_Object *obj, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize );
+__extern xdc_Bool ti_uia_loggers_LoggerMin_getContents__I( ti_uia_loggers_LoggerMin_Object *obj, xdc_Ptr hdrBuf, xdc_SizeT size, xdc_SizeT *cpSize);
 
 /* isEmpty__I */
 #define ti_uia_loggers_LoggerMin_isEmpty ti_uia_loggers_LoggerMin_isEmpty__I
 xdc__CODESECT(ti_uia_loggers_LoggerMin_isEmpty__I, "ti_uia_loggers_LoggerMin_isEmpty")
-__extern xdc_Bool ti_uia_loggers_LoggerMin_isEmpty__I( ti_uia_loggers_LoggerMin_Object *obj );
+__extern xdc_Bool ti_uia_loggers_LoggerMin_isEmpty__I( ti_uia_loggers_LoggerMin_Object *obj);
 
 /* genTimestamp__I */
 #define ti_uia_loggers_LoggerMin_genTimestamp ti_uia_loggers_LoggerMin_genTimestamp__I
 xdc__CODESECT(ti_uia_loggers_LoggerMin_genTimestamp__I, "ti_uia_loggers_LoggerMin_genTimestamp")
-__extern xdc_Ptr ti_uia_loggers_LoggerMin_genTimestamp__I( xdc_Ptr writePtr );
+__extern xdc_Ptr ti_uia_loggers_LoggerMin_genTimestamp__I( xdc_Ptr writePtr);
 
 
 /*
@@ -529,7 +531,7 @@ static inline ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_Handle_do
 static inline ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_Handle_downCast(xdc_runtime_ILogger_Handle i)
 {
     xdc_runtime_ILogger_Handle i2 = (xdc_runtime_ILogger_Handle)i;
-    return (const void*)i2->__fxns == (const void*)&ti_uia_loggers_LoggerMin_Module__FXNS__C ? (ti_uia_loggers_LoggerMin_Handle)i : (ti_uia_loggers_LoggerMin_Handle)0;
+    return ((const void*)i2->__fxns == (const void*)&ti_uia_loggers_LoggerMin_Module__FXNS__C) ? (ti_uia_loggers_LoggerMin_Handle)i : (ti_uia_loggers_LoggerMin_Handle)NULL;
 }
 
 /* Handle_from_xdc_runtime_ILogger */
@@ -558,23 +560,23 @@ static inline CT__ti_uia_loggers_LoggerMin_Module__id ti_uia_loggers_LoggerMin_M
 
 /* Module_hasMask */
 static inline xdc_Bool ti_uia_loggers_LoggerMin_Module_hasMask(void);
-static inline xdc_Bool ti_uia_loggers_LoggerMin_Module_hasMask(void) 
+static inline xdc_Bool ti_uia_loggers_LoggerMin_Module_hasMask(void)
 {
-    return (xdc_Bool)(ti_uia_loggers_LoggerMin_Module__diagsMask__C != NULL);
+    return (xdc_Bool)(ti_uia_loggers_LoggerMin_Module__diagsMask__C != (CT__ti_uia_loggers_LoggerMin_Module__diagsMask)NULL);
 }
 
 /* Module_getMask */
 static inline xdc_Bits16 ti_uia_loggers_LoggerMin_Module_getMask(void);
-static inline xdc_Bits16 ti_uia_loggers_LoggerMin_Module_getMask( void ) 
+static inline xdc_Bits16 ti_uia_loggers_LoggerMin_Module_getMask(void)
 {
-    return ti_uia_loggers_LoggerMin_Module__diagsMask__C != NULL ? *ti_uia_loggers_LoggerMin_Module__diagsMask__C : (xdc_Bits16)0;
+    return (ti_uia_loggers_LoggerMin_Module__diagsMask__C != (CT__ti_uia_loggers_LoggerMin_Module__diagsMask)NULL) ? *ti_uia_loggers_LoggerMin_Module__diagsMask__C : (xdc_Bits16)0;
 }
 
 /* Module_setMask */
 static inline xdc_Void ti_uia_loggers_LoggerMin_Module_setMask(xdc_Bits16 mask);
 static inline xdc_Void ti_uia_loggers_LoggerMin_Module_setMask(xdc_Bits16 mask)
 {
-    if (ti_uia_loggers_LoggerMin_Module__diagsMask__C != NULL) {
+    if (ti_uia_loggers_LoggerMin_Module__diagsMask__C != (CT__ti_uia_loggers_LoggerMin_Module__diagsMask)NULL) {
         *ti_uia_loggers_LoggerMin_Module__diagsMask__C = mask;
     }
 }
@@ -583,8 +585,8 @@ static inline xdc_Void ti_uia_loggers_LoggerMin_Module_setMask(xdc_Bits16 mask)
 static inline void ti_uia_loggers_LoggerMin_Params_init(ti_uia_loggers_LoggerMin_Params *prms);
 static inline void ti_uia_loggers_LoggerMin_Params_init( ti_uia_loggers_LoggerMin_Params *prms ) 
 {
-    if (prms) {
-        ti_uia_loggers_LoggerMin_Params__init__S(prms, 0, sizeof(ti_uia_loggers_LoggerMin_Params), sizeof(xdc_runtime_IInstance_Params));
+    if (prms != NULL) {
+        ti_uia_loggers_LoggerMin_Params__init__S(prms, NULL, sizeof(ti_uia_loggers_LoggerMin_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
 
@@ -592,7 +594,7 @@ static inline void ti_uia_loggers_LoggerMin_Params_init( ti_uia_loggers_LoggerMi
 static inline void ti_uia_loggers_LoggerMin_Params_copy(ti_uia_loggers_LoggerMin_Params *dst, const ti_uia_loggers_LoggerMin_Params *src);
 static inline void ti_uia_loggers_LoggerMin_Params_copy(ti_uia_loggers_LoggerMin_Params *dst, const ti_uia_loggers_LoggerMin_Params *src) 
 {
-    if (dst) {
+    if (dst != NULL) {
         ti_uia_loggers_LoggerMin_Params__init__S(dst, (const void *)src, sizeof(ti_uia_loggers_LoggerMin_Params), sizeof(xdc_runtime_IInstance_Params));
     }
 }
@@ -604,8 +606,8 @@ static inline void ti_uia_loggers_LoggerMin_Params_copy(ti_uia_loggers_LoggerMin
 #define ti_uia_loggers_LoggerMin_Object_sizeof() ti_uia_loggers_LoggerMin_Object__sizeof__C
 
 /* Object_get */
-static inline ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_Object_get(ti_uia_loggers_LoggerMin_Instance_State *oarr, int i);
-static inline ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_Object_get(ti_uia_loggers_LoggerMin_Instance_State *oarr, int i) 
+static inline ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_Object_get(ti_uia_loggers_LoggerMin_Object *oarr, int i);
+static inline ti_uia_loggers_LoggerMin_Handle ti_uia_loggers_LoggerMin_Object_get(ti_uia_loggers_LoggerMin_Object *oarr, int i) 
 {
     return (ti_uia_loggers_LoggerMin_Handle)ti_uia_loggers_LoggerMin_Object__get__S(oarr, i);
 }

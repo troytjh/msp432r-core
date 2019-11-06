@@ -45,10 +45,20 @@ void DMA_enableModule(void)
 
 void DMA_disableModule(void)
 {
+    uint32_t i;
+
     //
     // Clear the master enable bit in the config register.
     //
     DMA_Control->CFG = 0;
+
+    //
+    // Clear all source configuration registers
+    //
+    i = DMA_Channel->DEVICE_CFG & 0xff;
+    while (i--) {
+        DMA_Channel->CH_SRCCFG[i] = 0;
+    }
 }
 
 uint32_t DMA_getErrorStatus(void)
@@ -410,8 +420,8 @@ void DMA_setChannelTransfer(uint32_t channelStructIndex, uint32_t mode,
     if (increment != UDMA_SRC_INC_NONE)
     {
         increment = increment >> 26;
-        bufferBytes = transferSize << increment;
-        srcAddr = (void *) ((uint32_t) srcAddr + bufferBytes - 1);
+        bufferBytes = (transferSize - 1) << increment;
+        srcAddr = (void *) ((uint32_t) srcAddr + bufferBytes);
     }
 
     //
@@ -450,8 +460,8 @@ void DMA_setChannelTransfer(uint32_t channelStructIndex, uint32_t mode,
         else
         {
             increment = increment >> 30;
-            bufferBytes = transferSize << increment;
-            dstAddr = (void *) ((uint32_t) dstAddr + bufferBytes - 1);
+            bufferBytes = (transferSize - 1) << increment;
+            dstAddr = (void *) ((uint32_t) dstAddr + bufferBytes);
         }
     }
 
@@ -764,7 +774,7 @@ void DMA_clearInterruptFlag(uint32_t channel)
 void DMA_enableInterrupt(uint32_t interruptNumber)
 {
     ASSERT(
-            (interruptNumber == DMA_INT0) || (interruptNumber == DMA_INT1)
+            (interruptNumber == DMA_INT1)
             || (interruptNumber == DMA_INT2)
             || (interruptNumber == DMA_INT3));
 
@@ -784,7 +794,7 @@ void DMA_enableInterrupt(uint32_t interruptNumber)
 void DMA_disableInterrupt(uint32_t interruptNumber)
 {
     ASSERT(
-            (interruptNumber == DMA_INT0) || (interruptNumber == DMA_INT1)
+            (interruptNumber == DMA_INT1)
             || (interruptNumber == DMA_INT2)
             || (interruptNumber == DMA_INT3));
 

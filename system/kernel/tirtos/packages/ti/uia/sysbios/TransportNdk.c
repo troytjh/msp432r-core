@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017, Texas Instruments Incorporated
+ * Copyright (c) 2012-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -109,8 +109,8 @@ Ptr TransportNdk_start(UIAPacket_HdrType hdrType)
         /* Construct local address structure */
         memset((char *)&msgSin, 0, sizeof(struct sockaddr_in));
         msgSin.sin_family      = AF_INET;
-        msgSin.sin_addr.s_addr = htonl(INADDR_ANY);
-        msgSin.sin_port        = htons(TransportNdk_tcpPort);
+        msgSin.sin_addr.s_addr = NDK_htonl(INADDR_ANY);
+        msgSin.sin_port        = NDK_htons(TransportNdk_tcpPort);
 
         /* Bind to the local address */
         status = bind(TransportNdk_msgSocket, (struct sockaddr *)&msgSin,
@@ -144,9 +144,9 @@ Ptr TransportNdk_start(UIAPacket_HdrType hdrType)
         /* Construct local address structure */
         memset((char *)&TransportNdk_eventSin, 0, sizeof(struct sockaddr_in));
 
-        TransportNdk_eventSin.sin_family      = AF_INET;
-        TransportNdk_eventSin.sin_port        = htons(TransportNdk_udpPort);
-        TransportNdk_eventSin.sin_addr.s_addr = htonl(INADDR_ANY);
+        TransportNdk_eventSin.sin_family = AF_INET;
+        TransportNdk_eventSin.sin_port = NDK_htons(TransportNdk_udpPort);
+        TransportNdk_eventSin.sin_addr.s_addr = NDK_htonl(INADDR_ANY);
         retVal = (Ptr)TransportNdk_eventSocket;
     }
     else {
@@ -176,7 +176,7 @@ SizeT TransportNdk_recv(Ptr handle, UIAPacket_Hdr **packet, SizeT size)
     }
     else {
         /* Problem with the msg socket. Do not send the events. */
-        TransportNdk_eventSin.sin_addr.s_addr = htonl(INADDR_ANY);
+        TransportNdk_eventSin.sin_addr.s_addr = NDK_htonl(INADDR_ANY);
     }
 
     return (status);
@@ -204,7 +204,7 @@ Bool TransportNdk_send(Ptr handle, UIAPacket_Hdr **packet)
         }
     }
     else if (((struct sockaddr_in *)&TransportNdk_eventSin)->sin_addr.s_addr
-             != htonl(INADDR_ANY)) {
+             != NDK_htonl(INADDR_ANY)) {
         status = sendto(TransportNdk_eventSocket, *packet,
                      UIAPacket_getEventLength(*packet), 0,
                      (struct sockaddr *)&TransportNdk_eventSin,

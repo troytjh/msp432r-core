@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-D20
+ * @(#) xdc-H25
  */
 import java.util.*;
 import org.mozilla.javascript.*;
@@ -11,7 +11,7 @@ import xdc.services.spec.Session;
 
 public class ti_sysbios_family_arm_msp432
 {
-    static final String VERS = "@(#) xdc-D20\n";
+    static final String VERS = "@(#) xdc-H25\n";
 
     static final Proto.Elm $$T_Bool = Proto.Elm.newBool();
     static final Proto.Elm $$T_Num = Proto.Elm.newNum();
@@ -219,6 +219,7 @@ public class ti_sysbios_family_arm_msp432
         om.bind("ti.sysbios.family.arm.msp432.Seconds.get", new Extern("ti_sysbios_family_arm_msp432_Seconds_get__E", "xdc_UInt32(*)(xdc_Void)", true, false));
         om.bind("ti.sysbios.family.arm.msp432.Seconds.getTime", new Extern("ti_sysbios_family_arm_msp432_Seconds_getTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
         om.bind("ti.sysbios.family.arm.msp432.Seconds.set", new Extern("ti_sysbios_family_arm_msp432_Seconds_set__E", "xdc_Void(*)(xdc_UInt32)", true, false));
+        om.bind("ti.sysbios.family.arm.msp432.Seconds.setTime", new Extern("ti_sysbios_family_arm_msp432_Seconds_setTime__E", "xdc_UInt32(*)(ti_sysbios_interfaces_ISeconds_Time*)", true, false));
     }
 
     void Timer$$CREATES()
@@ -355,7 +356,7 @@ public class ti_sysbios_family_arm_msp432
         sizes.add(Global.newArray("__fxns", "UPtr"));
         sizes.add(Global.newArray("staticInst", "UShort"));
         sizes.add(Global.newArray("id", "TInt"));
-        sizes.add(Global.newArray("controlRegInit", "UInt"));
+        sizes.add(Global.newArray("controlRegInit", "UInt16"));
         sizes.add(Global.newArray("runMode", "Nti.sysbios.interfaces.ITimer.RunMode;;;;"));
         sizes.add(Global.newArray("startMode", "Nti.sysbios.interfaces.ITimer.StartMode;;;"));
         sizes.add(Global.newArray("period", "UInt"));
@@ -365,8 +366,8 @@ public class ti_sysbios_family_arm_msp432
         sizes.add(Global.newArray("tickFxn", "UFxn"));
         sizes.add(Global.newArray("frequency", "Sxdc.runtime.Types;FreqHz"));
         sizes.add(Global.newArray("hwi", "UPtr"));
-        sizes.add(Global.newArray("prevThreshold", "UInt"));
-        sizes.add(Global.newArray("savedCurrCount", "UInt"));
+        sizes.add(Global.newArray("prevThreshold", "UInt16"));
+        sizes.add(Global.newArray("savedCurrCount", "UInt16"));
         sizes.add(Global.newArray("rollovers", "UInt32"));
         sizes.add(Global.newArray("synchronous", "UShort"));
         sizes.add(Global.newArray("inputDivider", "UInt"));
@@ -575,7 +576,7 @@ public class ti_sysbios_family_arm_msp432
                 po.addFld("$hostonly", $$T_Num, 0, "r");
                 po.addFld("staticInst", $$T_Bool, $$UNDEF, "w");
                 po.addFld("id", Proto.Elm.newCNum("(xdc_Int)"), $$UNDEF, "w");
-                po.addFld("controlRegInit", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
+                po.addFld("controlRegInit", Proto.Elm.newCNum("(xdc_UInt16)"), $$UNDEF, "w");
                 po.addFld("runMode", (Proto)om.findStrict("ti.sysbios.interfaces.ITimer.RunMode", "ti.sysbios.family.arm.msp432"), $$UNDEF, "w");
                 po.addFld("startMode", (Proto)om.findStrict("ti.sysbios.interfaces.ITimer.StartMode", "ti.sysbios.family.arm.msp432"), $$UNDEF, "w");
                 po.addFld("period", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
@@ -585,8 +586,8 @@ public class ti_sysbios_family_arm_msp432
                 po.addFld("tickFxn", new Proto.Adr("xdc_Void(*)(xdc_UArg)", "PFv"), $$UNDEF, "w");
                 po.addFld("frequency", (Proto)om.findStrict("xdc.runtime.Types.FreqHz", "ti.sysbios.family.arm.msp432"), $$DEFAULT, "w");
                 po.addFld("hwi", (Proto)om.findStrict("ti.sysbios.family.arm.m3.Hwi.Handle", "ti.sysbios.family.arm.msp432"), $$UNDEF, "w");
-                po.addFld("prevThreshold", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
-                po.addFld("savedCurrCount", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
+                po.addFld("prevThreshold", Proto.Elm.newCNum("(xdc_UInt16)"), $$UNDEF, "w");
+                po.addFld("savedCurrCount", Proto.Elm.newCNum("(xdc_UInt16)"), $$UNDEF, "w");
                 po.addFld("rollovers", Proto.Elm.newCNum("(xdc_UInt32)"), $$UNDEF, "w");
                 po.addFld("synchronous", $$T_Bool, $$UNDEF, "w");
                 po.addFld("inputDivider", Proto.Elm.newCNum("(xdc_UInt)"), $$UNDEF, "w");
@@ -790,14 +791,14 @@ public class ti_sysbios_family_arm_msp432
             sb.append("pkg.packageRepository = xdc.om['ti.sysbios.family.arm.msp432$$stat$root'];\n");
         sb.append("}\n");
         sb.append("pkg.build.libraries = [\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.family.arm.msp432.aem4f',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.family.arm.msp432.am4fg',\n");
-            sb.append("'lib/sysbios/debug/ti.sysbios.family.arm.msp432.arm4f',\n");
+            sb.append("'lib/debug/ti.sysbios.family.arm.msp432.aem4f',\n");
+            sb.append("'lib/debug/ti.sysbios.family.arm.msp432.am4fg',\n");
+            sb.append("'lib/debug/ti.sysbios.family.arm.msp432.arm4f',\n");
         sb.append("];\n");
         sb.append("pkg.build.libDesc = [\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.family.arm.msp432.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.family.arm.msp432.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
-            sb.append("['lib/sysbios/debug/ti.sysbios.family.arm.msp432.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.family.arm.msp432.aem4f', {target: 'ti.targets.arm.elf.M4F', suffix: 'em4f'}],\n");
+            sb.append("['lib/debug/ti.sysbios.family.arm.msp432.am4fg', {target: 'gnu.targets.arm.M4F', suffix: 'm4fg'}],\n");
+            sb.append("['lib/debug/ti.sysbios.family.arm.msp432.arm4f', {target: 'iar.targets.arm.M4F', suffix: 'rm4f'}],\n");
         sb.append("];\n");
         Global.eval(sb.toString());
     }
@@ -1159,8 +1160,8 @@ public class ti_sysbios_family_arm_msp432
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
         Value.Map atmap = (Value.Map)vo.getv("$attr");
-        atmap.setElem("", true);
         atmap.setElem("", "./ClockFreqs.xdt");
+        atmap.setElem("", true);
         atmap.seal("length");
         vo.bind("MODULE_STARTUP$", 0);
         vo.bind("PROXY$", 0);
@@ -1252,7 +1253,8 @@ public class ti_sysbios_family_arm_msp432
         vo.bind("get", om.findStrict("ti.sysbios.family.arm.msp432.Seconds.get", "ti.sysbios.family.arm.msp432"));
         vo.bind("getTime", om.findStrict("ti.sysbios.family.arm.msp432.Seconds.getTime", "ti.sysbios.family.arm.msp432"));
         vo.bind("set", om.findStrict("ti.sysbios.family.arm.msp432.Seconds.set", "ti.sysbios.family.arm.msp432"));
-        vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_arm_msp432_Seconds_Module__startupDone__E", "ti_sysbios_family_arm_msp432_Seconds_get__E", "ti_sysbios_family_arm_msp432_Seconds_getTime__E", "ti_sysbios_family_arm_msp432_Seconds_set__E"));
+        vo.bind("setTime", om.findStrict("ti.sysbios.family.arm.msp432.Seconds.setTime", "ti.sysbios.family.arm.msp432"));
+        vo.bind("$$fxntab", Global.newArray("ti_sysbios_family_arm_msp432_Seconds_Module__startupDone__E", "ti_sysbios_family_arm_msp432_Seconds_get__E", "ti_sysbios_family_arm_msp432_Seconds_getTime__E", "ti_sysbios_family_arm_msp432_Seconds_set__E", "ti_sysbios_family_arm_msp432_Seconds_setTime__E"));
         vo.bind("$$logEvtCfgs", Global.newArray());
         vo.bind("$$errorDescCfgs", Global.newArray());
         vo.bind("$$assertDescCfgs", Global.newArray());
