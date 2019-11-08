@@ -247,7 +247,7 @@ typedef xdc_Fxn         Fxn;
 typedef xdc_Ptr         Ptr;
 typedef xdc_CPtr        CPtr;
 #ifndef xdc__nolocalstring
-typedef xdc_String      String;
+//typedef xdc_String      String;
 #endif
 typedef xdc_CString     CString;
 
