@@ -1,1 +1,2 @@
-# msp432r-core
+# MSP-432r Framework
+
